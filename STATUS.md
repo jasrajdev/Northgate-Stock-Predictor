@@ -1,11 +1,13 @@
 # Current Status
 
 - Project repository created: private GitHub repo, default branch `main`.
-- Stage: setup / pre-implementation.
+- Stage: initial project structure created; market-data ingestion is the next implementation task.
 - Deadline: 15 November 2026.
 - Working style: learn by building; concise, beginner-friendly explanations; explain unfamiliar terms in brackets once.
-- Environment: Mac + VS Code + GitHub; use free tools and avoid paid services unless necessary.
-- Next: confirm Python environment, create project structure, then implement reproducible daily market-data ingestion and quality checks.
+- Environment: Mac + VS Code + GitHub; Python 3.12.15 virtual environment at `.venv/`; `.gitignore` excludes local environments and caches.
+- Initial dependencies declared: NumPy, pandas, yfinance; pytest in development requirements.
+- Added `src/northgate/`, a data module scaffold, tests, and placeholder directories for raw/processed data, notebooks, and reports.
+- Next: pull the latest `main` branch, install requirements in the active `.venv`, run the structure test, then implement market-data ingestion and quality checks.
 - No model performance claims or results yet.
 
 ## Session update rule
