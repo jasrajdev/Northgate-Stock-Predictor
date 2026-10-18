@@ -1,0 +1,4 @@
+# Core data-ingestion and analysis dependencies
+numpy>=2.0,<3.0
+pandas>=2.2,<4.0
+yfinance>=0.2.65,<2.0
