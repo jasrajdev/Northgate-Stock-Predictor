@@ -1,0 +1,1 @@
+# Northgate-Stock-Predictor
