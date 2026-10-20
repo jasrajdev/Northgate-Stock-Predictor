@@ -6,6 +6,13 @@ Status: research leads identified; not yet a final dataset specification.
 ## Current focus
 First build a reproducible price/volume dataset and backtesting baseline for Indian equities. News and broader event analysis are a later phase, but their research leads and hypotheses are preserved below.
 
+## Stock universe / market choice
+- Candidate starting universe: NIFTY 50 constituents. NSE describes it as a diversified 50-stock index and publishes its methodology and constituent list: https://www.nseindia.com/static/products-services/indices-nifty50-index
+- Why this is a reasonable starting point: large, actively traded companies across sectors; the index is designed using explicit rules including liquidity. This is a research starting point, not proof that every historical constituent is easy to obtain.
+- Do not assume today's NIFTY 50 membership was the membership 5–10 years ago. Using today's members for the entire past creates survivorship bias. If historical constituents are unavailable, document this as a limitation rather than pretending it is absent.
+- Start with a smaller subset across sectors for pipeline development, then expand to the full 50 if data coverage and time allow. Final subset and selection rule remain undecided.
+- Portfolio comparison should ideally use the NIFTY 50 Total Returns Index (TRI), because it includes dividends; plain price-index returns omit dividends. Verify the exact benchmark series and access terms before implementation.
+
 ## What to learn before choosing data
 1. Define the prediction target: price level, next-session return/direction, or volatility. These are different tasks.
 2. Define the horizon: how far ahead the forecast refers to (for example, the next trading session). Choose one primary target/horizon before modelling.
@@ -31,7 +38,9 @@ Potential later derived features (calculated from historical data): returns, rol
 - RBI Database on Indian Economy: https://data.rbi.org.in/
   - Candidate source for macroeconomic and financial series in a later feature phase. Confirm series frequency, historical availability, release dates, revisions, and terms.
 - Research paper: “Stock Market Prediction of NIFTY 50 Index Applying Machine Learning Techniques” (2022): https://doi.org/10.1080/08839514.2022.2111134
-  - Search result describes daily NIFTY 50 data from 2014–2018 and OHLCV-related variables. Read the full paper and scrutinize its validation design; do not copy its data choices or trust performance claims without checking leakage and out-of-sample methodology.
+  - Studies NIFTY 50 index forecasting with RNN, LSTM, and CNN; the article abstract reports lower MSE for LSTM than the other two models.
+  - The paper describes an 80/20 train/test split and K-fold cross-validation within training. Because this is time-series data, scrutinize whether folds preserve chronological order; ordinary random K-fold can leak future information. Do not copy its validation setup without checking.
+  - Its described inputs include Date, Open, High, Low, Close, and Volume. Read the full methodology and limitations; an index forecast is not the same task as selecting individual stocks and constructing a portfolio.
 - Research paper: “Understanding the Impact of News Articles on the Movement of Market Index: A Case on Nifty 50”: https://arxiv.org/abs/2412.06794
   - Later-phase lead for broad news topics, not only company headlines.
 - Research paper/dataset: “NIFTY Financial News Headlines Dataset”: https://arxiv.org/abs/2405.09747
