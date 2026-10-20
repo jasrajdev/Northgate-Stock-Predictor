@@ -2,13 +2,20 @@
 
 Resolve these through research or implementation; record answers and sources here.
 
-- Which equities and benchmark best fit the PRD and available adjusted daily data? Initial market focus is India; exact stock list and selection rules remain open.
-- Which reliable, free source will provide macroeconomic data and timestamped financial news?
-- What prediction target and horizon will be used, and how will this choice be justified?
-- Should the first prediction target be next-session return, direction (rise/fall), or volatility? These are different tasks; choose a primary target before modelling.
-- Which event/topic taxonomy is practical for news: company earnings, government/regulatory policy, RBI/macroeconomics, global/geopolitical events, market flows, and sector-level events?
+## First phase: price/volume baseline
+- Which Indian equities and benchmark should we use, and what reproducible rule selects them?
+- Which source provides enough historical daily OHLCV and corporate-action-adjusted prices at acceptable cost and with clear terms?
+- What primary target and horizon will we predict: next-session return, direction, or volatility?
+- What chronological train/validation/test periods and simple baselines should we use?
+- How do we account for survivorship bias (only studying companies that survived or are prominent today)?
+
+## Later phase: macro/news/events
+- Which reliable, free source will provide Indian macroeconomic series and timestamped financial news?
+- Which event/topic categories add useful information beyond price/volume?
 - How will publication time, after-market news, revised economic data, duplicate stories, and historical availability be handled to avoid look-ahead bias?
 - Can news be collected at sufficient historical depth and with trustworthy timestamps under free source terms?
+
+## Portfolio evaluation and implementation
 - What realistic transaction-cost and slippage assumptions can be documented?
 - Which local Python/deep-learning setup is practical on the available Mac, and when should Colab be used?
 - What are the exact acceptance criteria and final deliverables in the original PRD?
