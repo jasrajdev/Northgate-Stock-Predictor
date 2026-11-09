@@ -1,32 +1,44 @@
 # Project Notebook
 
 ## Research question
-Can machine learning discover a useful signal in stock-market data that improves investment decisions out of sample?
+Can machine learning discover a useful signal in Indian stock-market data that improves investment decisions out of sample?
 
 ## Required scope from Northgate PRD
-- 8–15 liquid large-cap equities plus a market benchmark; roughly 8–10 years of daily OHLCV and adjusted-close data, relevant macro series, and timestamped financial news.
+- 8–15 liquid large-cap equities plus a broad market benchmark; at least 8–10 years of daily OHLCV and adjusted-close data, relevant macro series, and timestamped financial news.
 - EDA and finance math; compare 4 classical ML models (Linear/Ridge, Random Forest, XGBoost, SVR) and 4 deep-learning models (LSTM, GRU, BiLSTM, Transformer).
 - Test FinBERT/VADER sentiment impact; mean-variance portfolio optimization; backtesting, risk metrics, recommendation logic, and a 7-panel Streamlit dashboard.
-- Deliver reproducible code, comparisons, dashboard, and a 10–15 page report. Check the original PRD for exact requirements before finalizing.
+- Deliver reproducible code, comparisons, dashboard, and a 10–15 page report. See original PRD for exact requirements.
 
-## Current research direction — 2026-10-20
-- Market focus: Indian equities.
-- Current priority is price/volume data, target/horizon selection, and a valid backtesting baseline. News/event analysis is phase 2, not abandoned.
-- User wants research papers and source documentation to guide data choices rather than selecting features arbitrarily.
-- Specific stock universe, benchmark, prediction target/horizon, and final data source remain open.
-- Candidate price fields: date, open, high, low, close, adjusted close or documented adjusted series, volume, instrument identifier.
-- Candidate derived features: returns, rolling volatility, moving averages, volume changes. Must be calculated without using future data.
-- Source candidates: NSE All Reports for daily files; check NSE historical-data terms/coverage because NSE also advertises paid historical subscriptions. RBI DBIE is a possible later source for macro series.
-- A 2022 NIFTY 50 ML paper is a research lead for typical data fields and evaluation design; review its split methodology and limitations rather than copying its choices.
-- News/event research leads remain in `docs/DATA_RESEARCH.md` and `IDEAS_BACKLOG.md`. Candidate topics include company announcements, government policy, RBI/economic releases, global/commodity events, and market-wide/sector news.
-- Event/news co-occurrence cannot prove causation. Build a simple baseline before considering multi-agent complexity.
+## User-defined practical success objective — 2026-11-09
+- Aim for at least 70% of BUY recommendations to result in positive net returns over a five-trading-session holding period.
+- This is a target to test, not a promise or established performance.
+- A 70% win rate alone does not prove profitability: measure average win/loss, net return after costs, profit factor, drawdown, Sharpe, trade count, and uncertainty.
+- Do not equate a regression forecast with a calibrated probability of success.
+
+## Two distinct evaluation layers
+1. Forecasting: compare all eight models on identical held-out dates; PRD requires beating naive random-walk on MAE and directional accuracy.
+2. Strategy/portfolio: simulate BUY/HOLD/SELL and allocations; PRD requires optimised portfolio out-of-sample Sharpe to exceed equal-weight baseline. Also compare broad-market benchmark.
+Do not use model RMSE alone as evidence of profitable trading.
+
+## Current implementation direction — 2026-11-09
+- Market focus: Indian equities; NIFTY 50 is a candidate starting universe. PRD final universe must be 8–15 equities, not 20–30.
+- News/event research is phase 2 after a working price/volume baseline; preserve candidate news categories in `IDEAS_BACKLOG.md`.
+- Read user's 2022 NIFTY 50 paper briefing; detailed notes and caveats are in `docs/RESEARCH_PAPER_REVIEW.md`.
+- Stepwise implementation plan is in `docs/IMPLEMENTATION_PLAN.md`.
+- Proposed trade convention (not final): signal after close on t, enter at t+1 open, exit at t+5 close.
+- Need source feasibility test before full data download; yfinance is in PRD reference code but Indian coverage, corporate-action adjustments, and long-history reliability must be checked. NSE official files/historical data are another candidate; historical access may have costs.
+- Historical index membership is important: selecting only current NIFTY 50 constituents for past years can create survivorship bias. Use point-in-time membership if accessible; otherwise disclose limitation.
+- Avoid blindly forward-filling missing stock prices; inspect gaps and retain audit logs. Never back-fill.
+- Do not train all eight models until data, target, split protocol, and baseline are tested.
 
 ## Non-negotiable research safeguards
 - Split data by time, never randomly across dates.
 - At each prediction date, use only information that would actually have been available then. Align after-close news to the next trading session.
-- Compare forecasts with a naive last-value/random-walk baseline; compare portfolios with equal weight and a benchmark.
+- Fit scalers on training data only; transform validation/test using training-fitted parameters.
+- For five-session forward outcomes, purge overlapping label horizons at split boundaries to prevent shared future outcome periods crossing folds.
+- Compare forecasts with naive last-value/random-walk baseline; compare portfolios with equal weight and benchmark.
 - Include transaction costs/slippage where feasible; disclose limitations. A model losing to a baseline is a valid finding.
-- Freeze choices before final testing where possible; do not tune against the test period.
+- Freeze choices before final testing; do not tune against the test period.
 - This is research/decision support, not live brokerage execution or a guarantee of returns.
 
 ## Build philosophy
