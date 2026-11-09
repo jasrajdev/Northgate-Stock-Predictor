@@ -33,3 +33,15 @@ Record each important choice with date, decision, reason, alternatives, and whet
 - Idea: explore a research pipeline that classifies news by event/topic, affected company or sector, sentiment, and publication time; later test whether these features add value beyond price/volume and macro data.
 - Important limitation: co-occurrence does not prove that a news item caused a price move. Start with a simple, testable pipeline rather than committing to a multi-agent system or training a language model from scratch.
 - Status: hypothesis for research, not an implementation decision.
+
+## 2026-11-09 — Additional recommendation success target
+- Decision: use 70% profitable BUY recommendations over a five-trading-session holding period as a user-defined research target to evaluate.
+- Reason: reflects the user's practical definition of a useful buying signal.
+- Important: target is not guaranteed; it does not replace the PRD's forecast and portfolio acceptance criteria.
+- Status: horizon and target rate recorded; exact signal/entry/exit timing, costs, trade concurrency, and position sizing remain to be finalised.
+- Reversible: yes, with documented reason.
+
+## 2026-11-09 — Stepwise implementation
+- Decision: agree an evaluation contract and test data-source feasibility before bulk data download or training all models.
+- Reason: prevent inconsistent backtests and wasted implementation effort.
+- Status: next-step process decision.
