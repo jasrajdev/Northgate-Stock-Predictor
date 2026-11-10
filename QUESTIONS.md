@@ -27,3 +27,13 @@ Resolve these through research or implementation; record answers here.
 ## Delivery
 - Which local Python/deep-learning setup is practical on the available Mac, and when should Colab be used?
 - What can be completed to a correct standard by the 15 November 2026 deadline, and what must be explicitly deferred?
+
+## Return-based strategy design (added 2026-11-11)
+- What is a realistic distribution of Indian stock returns over 1–5 trading sessions, by stock/sector and volatility regime?
+- How often do candidate profit targets (e.g. a grid of modest fixed percentages) get reached within five sessions, and what adverse movement occurs first?
+- Should exits use fixed percentage targets/stops, volatility-scaled barriers (e.g. ATR multiples), a trailing stop, or a combination?
+- What is the appropriate risk/reward and net expectancy after brokerage, statutory charges, spread and slippage?
+- What should happen if both target and stop appear to be crossed in the same daily OHLC candle? Can intraday data resolve ordering, or should the backtest assume the adverse outcome?
+- Should the model estimate expected forward return, probability of reaching a profit barrier before a stop barrier, or both?
+- Which objective should drive threshold selection: net expectancy, risk-adjusted return, drawdown-constrained return, or a multi-metric rule? Win rate alone is insufficient.
+- How do we reduce overfitting when trying many exit thresholds and model configurations?
