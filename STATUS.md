@@ -20,3 +20,6 @@
 
 ## Session update rule
 After each meaningful work session, record completed work, tests/results, decisions, new ideas, blockers, and the single next action. Update this file and verify the saved contents.
+- Strategy refinement (2026-11-11): five sessions is now a proposed maximum holding period, not a mandatory exit date. Explore return-based exits using a take-profit barrier, stop-loss/risk exit, and max-five-session time exit. No fixed 5%/10% target has been chosen.
+- New research direction: estimate empirical 1–5 session return/volatility distributions, compare fixed vs volatility-scaled exit barriers, include costs, and select rules on chronological validation only. See `docs/IMPLEMENTATION_PLAN.md`.
+- Evidence reviewed: academic studies show stop-loss/trailing-stop effects depend on return dynamics and transaction costs; there is no universal optimal threshold. See cited studies in implementation plan and ideas backlog.
