@@ -100,3 +100,40 @@ Complete Step 1: agree the trade timing/return definition and the recommendation
 
 ## Timeline risk
 The original PRD describes a four-week, 25–30-hours/week plan. The current project deadline recorded in STATUS.md is 15 November 2026, only six calendar days from this update. The complete PRD scope is unlikely to be delivered to its intended quality in that time without substantial scope/risk. Prioritise a correct, reproducible core and clearly label incomplete modules rather than faking completeness or skipping validation.
+
+## Strategy-design update — 2026-11-11: return-based exits, time as a maximum
+The user has refined the objective: five sessions should be a maximum holding period, not a mandatory exit date or a requirement that every stock rise by a fixed amount exactly on day five. The desired strategy should seek a sensible, positive net return while avoiding both tiny uninteresting gains and unrealistic high-return assumptions.
+
+### Proposed research framing (not yet a final rule)
+- Treat each candidate trade as having three possible exit events: a take-profit target, a stop-loss/risk exit, or a maximum holding-time exit (up to five trading sessions).
+- The target return and stop-loss must be tested, not guessed. Do not assume 5%, 10%, or any other fixed number is optimal.
+- Test a small, predeclared grid of take-profit and stop-loss settings on chronological validation data only. Include a no-fixed-profit-target / time-exit baseline.
+- Consider volatility-scaled barriers (e.g. multiples of recent ATR or rolling volatility) alongside fixed percentage barriers. ATR means Average True Range, a measure of typical price movement. Volatility scaling may make thresholds more comparable between calm and volatile stocks, but is only a hypothesis.
+- For daily OHLC data, if both take-profit and stop-loss are crossed within the same candle, their order is unknown. Use intraday data or a conservative assumption (count the adverse exit first) and document it; never assume the favourable sequence.
+- Model target may be framed as probability of reaching a specified net-return barrier before a stop barrier within five sessions, or as the distribution/expected value of forward returns. Choose after comparing simple baselines and data feasibility. A raw regression prediction is not a probability.
+- Report net expectancy (average net profit per trade), win rate, average win/loss, profit factor, drawdown, Sharpe, trade frequency, exposure, and uncertainty. Optimise for a robust net risk-adjusted objective, not win rate alone.
+- Threshold search creates overfitting risk. Use validation/walk-forward folds for selection, keep the final chronological test untouched, and account for multiple configurations tested.
+- There is no universal profit target that maximises profit for all stocks and market regimes.
+
+### Evidence leads
+- Lo & Remorov (2017), “Stop-loss strategies with serial correlation, regime switching, and transaction costs,” Journal of Financial Markets. Their U.S. stock study reports tight stop-loss rules can underperform buy-and-hold after transaction costs due to excessive trading; outcomes depend on return autocorrelation/regimes. DOI: https://doi.org/10.1016/j.finmar.2017.02.003
+- Kaminski & Lo (2014), “When do stop-loss rules stop losses?”, Journal of Financial Markets. Theoretical and empirical results indicate stop-loss value depends on return dynamics; under random-walk assumptions, stop-loss rules can reduce expected returns, while momentum conditions may change outcomes. DOI: https://doi.org/10.1016/J.FINMAR.2013.07.001
+- Dai et al. (2020), “Risk reduction using trailing stop-loss rules,” International Review of Financial Analysis. Trailing stops reduced downside risk in their study but had lower mean returns than a mean-variance benchmark; transaction costs weakened tight rules. DOI: https://doi.org/10.1111/irfi.12328
+- NSE India lists statutory charges/levies for equity trades; use current official charges and a chosen broker tariff when modelling costs. https://www.nseindia.com/static/invest/first-time-investor-sebi-turnover-fees-stt-other-levies
+These papers are not evidence of a best Indian-equity target for Northgate; their markets, instruments, and assumptions differ.
+
+### Research sequence
+1. First calculate the empirical distribution of 1–5 session forward returns and realised volatility for a broad, feasible Indian stock sample.
+2. Measure how often different gross return barriers are reached within five sessions, how long they take, and adverse excursion before exit.
+3. Add transaction costs and slippage; discard thresholds whose gross edge disappears net of costs.
+4. Compare fixed-percentage barriers with volatility-scaled barriers on chronological validation folds.
+5. Select a simple robust rule, freeze it, and report final out-of-sample results without retuning.
+
+## Universe and model breadth
+- The PRD's 8–15 stocks are a starting project scope, not a universal statistical optimum. A broader research universe can improve cross-sectional coverage if reliable point-in-time data and compute/time permit.
+- Do not expand merely to claim "more data". More tickers add observations but also sector correlation, survivorship, symbol-history and data-quality complexity. Start with a manageable liquid universe, validate the pipeline, then expand systematically.
+- Test model families in stages: naive baseline first; simple linear/logistic baseline next; tree-based model next; one sequence model (e.g. LSTM/GRU) only if the simpler models show useful signal. Add remaining PRD architectures if time permits or if comparison is a deliverable. No need to train all eight simultaneously.
+- Model selection is based on identical chronological out-of-sample comparisons and net strategy utility, not training accuracy or popularity.
+
+### Next action
+Research/measure Indian stock return and volatility distributions for the proposed maximum five-session window before selecting take-profit/stop-loss thresholds. Do not lock 5% or 10% now.
