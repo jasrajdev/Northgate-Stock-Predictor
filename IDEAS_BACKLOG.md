@@ -37,3 +37,15 @@ Keep all useful ideas here, including speculative or untested ones. Label status
 
 ## Untested
 Nothing listed here should be treated as proven until tested out of sample.
+
+## Return-based exit strategy — research hypothesis (2026-11-11)
+- Five sessions is a maximum holding period, not necessarily a mandatory exit date.
+- Test profit target + stop-loss + maximum-time exit. Do not hardcode 5% or 10% without evidence.
+- Compare fixed percentage barriers against volatility-scaled barriers using ATR/rolling volatility.
+- Measure how frequently each barrier is reached within 1–5 sessions, time-to-hit, maximum favourable excursion and maximum adverse excursion.
+- Include transaction costs and slippage. Tight exits can create excess turnover and costs.
+- If daily OHLC shows both stop and target crossed on one day, intraday ordering is unknown; use intraday data or conservative adverse-first assumption.
+- Preserve alternative objectives: net expectancy, profit factor, drawdown, Sharpe, win rate, trade count and uncertainty. Avoid optimising win rate alone.
+- Evidence leads: Lo & Remorov (2017) DOI 10.1016/j.finmar.2017.02.003; Kaminski & Lo (2014) DOI 10.1016/J.FINMAR.2013.07.001; Dai et al. (2020) DOI 10.1111/irfi.12328. Findings are context-dependent and not direct prescriptions for Indian cash equities.
+- Hypothesis: use a broad, reliable stock sample to estimate return/volatility distributions before selecting thresholds. Expand beyond 8–15 only if data quality and point-in-time history support it.
+- Model strategy: baseline → simple linear/logistic → tree-based → one sequence model; add further architectures only when useful or required for project comparison. Avoid running all models at once.
