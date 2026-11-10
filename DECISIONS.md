@@ -45,3 +45,11 @@ Record each important choice with date, decision, reason, alternatives, and whet
 - Decision: agree an evaluation contract and test data-source feasibility before bulk data download or training all models.
 - Reason: prevent inconsistent backtests and wasted implementation effort.
 - Status: next-step process decision.
+
+## 2026-11-11 — Refine five-session horizon into maximum holding period
+- User clarification: five trading sessions should be the maximum time to hold a position, not a compulsory exit date. A trade may close earlier if a researched profit or risk exit is triggered.
+- User wants a return-based strategy, balancing realistic opportunity with avoiding both tiny gains and unrealistic targets.
+- Decision status: accept the maximum-holding-period framing as the working research direction. Do not select a fixed 5%, 10%, or other target yet.
+- Proposed tests: fixed percentage barriers vs volatility-scaled barriers, with take-profit, stop-loss and max-five-session exits; include costs and conservative handling of same-day barrier ambiguity.
+- Reason: choose thresholds from observed Indian equity return/volatility distributions and chronological validation, rather than intuition.
+- Reversible: yes. Exact barrier logic and objective remain open.
