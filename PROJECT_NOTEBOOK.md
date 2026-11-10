@@ -46,3 +46,11 @@ Build in small tested steps. Explain what each step achieves and why. Prefer rep
 
 ## Core concept
 Historical backtesting is like replaying the past: on every simulated date, the system must know only what an investor could have known on that date. Seeing future information is look-ahead bias/data leakage.
+## Return-based strategy refinement — 2026-11-11
+- Five sessions is a maximum holding period, not a compulsory day-five exit. User wants exits based on a sensible return opportunity and risk, not an arbitrary fixed holding duration.
+- No fixed 5% or 10% target selected. First measure Indian equity 1–5 session return and volatility distributions, then compare candidate take-profit/stop-loss rules on chronological validation data.
+- Candidate structure: take-profit barrier, stop-loss/risk exit, and maximum-five-session exit. Compare fixed percentage barriers with volatility-scaled barriers (e.g. ATR); treat these as hypotheses.
+- Tight exits may create turnover and transaction costs; include realistic charges/slippage. If daily OHLC suggests both barriers were crossed in one candle, order is unknown; use intraday data or conservative adverse-first handling.
+- A 70% win rate remains a target, not the sole optimisation objective. Also measure net expectancy, average win/loss, profit factor, drawdown, Sharpe, turnover, trade count and uncertainty.
+- Broader universe than the PRD's 8–15 may be explored if reliable historical data supports it, but expand in stages and address survivorship/sector correlation. More tickers are not automatically better.
+- Models should be tested progressively: naive baseline → simple linear/logistic → tree-based → one sequence model; add other PRD architectures if evidence/time justifies or comparison is required. Do not train all at once.
