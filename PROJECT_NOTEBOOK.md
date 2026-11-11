@@ -44,5 +44,10 @@ Use the original PRD for exact acceptance wording. Do not silently remove requir
 8. Include transaction costs/slippage where feasible.
 9. Do not equate forecast error, a recommendation win rate, and portfolio profitability.
 
-## Current implementation state
-Only the initial repository scaffold is present. No market data, trained model, backtest, dashboard, or measured result has been verified.
+## Current implementation state (updated 2026-11-12)
+- Yahoo Finance ingestion script is in the repository. User reports successful local download of 10 provisional Indian equities plus the NIFTY 50 price index: 29,484 combined rows through 2026-11-09.
+- A combined market panel and 24 backward-looking features per instrument have been generated locally. Feature calculations are grouped by ticker; raw zero-volume observations are preserved while zero volume is excluded from equity volume indicators, and NIFTY 50 volume indicators are disabled.
+- First-pass user-reported validation found no duplicate ticker/date keys, unsorted rows, or missing values in the combined panel's 11 columns. This is not a complete audit of expected exchange sessions or vendor accuracy.
+- A next-session supervised dataset builder has been added to GitHub. It labels each feature row with the same ticker's next observed adjusted close, next-session log return, and direction. The user has not yet run this script; output is not yet verified.
+- No model has been trained; no backtest, dashboard, or measured performance result has been verified.
+- Next data families required by the PRD: macro/market indicators and timestamped financial news/sentiment. Multi-day target horizons remain unspecified in the PRD and need an explicit choice.
