@@ -1,18 +1,20 @@
 # Northgate Stock Predictor
 
-Research project: test whether ML/DL forecasts and sentiment can improve portfolio decisions versus simple baselines. This is a decision-support research tool, not a trading bot; profitability is not guaranteed.
+India-focused research project testing whether machine-learning forecasts and carefully time-aligned information can improve investment decisions versus simple baselines. This is a decision-support research tool, not a live trading bot; profitability is not guaranteed.
 
 ## Source of truth
-- `STATUS.md` — current state and next actions
-- `PROJECT_NOTEBOOK.md` — durable context and reasoning
-- `IDEAS_BACKLOG.md` — all ideas, including untested ones
-- `DECISIONS.md` — choices and why
-- `LEARNING_LOG.md` — concepts learned and experiments
-- `QUESTIONS.md` — unresolved questions
-- `docs/CONTINUITY_PROTOCOL.md` — instructions for every AI session
+- `STATUS.md` — verified project state and next action
+- `PROJECT_NOTEBOOK.md` — durable project context and research safeguards
+- `DECISIONS.md` — confirmed decisions only
+- `QUESTIONS.md` — unresolved choices
+- `IDEAS_BACKLOG.md` — a concise list of research directions, not a transcript of brainstorming
+- `LEARNING_LOG.md` — concepts learned
+- `docs/IMPLEMENTATION_PLAN.md` — staged project plan
+- `docs/DATA_RESEARCH.md` — data-source and dataset research
+- `docs/CONTINUITY_PROTOCOL.md` — instructions for future project sessions
 
 ## Start every session
-Read `STATUS.md`, `PROJECT_NOTEBOOK.md`, `DECISIONS.md`, and relevant backlog/log entries before advising or changing anything. After meaningful progress, update relevant files and verify by reading them back.
+Read `STATUS.md`, `PROJECT_NOTEBOOK.md`, `DECISIONS.md`, and the relevant plan/research files. Keep conversational brainstorming separate from confirmed repository decisions. After a requested repository edit, fetch and verify every changed file.
 
 ## Research safeguards
-Use chronological splits; prevent look-ahead/data leakage; compare against naive forecast, equal-weight portfolio, and a benchmark; report costs/limitations and honest negative results. Never claim a model works without out-of-sample evidence.
+Use chronological splits; prevent look-ahead/data leakage; align information to its actual publication time; compare against simple baselines; include costs and limitations; report negative results honestly. Never claim a model works without out-of-sample evidence.
