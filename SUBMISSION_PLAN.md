@@ -140,3 +140,11 @@ Append concise dated entries here after meaningful, verified progress:
 - The 44 infinite values were all in `volume_change_1d`. The common dates across unrelated equities strongly suggest Yahoo's volume field is unavailable/zero on those dates, rather than evidence that all these stocks genuinely had no trading. This is an inference from the pattern, not independently verified exchange data.
 - Updated `scripts/build_features.py`: retain raw `Volume` values unchanged; treat zero equity volume as unavailable (`NaN`) for volume-derived features; do not calculate volume-derived features for the NIFTY 50 price index. This prevents division by zero and avoids treating the index as a traded stock.
 - **Not yet executed locally:** user must pull the updated script and regenerate `feature_panel.csv`; then verify no infinities remain and inspect the resulting NaN counts. The raw download and market panel do not need to be downloaded again.
+
+
+### 2026-11-12 — Zero-volume feature fix executed and checked
+- **User-provided terminal output:** pulled commit `c1b4422` and reran `scripts/build_features.py`. It completed with 29,484 rows, 11 tickers, and 24 generated features.
+- **Verified from user's diagnostic output:** infinite values in `volume_change_1d`, `volume_sma_20`, and `volume_to_sma_20` are all zero.
+- Missing values after the fix: `volume_change_1d` 2,722; `volume_sma_20` 3,244; `volume_to_sma_20` 3,244. These reflect unavailable zero-volume inputs plus rolling-window warm-up periods. The raw `Volume` column is retained.
+- This addresses numerical infinities; it does not validate the completeness or correctness of Yahoo volume history. Volume-derived features must be treated cautiously, and volume missingness itself may be informative.
+- **Current result:** feature engineering runs successfully and the identified divide-by-zero problem is resolved according to the user's output. Next: inspect which rows/features are missing and verify the raw market panel remains unchanged; then define the prediction target before model training.
