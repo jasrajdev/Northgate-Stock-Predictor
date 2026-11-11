@@ -13,7 +13,7 @@ Only unresolved questions belong here. Do not treat a question or candidate opti
 - Which macroeconomic series are required, and can their release dates/revisions be aligned correctly?
 
 ## Forecasting and evaluation
-- What is the primary forecast target and horizon?
+- Multi-day forward-price horizons are not specified in the PRD. Which additional horizons should be implemented after the next-session dataset?
 - What chronological train/validation/test periods and walk-forward folds will be used?
 - How will overlapping forward labels be purged at split boundaries?
 - What exactly constitutes a BUY recommendation and a successful trade?
