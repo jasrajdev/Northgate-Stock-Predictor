@@ -1,17 +1,14 @@
 # Learning Log
 
-For each entry: concept, plain-language meaning, why it matters here, example/test, remaining confusion.
-
 ## Backtesting and leakage
-- Meaning: backtesting simulates a strategy on historical dates; leakage happens when information from the future slips into a prediction.
-- Why it matters: it can make a weak strategy look unrealistically successful.
-- Rule: on every date, features and news must reflect only information available at that time.
-- Status: foundational rule; apply to data preparation, feature engineering, model selection, and portfolio tests.
+- Meaning: backtesting simulates decisions on historical dates; leakage occurs when information from the future enters a prediction.
+- Why it matters: leakage can make a weak strategy look unrealistically successful.
+- Rule: at each simulated decision time, use only information available by that time.
+- Status: foundational rule for data preparation, features, model selection, and portfolio tests.
 
-## Forecasting vs recommendation vs portfolio evaluation — 2026-11-09
-- Forecasting evaluation: checks whether predicted values/directions match future outcomes (e.g. MAE and directional accuracy).
-- Recommendation win rate: among BUY signals actually generated, what fraction have positive net returns over the chosen holding period?
-- Portfolio evaluation: checks the combined capital-weighted holdings, including risk, costs, and benchmark-relative performance.
-- Why it matters: a low forecast error does not automatically mean profitable trades; a high win rate does not automatically mean a profitable portfolio.
-- Northgate's user-defined target: aim for 70% profitable BUY recommendations over five trading sessions; not a guarantee or a substitute for PRD metrics.
-- Open: precise signal time, entry/exit prices, transaction costs, position sizing, and handling of overlapping trades.
+## Three different evaluation questions
+- Forecasting: did predicted values or directions match later market outcomes?
+- Recommendation evaluation: did BUY/HOLD/SELL decisions produce useful outcomes under a clearly defined trade convention?
+- Portfolio evaluation: did the combined capital-weighted holdings perform well after costs and risk?
+- Why it matters: a low forecast error or high BUY win rate does not automatically imply a profitable or robust portfolio.
+- Status: evaluation layers are distinct; precise targets, horizons, and rules remain open.
