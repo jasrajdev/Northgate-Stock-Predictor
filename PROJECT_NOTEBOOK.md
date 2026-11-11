@@ -27,7 +27,7 @@ Use the original PRD for exact acceptance wording. Do not silently remove requir
 
 ## Open design choices
 - Exact universe, benchmark, data providers, and point-in-time constituent history.
-- Forecast target and horizon.
+- Additional multi-day forecast horizons beyond the confirmed next-session adjusted-close target.
 - Recommendation logic, trade timing, holding period, exit logic, and capital allocation.
 - Whether and how the earlier 70% profitable-BUY aspiration should be retained as a secondary research objective; it is not a guaranteed outcome or a PRD acceptance criterion.
 - News/event data sources, scope, event classification, timestamp handling, and whether news adds measurable value beyond price/volume.
