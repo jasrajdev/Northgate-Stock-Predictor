@@ -4,124 +4,163 @@ Updated: 2026-11-12
 
 ## Purpose
 
-This is the **single rolling research document** for Northgate. It preserves the useful, cumulative conclusions from reviewed sources, how the evidence changes our understanding, what remains unresolved, and what source we should examine next.
+This is the **single rolling research document** for Northgate. It preserves cumulative, useful findings from reviewed sources, how evidence changes our understanding, what remains unresolved, and what we should investigate next.
 
-Do not create a separate teaching/summary document for every paper. Do not store full prompts or lengthy paper-by-paper notes here. Keep source identities and review status for traceability, but continuously refine the synthesis below as new evidence arrives.
+Do not create separate paper-summary or teaching files. Keep source identities and review status for traceability, but continuously refine the synthesis below. Full extraction prompts and long raw notes stay in chat, not GitHub.
 
 ## Research discipline
 
-- Use freely accessible full-text sources as the default. Do not recommend a paid paper as a required source.
-- Distinguish the source's reported findings from our interpretation and from approved Northgate decisions.
+- Use freely accessible full-text sources by default; do not make paid papers a required step.
+- Distinguish source findings, our interpretation, and approved Northgate decisions.
 - Record page, section, table, figure or appendix references for important claims.
 - If a source does not state something, record **“Not stated in source.”**
-- Do not transfer US/European results directly to Indian equities without validation.
-- No research finding becomes a project decision until its relevance is discussed and the user explicitly agrees.
-- Preserve contradictory evidence rather than silently choosing one study's result.
+- Do not transfer US/European findings directly to Indian equities without validation.
+- Preserve contradictions and source limitations rather than silently resolving them.
+- No finding becomes a project decision until discussed and explicitly approved.
 - Keep the PRD scope intact unless the user approves a change.
 
 ## Sources reviewed / queued
 
-| # | Source | Access and review status | Role in the research |
+| # | Source | Status | Why it matters |
 |---|---|---|---|
-| 1 | Lalwani & Meshram (2022), [The cross-section of Indian stock returns: evidence using machine learning](https://doi.org/10.1080/00036846.2021.1982132) | **Abstract/metadata only.** The available three-page file was a publisher landing-page printout, not the 15-page article. Full text not found free; do not pay for it. | Retain only limited abstract-level context about an Indian-market study; methodology remains unverified. |
-| 2 | Gu, Kelly & Xiu (2020), [Empirical Asset Pricing via Machine Learning](https://doi.org/10.1093/rfs/hhaa009) — [free NBER PDF](https://www.nber.org/system/files/working_papers/w25398/w25398.pdf) | **Full-paper extraction reviewed.** The supplied extraction reports an 80-page NBER Working Paper 25398, dated December 2018 and revised September 2019. Treat that version as distinct from the final 2020 journal version unless checked. | Large US cross-sectional panel; pooled learning; predictor construction and timing; chronological evaluation; model and portfolio comparisons. |
-| 3 | Fieberg et al. (2023), [Machine learning techniques for cross-sectional equity returns’ prediction](https://doi.org/10.1007/s00291-022-00693-w) — [free open-access full text](https://link.springer.com/article/10.1007/s00291-022-00693-w) | **Full paper reviewed; source-only extraction saved** in `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`. No separate supplementary file was available in the supplied project files. | European cross-sectional panel; six predictors; dead-list universe construction; median imputation/rank normalisation; 10-year rolling estimation; model, size/liquidity, portfolio and turnover results. |
-| 4 | Chen, Pelger & Zhu (2024), [Deep Learning in Asset Pricing](https://doi.org/10.1287/mnsc.2023.4695) | Pending; use only if freely accessible full text/supplement is available. | Deep-learning asset-pricing evidence and whether it adds anything material to the current dataset/model questions. |
-| 5 | [Stock picking with machine learning](https://doi.org/10.1002/for.3021) | Optional; review only if full text is freely accessible and it fills a specific remaining gap. | Possible additional stock-selection design; not required by default. |
+| 1 | Lalwani & Meshram (2022), [The cross-section of Indian stock returns: evidence using machine learning](https://doi.org/10.1080/00036846.2021.1982132) | **Abstract/metadata only.** The available three-page file was a publisher landing-page printout, not the full article; full text was not found freely. | Limited India-specific context only. Its claimed survivorship-bias-free sample and one-month-ahead return study are not methodologically verified. |
+| 2 | Gu, Kelly & Xiu (2020), [Empirical Asset Pricing via Machine Learning](https://doi.org/10.1093/rfs/hhaa009) — [free NBER PDF](https://www.nber.org/system/files/working_papers/w25398/w25398.pdf) | **Full-paper extraction reviewed.** The supplied extraction covered NBER Working Paper 25398 (December 2018; revised September 2019); this version should not be conflated with the final 2020 journal version without checking. | Large US cross-sectional panel; pooled learning; broad predictor design; time alignment; chronological evaluation; model and portfolio comparisons. |
+| 3 | Fieberg et al. (2023), [Machine learning techniques for cross-sectional equity returns’ prediction](https://doi.org/10.1007/s00291-022-00693-w) — [free open-access full text](https://link.springer.com/article/10.1007/s00291-022-00693-w) | **Full paper reviewed** using the supplied source-only extraction. No separate supplementary-material file was available in the supplied project files. | European monthly firm-return panel; six predictors; universe/dead-list construction; missing-data and rank-normalisation choices; rolling validation; size/liquidity and portfolio results. |
+| 4 | Chen, Pelger & Zhu (2024), [Deep Learning in Asset Pricing](https://doi.org/10.1287/mnsc.2023.4695) | Pending; review only if freely accessible full text/supplement is available. | Potentially useful later for the PRD's deep-learning model phase; not required to complete the current dataset-design comparison. |
+| 5 | [Stock picking with machine learning](https://doi.org/10.1002/for.3021) | Optional; do not pursue unless full text is freely accessible and it fills a specific unresolved gap. | Possible additional stock-selection design; not required by default. |
 
 ## Cumulative research synthesis
 
-The following is the current evidence-informed understanding. It is a **research synthesis, not an approved Northgate specification**.
+This is an evidence synthesis, **not an approved Northgate specification**.
 
-### 1. Prediction task and learning structure
+### 1. Prediction problem and learning structure
 
-- The reviewed evidence includes cross-sectional return prediction: predicting differences in future returns across multiple stocks, rather than simply forecasting one index time series.
-- A pooled panel model is a credible research design: one common function can be estimated from stock-month observations and then produce a separate prediction for each stock.
-- In the Gu–Kelly–Xiu study, stock identity is not itself the learned function; stock-level characteristics and common macro inputs represent differences between stocks and time periods.
-- This does **not** establish that pooled models outperform separate models for a small universe. The reviewed study does not run a controlled small-universe comparison.
-- Keep cross-sectional stock selection distinct from aggregate-market/index time-series forecasting. They are different prediction problems and may need different datasets and baselines.
+- Gu–Kelly–Xiu and Fieberg both study **cross-sectional stock-return prediction** using pooled firm-time observations: one common learned relationship produces predictions for many individual stocks.
+- Fieberg's observation is a **firm-month**, with next-month return as target (Sections 2–3, pp. 293–295).
+- Gu–Kelly–Xiu use a much broader US equity panel with stock characteristics and common macro information. Fieberg uses a European panel and six firm characteristics.
+- Neither paper establishes that pooled learning is superior to per-stock models, because neither provides the controlled pooled-versus-individual comparison needed to answer that question.
+- Neither establishes reliable pooled learning with only the PRD's 8–15 equities.
+- Cross-sectional stock selection is not the same task as forecasting one index's time series. Northgate must clarify whether it intends one task or separate experiments.
 
 ### 2. Target and frequency
 
-- The Gu–Kelly–Xiu extraction reports a primary target of next-month individual-stock **excess return**, not stock price, with monthly total-return data and a Treasury-bill risk-free adjustment.
-- The Indian paper's accessible abstract also refers to stock returns and rolling one-month-ahead forecasts, but its full target formula is unavailable.
-- These provide monthly return-prediction precedents; they do not prove monthly is best for Northgate. The PRD's daily data requirement and intended prediction/holding horizon still need to be reconciled experimentally.
-- Keep price prediction, total return, excess return, directional classification and cross-sectional ranking clearly distinct. Do not choose one target yet.
+- Gu–Kelly–Xiu's supplied extraction reports next-month individual-stock **excess returns**, based on monthly total returns and a Treasury-bill risk-free adjustment.
+- Fieberg predicts next-month individual-stock **returns** using monthly data and Datastream Total Return Index (RI) (Sections 3–4, pp. 295, 305–306). The paper does not explicitly establish whether its return calculation is simple or logarithmic or fully specify dividend/corporate-action mechanics.
+- Lalwani & Meshram's abstract also mentions rolling one-month-ahead stock-return forecasts, but the full methodology is unavailable.
+- These sources support monthly return prediction as a studied research design. They do **not** prove monthly is best for Northgate.
+- The PRD currently describes daily OHLCV/adjusted-price data and daily/multi-day forward closing-price prediction. This is a material target/frequency mismatch with the two fully reviewed cross-sectional papers. Do not quietly replace the PRD target with monthly returns; explicitly reconcile the research task before modelling.
+- Keep price, total return, excess return, directional classification and cross-sectional ranking distinct.
 
 ### 3. Predictors and feature design
 
-- Gu–Kelly–Xiu's reported baseline combines 94 stock characteristics, 8 macroeconomic predictors and 74 industry indicators, producing 920 baseline covariates after characteristic–macro interactions.
-- That is evidence of one large research design, not a requirement for Northgate to use 920 features.
-- The next useful comparison is Fieberg et al., which uses a deliberately sparse set of six established firm characteristics. Comparing these studies can help us understand the trade-off between broad feature sets and sparse, controlled predictor sets.
-- Feature availability and timing matter as much as feature names. Accounting characteristics need publication lags; a feature must only enter a prediction after it would actually have been available.
-- We still need Indian-market evidence for data availability, definitions, update frequency and point-in-time timing.
+- Gu–Kelly–Xiu's supplied extraction reports a broad baseline with 94 stock characteristics, 8 macro predictors and 74 industry indicators, resulting in 920 baseline covariates after interactions.
+- Fieberg deliberately uses six established firm characteristics: beta, log market capitalisation, book-to-market, momentum, investment (asset growth), and operating profitability (Section 4, pp. 305–306).
+- Fieberg's stated motivation is to test ML with a relatively sparse, established feature set rather than relying on hundreds of potentially irrelevant predictors (Introduction, pp. 290–292).
+- These studies offer contrasting feature-design precedents: broad high-dimensional predictors versus a sparse six-characteristic set. They do not establish which is better for Northgate's daily Indian dataset.
+- Fieberg's reported timing includes beta from the prior 12 months of daily returns, momentum from the prior 12-month total return excluding the latest month, and a six-month publication lag for accounting variables. The authors state this lag is assumed to avoid look-ahead bias (pp. 305–306).
+- Feature availability, definitions, publication dates and historical point-in-time availability must be checked for India. Do not assume European/US accounting fields map cleanly to Indian sources.
 
-### 4. Data quality and universe integrity
+### 4. Universe integrity and sample size
 
-- The Indian paper's abstract claims a survivorship-bias-free sample, but the accessible document does not explain how that was implemented.
-- Gu–Kelly–Xiu use a broad historical US equity panel with a changing number of stocks, but the supplied extraction does not establish all delisting and historical-membership details.
-- Therefore, historical universe membership, delisted firms, bankruptcies, corporate actions, symbol changes and survivorship bias remain critical open questions for Northgate.
-- Gu–Kelly–Xiu report monthly cross-sectional median imputation for missing characteristics and cross-sectional rank scaling to [-1, 1]. This is a source-specific method, not an automatic Northgate choice.
-- We need to examine whether other studies use different missing-data and outlier approaches, and whether preprocessing is performed with only information available at each historical prediction time.
+- Fieberg reports approximately 12,000 European stocks, January 1990–December 2019, monthly frequency, and about 1,755 observations per month (Section 4, pp. 304–306).
+- It uses Datastream research, Worldscope and dead lists, removes duplicates, consolidates country lists and applies security/data screens (pp. 304–306).
+- Important limitation: use of dead lists is documented, but complete historical coverage of every delisted/failed company is not established. The extraction also notes an inconsistency between the stated 16 economies and 15 countries named in a footnote.
+- Fieberg progressively removes smaller stocks by market-cap quantiles; its largest-10% experiment still retains a segment of the original broad European universe. It is **not** a 10-stock or 8–15-stock experiment (Section 5.1, p. 307).
+- In Fieberg's Table 2 (p. 307), full-universe versus largest-10% out-of-sample panel R² (percentage points) includes: OLS 0.43 vs -0.32; RF 0.58 vs -0.45; GBRT 0.60 vs 0.14; NN 0.67 vs 0.24. Only GBRT and NN remain positive in the largest-10% segment in the reported table.
+- This demonstrates sensitivity to universe composition in that study; it does not prove that adding illiquid small stocks is suitable for Northgate. Northgate's PRD explicitly targets liquid large-cap equities, so liquidity and universe definition need their own India-specific evidence.
+- Historical NSE/BSE membership, delisted firms, bankruptcies, symbol changes, corporate actions and survivorship bias remain unresolved.
 
-### 5. Training and evaluation
+### 5. Missing data and preprocessing
 
-- Gu–Kelly–Xiu's reported design uses chronological training, validation and test periods; an expanding training sample; a rolling 12-year validation window; and annual model refitting.
-- They do not use shuffled cross-validation.
-- This provides a concrete example of time-ordered evaluation, but its very long historical windows and annual refitting are not automatically suitable for Northgate's shorter 8–10-year PRD dataset.
-- Preserve the principle: validation/tuning must not use the final test period, and every feature/preprocessing step must respect the historical information set.
-- The supplied extraction leaves some preprocessing-fit details unresolved; do not label every operation leakage-free without checking it.
+- Gu–Kelly–Xiu's supplied extraction reports monthly cross-sectional median imputation for missing characteristics and cross-sectional rank scaling to [-1, 1].
+- Fieberg replaces missing characteristics with the cross-sectional median when a return observation exists, excludes observations with missing returns rather than imputing the target, and uses cross-sectional rank normalisation mapped to [-1, 1] (pp. 306–307).
+- Fieberg says this helps address differing scales and extreme observations; the exact ranking formula and tie handling are not specified. Separate winsorisation and z-score procedures are also not specified.
+- This is a useful point of convergence: cross-sectional median treatment and rank-based normalisation appear in both supplied study extractions. It is not enough to conclude they are automatically safe or optimal for Northgate.
+- Fieberg does not provide a complete audit proving every preprocessing statistic uses only information available at the prediction timestamp. Northgate must explicitly test and document point-in-time fitting and prevent cross-period leakage.
 
-### 6. Model comparisons and complexity
+### 6. Training and validation
 
-- Gu–Kelly–Xiu compare linear, regularised, dimension-reduction, tree-based and feed-forward neural-network models. Their reported best stock-level neural network is NN3 (three hidden layers with 32, 16 and 8 neurons), which outperforms their deeper NN4/NN5 variants in the main stock-level comparison.
-- Their result supports testing nonlinear models against simple baselines; it does not establish that deep learning is always superior or that their architecture transfers to a small Indian sample.
-- The next study is valuable because it includes SVR and compares several ML methods using a sparse predictor set, directly overlapping with parts of the Northgate PRD.
-- Northgate must still compare the PRD-required model families on the same dates, target and information set, with simple baselines.
+- Gu–Kelly–Xiu's supplied extraction describes chronological training/validation/test, expanding training history, rolling 12-year validation and annual refitting.
+- Fieberg uses a **10-year rolling estimation window**, split into 7 years of training and 3 years of validation; it selects hyperparameters, re-estimates on the full 10 years, forecasts the subsequent year and rolls forward (Section 3.5, pp. 302–304, Figure 4).
+- Fieberg states forecast-period data do not enter estimation. It does not describe purging overlapping labels. The extraction notes inconsistent test-period dates: January 2001–December 2019 on p. 304 versus January 2000–December 2019 in some table notes.
+- Both studies support chronological validation rather than random shuffling. Their exact windows differ and are designed for long historical panels; neither establishes an optimal window for Northgate's 8–10-year history.
+- Preserve the general safeguards: validation/tuning must precede the untouched final test; feature availability must be time-aligned; fit transformations only on information available in each training period; consider purging overlapping forward labels where relevant.
 
-### 7. Economic evaluation
+### 7. Model comparisons and complexity
 
-- Forecast accuracy and investment performance are separate evaluation layers.
-- Gu–Kelly–Xiu aggregate individual-stock forecasts into portfolios and test forecast-sorted long–short strategies. Their reported portfolio results are sensitive to micro-cap inclusion.
-- The supplied extraction does not establish a complete realistic transaction-cost model covering brokerage, taxes, slippage and market impact.
-- Do not use reported Sharpe ratios or returns as Northgate targets. Northgate needs Indian-market costs, liquidity constraints, turnover and realistic execution assumptions.
+- Gu–Kelly–Xiu compare linear/regularised, dimension-reduction, tree-based and feed-forward neural-network models. Their supplied extraction reports NN3 (three hidden layers: 32, 16 and 8 neurons) outperforming deeper NN4/NN5 variants in their main stock-level comparison.
+- Fieberg compares OLS, Lasso, Ridge, Elastic Net, RBF-kernel SVR, Random Forest, gradient-boosted regression trees (GBRT), and a feed-forward neural network (Sections 3.1–3.5, pp. 295–303).
+- Fieberg's NN is not an LSTM, GRU, BiLSTM or Transformer: it has one hidden layer with 12 neurons, tanh activation, Adam, L2 weight decay, early stopping and an average of ten networks (pp. 302–303; Table 11, p. 320).
+- In Fieberg's full-universe Table 2 (p. 307), RF, GBRT and NN outperform OLS on its reported panel R²; SVR is sensitive to hyperparameters and performs poorly on that predictive metric. The paper's results are specific to its monthly European panel and six predictors.
+- The two studies justify testing nonlinear models against simple linear baselines; they do not prove deep learning always wins or transfer to a small Indian sample.
+- The PRD's required architectures still need separate evidence and fair experiments on the same Northgate data, dates, target and baselines.
 
-## Open questions that remain important
+### 8. Predictive accuracy versus economic performance
 
-1. What is the right prediction problem for Northgate: cross-sectional ranking of stocks, individual-stock return prediction, index time-series forecasting, or a clearly separated combination?
-2. Can pooled learning work with the PRD's 8–15 equities, or should pooled and per-stock approaches be compared?
-3. What is the effect of training on 8–10 years of daily data versus a longer monthly/weekly panel?
-4. Which target and horizon align with the intended recommendations and portfolio evaluation?
-5. Which features are available reliably and point-in-time for Indian equities?
-6. How can we obtain historical NSE/BSE universe membership, delisted securities and corporate-action-adjusted returns?
-7. What missing-data and outlier procedures are defensible without leakage?
-8. How should preprocessing be fitted and recomputed in each chronological training window?
-9. What performance survives Indian brokerage, statutory charges, bid–ask spread, slippage, turnover and liquidity limits?
-10. Which required model families can be trained and evaluated credibly with the available data and deadline?
+- Both studies reinforce that forecast accuracy and portfolio outcomes are separate evaluation layers.
+- Fieberg forms ten forecast-sorted deciles and evaluates a zero-net-investment long–short strategy: buy the highest predicted-return decile and short the lowest (Section 6.1, pp. 313–314).
+- In its full-universe Table 4 (pp. 309–310), RF has the highest reported average monthly high-minus-low return (2.38%), while GBRT has the highest reported monthly Sharpe (0.56; annualised Sharpe 1.94 as reported). These are historical results from the authors' European long–short experiment, not Northgate expectations.
+- Fieberg reports monthly turnover of 124–154% across models (Table 6, p. 314). It explicitly discusses difficulty estimating realistic transaction costs; complete profitability after brokerage, spread, taxes, market impact and slippage is not established.
+- Fieberg also finds predictive R² and long–short portfolio outcomes need not rank models identically; SVR is a useful example (pp. 307–313).
+- Gu–Kelly–Xiu's supplied extraction also reports portfolio results sensitive to micro-cap inclusion. Do not use either paper's Sharpe/return as a project target.
+- Northgate must evaluate forecast error, directional accuracy, BUY/HOLD/SELL outcomes and capital-weighted portfolio performance separately, with Indian costs, turnover, liquidity and benchmarks.
+
+## What the reviewed evidence does NOT establish
+
+| Question | Current evidence |
+|---|---|
+| Minimum number of stocks needed | Not stated by either fully reviewed paper. |
+| Reliable performance with 8–15 stocks | Not tested/established. |
+| Pooled versus per-stock superiority | Neither provides the required controlled comparison. |
+| Indian-market transferability | Not established by the two international studies; Paper 1 is only abstract-level. |
+| Daily versus monthly superiority | Not compared in a way that answers Northgate's question. |
+| Optimal Northgate target/horizon | Not established. |
+| Universally optimal feature set | Not established; studies use different feature sets and markets. |
+| Universally optimal training window | Not established. |
+| Complete delisted-company coverage | Not established for Fieberg from the supplied extraction. |
+| Fully realistic transaction-cost-adjusted profitability | Not established by Fieberg's reported analysis. |
+| LSTM/GRU/BiLSTM/Transformer superiority | Not established by Fieberg. |
+| Incremental value of news sentiment | Not established by these papers. |
+| BUY/HOLD/SELL effectiveness | Not established. |
+| Mean-variance optimisation benefit for Northgate | Not established. |
+
+## Current interpretation for Northgate — provisional, not decisions
+
+1. **Do not confuse the PRD's current daily forward-price task with the monthly cross-sectional return task in these papers.** This is the most important unresolved design issue to clarify.
+2. A pooled panel is a credible candidate to test, but the literature reviewed so far does not answer whether it works with only 8–15 companies. We should not claim that it does.
+3. Feature count alone is not a quality measure. A broad predictor set and a sparse established set are both studied; the relevant Northgate test is availability, timing, leakage control and incremental out-of-sample value.
+4. Cross-sectional median imputation and rank scaling are methods worth testing, not defaults to adopt without checking missingness, time alignment and leakage.
+5. Model selection must account for the universe: Fieberg's size-segment results show performance can change when small firms are excluded, but do not imply we should add illiquid firms.
+6. Strong forecast metrics do not prove tradable performance. Turnover and realistic Indian trading costs need explicit modelling.
+7. Keep the PRD's required models visible. Neither study's feed-forward neural network is evidence that the PRD's recurrent/Transformer architectures have been validated.
+
+## Open questions to resolve
+
+1. Is Northgate's primary task daily/multi-day price forecasting, return prediction, cross-sectional ranking, or separate experiments for more than one?
+2. What does the PRD mean precisely by “forward closing prices”: which forecast horizons, signal time and execution convention?
+3. Can pooled learning be evaluated fairly with the PRD's 8–15 equities, and should a simple per-stock baseline be included?
+4. Which Indian-market features are available reliably with point-in-time publication dates?
+5. Can we obtain historical NSE/BSE membership, delisted securities and corporate-action-adjusted returns?
+6. Is daily data sufficient for the chosen target, or should a separate monthly cross-sectional experiment be treated as a distinct task?
+7. Which preprocessing methods can be fitted without cross-sectional or temporal leakage?
+8. Which model families are feasible with the available sample size, compute and deadline?
+9. What realistic Indian brokerage, statutory charges, spread, slippage, market impact, liquidity and turnover assumptions should be used?
+10. Does news/sentiment add incremental value beyond price/volume features on identical out-of-sample dates?
 
 ## Next research step
 
-Fieberg et al. (2023) has now been reviewed in full. The detailed source-only extraction is in `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`.
+**Do cross-paper synthesis now; do not automatically process another dataset paper.** Gu–Kelly–Xiu and Fieberg provide a useful contrast in universe size, feature breadth, preprocessing, model comparisons and evaluation. The next work should clarify the Northgate prediction task against the PRD and decide which gaps genuinely need further evidence.
 
-The next useful research action is **cross-paper synthesis**, not automatically downloading another paper. Compare the evidence from Gu–Kelly–Xiu and Fieberg on:
-- Pooled cross-sectional learning and what sample breadth it requires.
-- Monthly excess/total-return targets versus Northgate's daily forward-price PRD.
-- Broad versus sparse predictors and their point-in-time availability.
-- Missing-data and preprocessing choices.
-- Rolling estimation and validation design.
-- The sensitivity of apparent model gains to small-stock inclusion.
-- Statistical forecast performance versus long-short portfolio outcomes and turnover.
-
-Keep all transfer questions for Indian equities and the PRD's 8–15-stock universe unresolved until supported by relevant evidence. Then decide whether Chen–Pelger–Zhu is needed for Phase 1 or belongs in the later deep-learning model phase.
+Defer Chen–Pelger–Zhu until the deep-learning/model-comparison phase unless a specific unresolved dataset question requires it. The optional stock-picking paper is not required at present. The India-specific paper remains a possible gap, but its full text is not freely available; do not pay for it by default.
 
 ## Progress log
 
 | Date | Progress | Current interpretation / next action |
 |---|---|---|
-| 2026-11-11 | Paper 1's three-page publisher landing-page printout reviewed; full article could not be obtained free. | Keep only abstract-level Indian-market context; do not pay for the article or treat its methodology as reviewed. |
-| 2026-11-12 | Full-paper extraction for Gu–Kelly–Xiu reviewed. | Strong evidence on pooled cross-sectional modelling, monthly excess-return targets, feature timing, missing-data handling and chronological evaluation; small-universe and India transferability remain unresolved. |
-| 2026-11-12 | Fieberg et al. (2023) full paper reviewed; source-only extraction completed and saved in `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`. | Confirms the study is a monthly pooled cross-sectional European firm-return panel, not daily price forecasting; its ~12,000-stock universe, six characteristics and long-short portfolio results do not establish performance for India or an 8–15-stock universe. Next: cross-paper synthesis. |
+| 2026-11-11 | Paper 1's three-page publisher landing-page printout reviewed; full article could not be obtained freely. | Retain abstract-level India context only; its methodology remains unverified. |
+| 2026-11-12 | Gu–Kelly–Xiu full-paper extraction reviewed. | Evidence on pooled cross-sectional modelling, monthly excess-return targets, feature timing, missing-data handling and chronological evaluation; small-universe and India transferability remain unresolved. |
+| 2026-11-12 | Fieberg et al. (2023) full-paper extraction reviewed from the uploaded source-only analysis. | Evidence on a monthly pooled European panel, six firm characteristics, dead-list construction, median imputation/rank scaling, 10-year rolling estimation, model comparisons, size sensitivity, turnover and long–short evaluation. Important limits: no 8–15-stock test, no India test, and no complete realistic cost model. |
 
 ## Decisions
 
-No dataset size, universe, target, horizon, feature set, model architecture, training window or recommendation rule is approved by this synthesis. Keep these as open research choices until the evidence is compared and the user explicitly confirms a decision.
+No dataset size, universe, target, horizon, feature set, model architecture, training window, preprocessing method or recommendation rule is approved by this synthesis. Keep these as open research choices until discussed and explicitly confirmed.
