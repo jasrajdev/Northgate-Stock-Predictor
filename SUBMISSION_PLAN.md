@@ -104,7 +104,7 @@ Build and verify the data foundation first, then proceed to baseline modelling a
 ## Current verified state (2026-11-12)
 
 - GitHub project scaffold exists.
-- No market dataset has been downloaded.
+- Market-data download executed successfully on the user's Mac: 29,484 rows across 10 provisional stocks plus the NIFTY 50 price index. Detailed quality validation remains pending.
 - No model has been trained.
 - No backtest/dashboard/performance result has been verified.
 - Existing project status, notebook, decisions, continuity protocol, and implementation plan were reviewed before creating this priority plan.
@@ -123,4 +123,5 @@ Append concise dated entries here after meaningful, verified progress:
 - Script requests daily OHLCV, Adj Close, dividends, and stock splits from Yahoo Finance via yfinance for 10 provisional Indian large-cap candidates plus the NIFTY 50 price index, from 2016-01-01 to the latest available session.
 - Script preserves per-symbol raw CSVs, writes a combined processed panel, and creates a JSON data-quality/download report. It flags failures and basic data anomalies rather than filling or inventing prices.
 - The ticker list is provisional, not a final universe decision. The downloaded `^NSEI` is the NIFTY 50 price index, not TRI; today's constituents also create survivorship-bias limitations.
-- **Not yet run:** no download, environment installation, or data-quality result has been verified. Next: user clones repo on Mac, installs requirements, runs script, and shares terminal output.
+- **Execution verified from user's Mac terminal output:** repository cloned to `~/Desktop/Northgate-Stock-Predictor`; Python virtual environment created and requirements installed successfully under Python 3.14; Yahoo Finance download completed for all 11 requested instruments (10 provisional stocks plus `^NSEI`), with 29,484 rows total. Each stock returned 2,681 rows from 2016-01-01 through 2026-11-09; NIFTY 50 returned 2,674 rows from 2016-01-04 through 2026-11-09. Files reported by script: `data/processed/market_panel.csv` and `reports/data_quality/download_report.json`, plus per-symbol CSVs under `data/raw/yahoo/`. These are user-reported local outputs; the assistant has not independently inspected the local files or JSON quality report.
+- **Next:** inspect the locally generated JSON quality report and run additional panel-level checks. Do not yet describe the dataset as fully validated.
