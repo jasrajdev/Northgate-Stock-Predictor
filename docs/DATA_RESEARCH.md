@@ -1,7 +1,7 @@
 # Data Research Plan — India-First
 
-Updated: 2026-11-11  
-Status: candidate sources identified; no final dataset specification or bulk download.
+Updated: 2026-11-12  
+Status: initial market dataset downloaded and processed locally; macro and timestamped news/sentiment source selection remains pending.
 
 ## Market and universe
 - Research focus: Indian equities.
@@ -22,7 +22,7 @@ For each instrument and trading session, verify:
 - NSE All Reports: https://www.nseindia.com/all-reports
 - NSE End-of-Day/Historical Data subscription information: https://www.nseindia.com/static/market-data/eod-historical-data-subscription
 - RBI Database on Indian Economy: https://data.rbi.org.in/
-- yfinance is listed in the current project dependencies, but its Indian-equity coverage, adjustment behaviour, history, and repeatability must be tested before relying on it.
+- yfinance was used for the initial local download. User reports 29,484 rows across 10 provisional equities plus the NIFTY 50 price index, covering 2016-01-01 to 2026-11-09 for stocks (NIFTY starts 2026-01-04). This is a provisional source, not archival-grade validation; corporate-action adjustment, expected-session completeness, survivorship bias and terms remain limitations to document.
 
 Do not assume official long-range NSE history or third-party adjusted data is free. Check coverage, terms, field definitions, and reproducibility.
 
@@ -42,5 +42,11 @@ For all time-sensitive information, retain publication/filing timestamps. Inform
 “Stock Market Prediction of NIFTY 50 Index Applying Machine Learning Techniques” (2022): https://doi.org/10.1080/08839514.2022.2111134
 See `docs/RESEARCH_PAPER_REVIEW.md` for the paper-specific notes and limitations.
 
+## Current implementation update (2026-11-12)
+- Initial Yahoo Finance market panel and 24 backward-looking features have been generated locally by the user.
+- First next-session supervised dataset generated: 29,473 rows across 11 instruments, with user-reported target integrity checks passing.
+- The 10 equity tickers are provisional; `^NSEI` is the NIFTY 50 price index, not TRI and not an investable stock. Current index constituents create survivorship-bias limitations.
+- Macro and timestamped news/sentiment datasets have not yet been prepared.
+
 ## Current recommendation
-Run a small data-source feasibility pilot before selecting the final universe or downloading the full history. Verify target/horizon and evaluation rules before feature engineering and model training.
+Proceed with macro/market data and timestamped news/sentiment collection. Before merging, verify source coverage, licensing/usage terms, historical availability and timestamps. Treat revised macro releases and after-close news as available only from their actual publication time. Compare sentiment features incrementally against a price/volume-only baseline on identical chronological dates. The exact multi-day forecast horizons remain open.
