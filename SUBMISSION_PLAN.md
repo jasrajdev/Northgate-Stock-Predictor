@@ -148,3 +148,10 @@ Append concise dated entries here after meaningful, verified progress:
 - Missing values after the fix: `volume_change_1d` 2,722; `volume_sma_20` 3,244; `volume_to_sma_20` 3,244. These reflect unavailable zero-volume inputs plus rolling-window warm-up periods. The raw `Volume` column is retained.
 - This addresses numerical infinities; it does not validate the completeness or correctness of Yahoo volume history. Volume-derived features must be treated cautiously, and volume missingness itself may be informative.
 - **Current result:** feature engineering runs successfully and the identified divide-by-zero problem is resolved according to the user's output. Next: inspect which rows/features are missing and verify the raw market panel remains unchanged; then define the prediction target before model training.
+
+
+### 2026-11-12 — Per-ticker volume missingness reviewed
+- **User-provided diagnostic output:** raw `Volume` has zero missing values for every ticker. The 10 equities have 1–2 zero-volume rows each (19 total). Their `volume_change_1d` missing counts are 3 (ITC) or 5 (the other equities), consistent with the initial previous-day calculation plus zero-volume dates and the following day's change being undefined when the previous observation is unavailable.
+- `^NSEI` has 28 zero-volume rows and 2,674 missing `volume_change_1d` values; all its volume-derived features are intentionally disabled because it is a price index, not a traded stock.
+- **Interpretation:** raw volume is present in the file, but the provider's zero values on shared equity dates are likely unavailable/placeholder observations. Do not treat them as genuine zero trading without exchange-level verification. Preserve raw values and missingness; do not impute zero or forward-fill volume.
+- **Next:** the volume-feature issue is sufficiently diagnosed for this submission pipeline. Proceed to target design, but first inspect the actual PRD target wording and agree forecast timing/horizon. Do not create labels or train until the target is explicitly settled.
