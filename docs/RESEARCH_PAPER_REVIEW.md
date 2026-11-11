@@ -32,4 +32,4 @@ This is a working review of the supplied research notes, not an independent repr
 - The paper's accessible details contain ambiguity about whether the target is returns or closing prices; verify exact target construction in the original article before reproducing.
 
 ## Northgate conclusion
-Use this paper as a learning reference for sequence modelling and OHLCV experimentation. Do not copy its validation design blindly, do not treat its LSTM result as a proven trading edge, and do not use it as evidence that a 70% five-day BUY win rate is achievable. Northgate's own chronological out-of-sample backtest must answer that question.
+Use this paper as a learning reference for sequence modelling and OHLCV experimentation. Do not copy its validation design blindly or treat its LSTM result as a proven trading edge. Northgate's own chronological out-of-sample evaluation must establish whether any forecast or strategy adds value.
