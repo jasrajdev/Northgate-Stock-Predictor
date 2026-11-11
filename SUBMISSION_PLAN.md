@@ -1,6 +1,6 @@
 # Northgate — Submission Plan (Priority File)
 
-Updated: 2026-11-12  
+Updated: 2026-11-12 (late session)  
 Status: ACTIVE WORKING PLAN — this file is the current execution checklist until the submission.
 
 > Keep the immediate work focused on building a reliable PRD-aligned submission. Do not expand into the broader research vision unless the user explicitly asks. Preserve unresolved choices as open questions; do not silently convert suggestions into decisions.
@@ -98,15 +98,15 @@ Build and verify the data foundation first, then proceed to baseline modelling a
 - Exact Desktop project-folder name/path (user will provide the exact name).
 - Final ticker list and benchmark data series.
 - Data provider and verified historical coverage.
-- Forecast target and horizon (next-day adjusted close vs next-day log return remains unresolved).
+- Exact multi-day forecast horizons and signal/execution timing.
 - Training, prediction, and portfolio universe definitions.
 - Scope prioritisation if all PRD deliverables cannot be completed by the deadline.
 
 ## Current verified state (2026-11-12)
 
 - GitHub project scaffold exists.
-- Market-data download executed successfully on the user's Mac: 29,484 rows across 10 provisional stocks plus the NIFTY 50 price index. Detailed quality validation remains pending.
-- No model has been trained.
+- Market-data download and feature generation were executed successfully on the user's Mac: 29,484 rows across 10 provisional stocks plus the NIFTY 50 price index, with 24 engineered features. User-provided structural checks passed; provider/calendar/corporate-action limitations remain.
+- Next-session supervised dataset generated successfully on user's Mac: 29,473 labelled rows across 11 instruments. Reported checks: no duplicate ticker/date keys, target dates strictly after feature dates, no missing target values, and no non-positive target adjusted closes. No model has been trained.
 - No backtest/dashboard/performance result has been verified.
 - Existing project status, notebook, decisions, continuity protocol, and implementation plan were reviewed before creating this priority plan.
 
@@ -167,3 +167,13 @@ Append concise dated entries here after meaningful, verified progress:
 - Dataset generation has not yet been run on the user's Mac; local output files are not yet verified.
 - Hardware plan: use the Mac M4/16 GB for ingestion, feature engineering, EDA and classical ML; consider the HP Victus for neural-network training only after confirming its exact NVIDIA GPU model, VRAM and CUDA availability. A one-day full PRD training/testing run cannot be promised; scope and runtime depend on GPU model, libraries, model sizes, tuning and news/portfolio work.
 - Remaining data families from the PRD: macro/market context (e.g. VIX, rates, inflation, unemployment) and timestamped financial news/sentiment. The current market panel is not the complete PRD dataset.
+
+
+### 2026-11-12 — Next-session modelling dataset generated
+- User successfully pulled the latest GitHub changes and ran `python scripts/build_next_day_dataset.py`.
+- Terminal output: 29,484 input rows; 29,473 rows retained with next-session labels; 11 rows removed (last observation for each of 11 tickers); 11 tickers.
+- Reported checks: 0 duplicate ticker/feature-date keys; every target date is after its feature date; 0 missing target values; 0 non-positive target adjusted closes.
+- Script-reported local outputs: `data/processed/modeling_dataset_next_day.csv` and `reports/data_quality/next_day_dataset_report.json`.
+- The output is user-verified via pasted terminal log, not independently inspected by the assistant. No model has been trained.
+- Next preparation: macro/market context and timestamped financial news/sentiment. Preserve publication/release timestamps, deduplicate news, and map after-close information to the next eligible trading session. Compare price/volume-only versus price/volume+sentiment on identical chronological dates.
+- Work can proceed in parallel after the stable datasets exist: EDA, baseline modelling, dashboard scaffolding, report methodology, and documentation. Training performance is not yet known.
