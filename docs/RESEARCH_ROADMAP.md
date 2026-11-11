@@ -25,7 +25,7 @@ Do not create a separate teaching/summary document for every paper. Do not store
 |---|---|---|---|
 | 1 | Lalwani & Meshram (2022), [The cross-section of Indian stock returns: evidence using machine learning](https://doi.org/10.1080/00036846.2021.1982132) | **Abstract/metadata only.** The available three-page file was a publisher landing-page printout, not the 15-page article. Full text not found free; do not pay for it. | Retain only limited abstract-level context about an Indian-market study; methodology remains unverified. |
 | 2 | Gu, Kelly & Xiu (2020), [Empirical Asset Pricing via Machine Learning](https://doi.org/10.1093/rfs/hhaa009) — [free NBER PDF](https://www.nber.org/system/files/working_papers/w25398/w25398.pdf) | **Full-paper extraction reviewed.** The supplied extraction reports an 80-page NBER Working Paper 25398, dated December 2018 and revised September 2019. Treat that version as distinct from the final 2020 journal version unless checked. | Large US cross-sectional panel; pooled learning; predictor construction and timing; chronological evaluation; model and portfolio comparisons. |
-| 3 | Fieberg et al. (2023), [Machine learning techniques for cross-sectional equity returns’ prediction](https://doi.org/10.1007/s00291-022-00693-w) — [free open-access full text](https://link.springer.com/article/10.1007/s00291-022-00693-w) | **Next source to review.** Publisher confirms open access and full text. | Independent European-market comparison; sparse six-feature design; missing data and outlier handling; rolling-window evaluation; size/liquidity sensitivity; SVR and model comparisons. |
+| 3 | Fieberg et al. (2023), [Machine learning techniques for cross-sectional equity returns’ prediction](https://doi.org/10.1007/s00291-022-00693-w) — [free open-access full text](https://link.springer.com/article/10.1007/s00291-022-00693-w) | **Full paper reviewed; source-only extraction saved** in `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`. No separate supplementary file was available in the supplied project files. | European cross-sectional panel; six predictors; dead-list universe construction; median imputation/rank normalisation; 10-year rolling estimation; model, size/liquidity, portfolio and turnover results. |
 | 4 | Chen, Pelger & Zhu (2024), [Deep Learning in Asset Pricing](https://doi.org/10.1287/mnsc.2023.4695) | Pending; use only if freely accessible full text/supplement is available. | Deep-learning asset-pricing evidence and whether it adds anything material to the current dataset/model questions. |
 | 5 | [Stock picking with machine learning](https://doi.org/10.1002/for.3021) | Optional; review only if full text is freely accessible and it fills a specific remaining gap. | Possible additional stock-selection design; not required by default. |
 
@@ -101,19 +101,18 @@ The following is the current evidence-informed understanding. It is a **research
 
 ## Next research step
 
-**Review Fieberg et al. (2023) next.** It is freely available in full text and is a strong complement to Gu–Kelly–Xiu rather than a repetition: it studies nearly 12,000 stocks across 16 European economies, uses six predictors, and explicitly examines overfitting/irrelevant predictors, missing values, stock-size/liquidity sensitivity, and rolling estimation. It also includes SVR, which is in the Northgate PRD.
+Fieberg et al. (2023) has now been reviewed in full. The detailed source-only extraction is in `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`.
 
-The next extraction should focus on:
-- Exact universe construction, data sources and treatment of dead/delisted securities.
-- Six predictors, definitions, timing and why the authors chose a sparse set.
-- Missing values, scaling/ranking, outliers and any point-in-time safeguards.
-- Exact rolling training/validation/test procedure and refit cadence.
-- What happens as smaller firms are removed, and what the largest 10% result actually means.
-- SVR, neural-network and tree-model settings, baselines and performance.
-- Turnover, trading-cost assumptions and economic realism.
-- What the European study still cannot tell us about a small Indian universe.
+The next useful research action is **cross-paper synthesis**, not automatically downloading another paper. Compare the evidence from Gu–Kelly–Xiu and Fieberg on:
+- Pooled cross-sectional learning and what sample breadth it requires.
+- Monthly excess/total-return targets versus Northgate's daily forward-price PRD.
+- Broad versus sparse predictors and their point-in-time availability.
+- Missing-data and preprocessing choices.
+- Rolling estimation and validation design.
+- The sensitivity of apparent model gains to small-stock inclusion.
+- Statistical forecast performance versus long-short portfolio outcomes and turnover.
 
-After that review, decide whether Chen–Pelger–Zhu is still needed for Phase 1 or whether it belongs in the later deep-learning model phase. Do not automatically process all five papers.
+Keep all transfer questions for Indian equities and the PRD's 8–15-stock universe unresolved until supported by relevant evidence. Then decide whether Chen–Pelger–Zhu is needed for Phase 1 or belongs in the later deep-learning model phase.
 
 ## Progress log
 
@@ -121,7 +120,7 @@ After that review, decide whether Chen–Pelger–Zhu is still needed for Phase 
 |---|---|---|
 | 2026-11-11 | Paper 1's three-page publisher landing-page printout reviewed; full article could not be obtained free. | Keep only abstract-level Indian-market context; do not pay for the article or treat its methodology as reviewed. |
 | 2026-11-12 | Full-paper extraction for Gu–Kelly–Xiu reviewed. | Strong evidence on pooled cross-sectional modelling, monthly excess-return targets, feature timing, missing-data handling and chronological evaluation; small-universe and India transferability remain unresolved. |
-| 2026-11-12 | Fieberg et al. full text confirmed open access. | Next source selected to test sparse-feature and robustness evidence across a non-US market. |
+| 2026-11-12 | Fieberg et al. (2023) full paper reviewed; source-only extraction completed and saved in `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`. | Confirms the study is a monthly pooled cross-sectional European firm-return panel, not daily price forecasting; its ~12,000-stock universe, six characteristics and long-short portfolio results do not establish performance for India or an 8–15-stock universe. Next: cross-paper synthesis. |
 
 ## Decisions
 
