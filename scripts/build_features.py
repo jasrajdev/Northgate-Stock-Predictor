@@ -59,9 +59,23 @@ def build_features(group: pd.DataFrame) -> pd.DataFrame:
     lower = rolling_mean - 2 * rolling_std
     group["bollinger_width_20"] = (upper - lower) / rolling_mean
 
-    group["volume_change_1d"] = volume.pct_change(fill_method=None)
-    group["volume_sma_20"] = volume.rolling(20, min_periods=20).mean()
-    group["volume_to_sma_20"] = volume / group["volume_sma_20"]
+    # Yahoo Finance returned zero volume on dates where equity prices are
+    # present across many unrelated stocks. Treat zero as unavailable volume,
+    # not as a genuine zero-trading observation. Preserve the raw Volume column.
+    # The NIFTY 50 price index is not an individual traded security; do not
+    # derive volume indicators from its Yahoo Volume field.
+    if group["Ticker"].iloc[0] == "^NSEI":
+        volume_for_features = pd.Series(np.nan, index=group.index, dtype="float64")
+    else:
+        volume_for_features = volume.where(volume > 0)
+
+    group["volume_change_1d"] = volume_for_features.pct_change(fill_method=None)
+    group["volume_sma_20"] = volume_for_features.rolling(
+        20, min_periods=20
+    ).mean()
+    group["volume_to_sma_20"] = (
+        volume_for_features / group["volume_sma_20"]
+    )
 
     # Retain raw columns; close is used only as a cross-check, not as the
     # adjusted-price basis for return/indicator features.
@@ -106,6 +120,8 @@ def main() -> None:
         },
         "notes": [
             "Features are calculated independently per ticker.",
+            "Zero equity-volume observations are treated as unavailable for volume features; raw Volume is preserved.",
+            "Volume-derived features are not calculated for the NIFTY 50 price index.",
             "All indicators use current/past observations only.",
             "Warm-up NaNs are expected and intentionally preserved.",
             "No prediction target is created in this step.",
