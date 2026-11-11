@@ -11,6 +11,7 @@ India-focused research project testing whether machine-learning forecasts and ca
 - `LEARNING_LOG.md` — concepts learned
 - `docs/IMPLEMENTATION_PLAN.md` — staged project plan
 - `docs/DATA_RESEARCH.md` — data-source and dataset research
+- `docs/RESEARCH_ROADMAP.md` — research questions, source-only prompts, Phase 1 source pack, and research log
 - `docs/CONTINUITY_PROTOCOL.md` — instructions for future project sessions
 
 ## Start every session
