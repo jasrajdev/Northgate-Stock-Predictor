@@ -74,7 +74,7 @@ The following is the current evidence-informed understanding. It is a **research
 
 ### 6. Model comparisons and complexity
 
-- Gu–Kelly–Xiu compare linear, regularised, dimension-reduction, tree-based and feed-forward neural-network models. Their reported best stock-level neural network is a relatively shallow three-hidden-layer? **Correction: the supplied extraction describes NN3 as three hidden layers (32, 16, 8 neurons), and reports it outperforming their deeper NN4/NN5 variants.**
+- Gu–Kelly–Xiu compare linear, regularised, dimension-reduction, tree-based and feed-forward neural-network models. Their reported best stock-level neural network is NN3 (three hidden layers with 32, 16 and 8 neurons), which outperforms their deeper NN4/NN5 variants in the main stock-level comparison.
 - Their result supports testing nonlinear models against simple baselines; it does not establish that deep learning is always superior or that their architecture transfers to a small Indian sample.
 - The next study is valuable because it includes SVR and compares several ML methods using a sparse predictor set, directly overlapping with parts of the Northgate PRD.
 - Northgate must still compare the PRD-required model families on the same dates, target and information set, with simple baselines.
