@@ -16,11 +16,14 @@ Updated: 2026-11-12
 - NIFTY 50 is a candidate universe and benchmark family, not a final stock-selection decision.
 - Build a reproducible research and decision-support system, not a live brokerage execution bot.
 - Preserve chronological out-of-sample testing, point-in-time information, simple baselines, transaction-cost awareness, and honest reporting.
-- The PRD's requested scope remains the reference scope: 8–15 liquid equities plus a benchmark, 8–10 years of data, the specified model comparisons, sentiment/news comparison, portfolio optimisation, dashboard, and report. Any scope reduction must be explicit rather than silently assumed.
+- The PRD's requested scope remains the reference scope: 8–15 liquid equities plus a benchmark, 8–10 years of data, the specified model comparisons, sentiment/news comparison, portfolio optimisation, dashboard, and report. Any scope reduction or expansion must be explicit rather than silently assumed.
+- Recommendation principle confirmed 2026-11-12: no daily trade is required. The system must be allowed to recommend no new trade across the whole portfolio, must apply pre-defined criteria consistently, and must not force a sale/rotation simply because another asset has a higher forecast. See `DECISIONS.md`.
 
 ## Not yet decided
+- Whether the PRD's 8–15 stocks are only the baseline research universe or also the eventual prediction/coverage limit.
+- Whether training on a broader multi-company panel can generalise to additional unseen Indian equities; this requires a fair out-of-sample experiment and is not assumed.
 - Exact stocks, benchmark series, historical membership method, and data providers.
-- Forecast target(s), prediction horizon(s), recommendation rules, trade entry/exit convention, and what constitutes a successful BUY.
+- Forecast target(s), prediction horizon(s), recommendation thresholds, uncertainty/abstention rules, trade entry/exit convention, and what constitutes a successful BUY.
 - Whether the practical 70% BUY-win-rate aspiration previously discussed should remain an evaluation objective; it is not a verified result or a PRD acceptance criterion.
 - News sources, coverage, API provider(s), event taxonomy, model approach, and workflow scheduler/orchestrator.
 - Final model set beyond the PRD comparison requirements, and any scope trade-offs needed for the recorded 15 November 2026 deadline.
@@ -31,7 +34,7 @@ Updated: 2026-11-12
 - The rolling research synthesis now compares Gu–Kelly–Xiu and Fieberg and identifies the PRD's daily forward-price task versus the papers' monthly return-prediction task as a key unresolved mismatch.
 
 ## Next action
-Clarify the intended prediction task and target against the PRD, using the cross-paper synthesis in `docs/RESEARCH_ROADMAP.md`; then agree the evaluation contract and run a small data-source feasibility pilot before bulk collection or model training.
+Clarify the prediction target and the distinction between training universe, prediction coverage, and portfolio universe against the PRD. Then agree the evaluation contract and run a small data-source feasibility pilot before bulk collection or model training.
 
 ## Progress rule
 Update this file only for verified progress and decisions the user has confirmed. Keep provisional brainstorming in the conversation; do not turn every idea into a repository entry. After any repository edit, fetch the saved file and verify its contents.
