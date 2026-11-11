@@ -26,12 +26,12 @@ Updated: 2026-11-12
 - Final model set beyond the PRD comparison requirements, and any scope trade-offs needed for the recorded 15 November 2026 deadline.
 
 ## Latest research progress
-- Fieberg et al. (2023) full paper reviewed using the uploaded source-only extraction instructions; detailed extraction is saved at `docs/FIEBERG_2023_RESEARCH_EXTRACTION.md`.
+- Fieberg et al. (2023) full-paper extraction reviewed. Its useful findings and limitations have been consolidated into the single rolling document `docs/RESEARCH_ROADMAP.md`; no separate paper-summary file is maintained.
 - The paper studies monthly pooled cross-sectional returns across a broad European universe, not daily price forecasting or a small 8–15-stock universe. It does not establish transferability to Indian equities.
-- `docs/RESEARCH_ROADMAP.md` now records the review and prioritises cross-paper synthesis.
+- The rolling research synthesis now compares Gu–Kelly–Xiu and Fieberg and identifies the PRD's daily forward-price task versus the papers' monthly return-prediction task as a key unresolved mismatch.
 
 ## Next action
-Synthesize the evidence across the reviewed papers, keeping India transferability and the PRD's daily forecasting task unresolved; then agree the evaluation contract and run a small data-source feasibility pilot before bulk collection or model training.
+Clarify the intended prediction task and target against the PRD, using the cross-paper synthesis in `docs/RESEARCH_ROADMAP.md`; then agree the evaluation contract and run a small data-source feasibility pilot before bulk collection or model training.
 
 ## Progress rule
 Update this file only for verified progress and decisions the user has confirmed. Keep provisional brainstorming in the conversation; do not turn every idea into a repository entry. After any repository edit, fetch the saved file and verify its contents.
