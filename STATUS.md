@@ -1,25 +1,32 @@
 # Current Status
 
-- Project repository created: private GitHub repo, default branch `main`.
-- Stage: initial project structure exists; moving from research planning to implementation planning.
-- Deadline: 15 November 2026.
-- Working style: learn by building; concise, beginner-friendly explanations; explain unfamiliar terms in brackets once.
-- Environment: Mac + VS Code + GitHub; Python 3.12.15 virtual environment at `.venv/`; `.gitignore` excludes local environments and caches.
-- Initial dependencies declared: NumPy, pandas, yfinance; pytest in development requirements.
-- Added `src/northgate/`, a data module scaffold, tests, and placeholder directories for raw/processed data, notebooks, and reports.
-- Market focus: Indian equities. NIFTY 50 is a candidate universe; final 8–15 stocks and benchmark series still need a reproducible selection rule.
-- User's additional practical objective: aim for at least 70% profitable BUY recommendations over a five-trading-session holding period. This is a research target, not a guaranteed result; evaluate net returns, average win/loss, profit factor, drawdown, Sharpe, trade count, and uncertainty too.
-- PRD acceptance criteria remain mandatory: best forecaster beats naive random walk on MAE and directional accuracy; optimised portfolio beats equal-weight baseline on out-of-sample Sharpe; four ML + four DL models; sentiment comparison; MPT; dashboard; report.
-- Read the original PRD and the user's uploaded review of the 2022 NIFTY 50 paper. Findings and caveats are preserved in `docs/RESEARCH_PAPER_REVIEW.md`.
-- Added `docs/IMPLEMENTATION_PLAN.md` with staged implementation, separate forecasting/recommendation/portfolio evaluations, proposed trade convention, leakage safeguards, and timeline risk.
-- Proposed but not yet confirmed trade convention: signal after close, enter next session open, exit fifth session close. Need agree this and transaction-cost assumptions before backtesting.
-- Research paper caveats: index forecasting is not portfolio profitability; reported model ranking varies by metric; K-fold chronology and exact target construction need scrutiny; StandardScaler must be fitted on training data only.
-- Current priority: agree the evaluation contract, then run a small India-data source feasibility pilot. Do not bulk-download data or train models yet.
-- No stock data has been downloaded, no models have been trained, and no performance claims/results exist.
-- Timeline risk: PRD planned four weeks at 25–30 hours/week; recorded deadline is 15 November 2026. Prioritise a correct reproducible core and disclose incomplete scope.
+Updated: 2026-11-11
 
-## Session update rule
-After each meaningful work session, record completed work, tests/results, decisions, new ideas, blockers, and the single next action. Update this file and verify the saved contents.
-- Strategy refinement (2026-11-11): five sessions is now a proposed maximum holding period, not a mandatory exit date. Explore return-based exits using a take-profit barrier, stop-loss/risk exit, and max-five-session time exit. No fixed 5%/10% target has been chosen.
-- New research direction: estimate empirical 1–5 session return/volatility distributions, compare fixed vs volatility-scaled exit barriers, include costs, and select rules on chronological validation only. See `docs/IMPLEMENTATION_PLAN.md`.
-- Evidence reviewed: academic studies show stop-loss/trailing-stop effects depend on return dynamics and transaction costs; there is no universal optimal threshold. See cited studies in implementation plan and ideas backlog.
+## Project state
+- Repository: private GitHub repository; default branch `main`.
+- Stage: initial Python project scaffold exists. Research and architecture planning are in progress; implementation has not advanced beyond the scaffold.
+- Environment recorded: Mac, VS Code, Python 3.12.15 virtual environment at `.venv/`.
+- Declared dependencies: NumPy, pandas, yfinance; pytest for development.
+- Existing code: package/data-module placeholders, a market-data scaffold, and a project-structure test.
+- No market dataset has been downloaded; no models have been trained; no backtest, dashboard, or performance result has been produced.
+- The original PRD is referenced by the project notes but is not present as a standalone file in the current GitHub repository tree reviewed on this date. Keep its requirements visible until it is added or otherwise made available as a durable project file.
+
+## Confirmed project direction
+- Research focus: Indian equities.
+- NIFTY 50 is a candidate universe and benchmark family, not a final stock-selection decision.
+- Build a reproducible research and decision-support system, not a live brokerage execution bot.
+- Preserve chronological out-of-sample testing, point-in-time information, simple baselines, transaction-cost awareness, and honest reporting.
+- The PRD's requested scope remains the reference scope: 8–15 liquid equities plus a benchmark, 8–10 years of data, the specified model comparisons, sentiment/news comparison, portfolio optimisation, dashboard, and report. Any scope reduction must be explicit rather than silently assumed.
+
+## Not yet decided
+- Exact stocks, benchmark series, historical membership method, and data providers.
+- Forecast target(s), prediction horizon(s), recommendation rules, trade entry/exit convention, and what constitutes a successful BUY.
+- Whether the practical 70% BUY-win-rate aspiration previously discussed should remain an evaluation objective; it is not a verified result or a PRD acceptance criterion.
+- News sources, coverage, API provider(s), event taxonomy, model approach, and workflow scheduler/orchestrator.
+- Final model set beyond the PRD comparison requirements, and any scope trade-offs needed for the recorded 15 November 2026 deadline.
+
+## Next action
+Agree the evaluation contract and run a small data-source feasibility pilot before bulk collection or model training.
+
+## Progress rule
+Update this file only for verified progress and decisions the user has confirmed. Keep provisional brainstorming in the conversation; do not turn every idea into a repository entry. After any repository edit, fetch the saved file and verify its contents.
