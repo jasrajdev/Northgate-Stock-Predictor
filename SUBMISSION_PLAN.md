@@ -116,3 +116,11 @@ Append concise dated entries here after meaningful, verified progress:
 - Commands/tests run and their actual outcomes.
 - Files created/updated.
 - Blockers and next action.
+
+
+### 2026-11-12 — Initial Yahoo Finance downloader added
+- Added `scripts/download_market_data.py` and fetched it back from GitHub to verify the saved file.
+- Script requests daily OHLCV, Adj Close, dividends, and stock splits from Yahoo Finance via yfinance for 10 provisional Indian large-cap candidates plus the NIFTY 50 price index, from 2016-01-01 to the latest available session.
+- Script preserves per-symbol raw CSVs, writes a combined processed panel, and creates a JSON data-quality/download report. It flags failures and basic data anomalies rather than filling or inventing prices.
+- The ticker list is provisional, not a final universe decision. The downloaded `^NSEI` is the NIFTY 50 price index, not TRI; today's constituents also create survivorship-bias limitations.
+- **Not yet run:** no download, environment installation, or data-quality result has been verified. Next: user clones repo on Mac, installs requirements, runs script, and shares terminal output.
