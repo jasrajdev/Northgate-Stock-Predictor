@@ -48,3 +48,11 @@ The following have appeared in earlier planning notes but are not confirmed desi
 - Omitting any of the PRD's required model comparisons.
 
 The earlier 70% profitable-BUY figure is an aspiration discussed by the user, not a proven result and not a PRD acceptance criterion. Confirm whether it remains a secondary research objective before using it to define experiments.
+
+
+## 2026-11-12 — First forecasting target follows the PRD
+- Decision for the first supervised dataset: use the next observed trading session's adjusted close as the primary one-session-ahead target. At date t, model inputs may use information available at t; the label is the same ticker's adjusted close at t+1.
+- Also retain next-session log return and direction as derived labels/evaluation fields, since directional accuracy is a required PRD metric.
+- Rationale: the PRD's primary objective is forward closing-price forecasting and it identifies adjusted close as the preferred target basis. The PRD also lists next-day log return as an example target, but the first dataset will preserve the forward adjusted-price target explicitly.
+- Multi-day forecasting remains required by the PRD, but exact horizons are not specified. Do not invent horizons; settle them before building those labels.
+- Revisit condition: user may explicitly change the target/horizon later. Until then, implement the PRD-first convention.
