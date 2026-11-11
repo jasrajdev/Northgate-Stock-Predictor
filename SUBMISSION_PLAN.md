@@ -49,9 +49,10 @@ Build and verify the data foundation first, then proceed to baseline modelling a
    - Fit learned preprocessing/scalers on training data only, not on the full dataset.
 
 8. **Define the prediction target**
-   - The PRD discusses next-day adjusted close and next-day log return; the final target/horizon is not yet approved.
-   - Resolve and document target, forecast timestamp, and signal timing before model training.
-   - Keep target construction separate from features to make leakage checks possible.
+   - First supervised dataset: next observed session's adjusted close (`target_adj_close_t1`), with next-session log return and direction retained as evaluation labels/derived targets.
+   - The feature row is timestamped at session t; labels refer to the next observed session for the same ticker.
+   - Multi-day forward-price forecasting is also required by the PRD, but its horizons are not specified; do not invent them. Agree them before adding multi-day labels.
+   - Keep target construction separate from features; never include `target_*` columns in model inputs.
 
 9. **Verify and freeze the data foundation**
    - Rerun the pipeline and compare outputs.
@@ -155,3 +156,14 @@ Append concise dated entries here after meaningful, verified progress:
 - `^NSEI` has 28 zero-volume rows and 2,674 missing `volume_change_1d` values; all its volume-derived features are intentionally disabled because it is a price index, not a traded stock.
 - **Interpretation:** raw volume is present in the file, but the provider's zero values on shared equity dates are likely unavailable/placeholder observations. Do not treat them as genuine zero trading without exchange-level verification. Preserve raw values and missingness; do not impute zero or forward-fill volume.
 - **Next:** the volume-feature issue is sufficiently diagnosed for this submission pipeline. Proceed to target design, but first inspect the actual PRD target wording and agree forecast timing/horizon. Do not create labels or train until the target is explicitly settled.
+
+
+### 2026-11-12 — First supervised dataset defined
+- Read the uploaded PRD. It explicitly asks for next-day and multi-day forward closing-price forecasts; it prefers adjusted close for return and target calculations. Its data contract says the target must be fixed before modelling and gives next-day adjusted close or next-day log return as examples.
+- User confirmed to follow the PRD for now and defer any later change.
+- First dataset target convention: at feature date t, predict the adjusted close at the next observed trading session for the same ticker. Also retain next-session log return and direction for evaluation. This is the first one-session-ahead dataset, not a replacement for the PRD's multi-day objective.
+- Multi-day horizons are not numerically specified in the PRD and remain open; do not assume a 5-day/10-day horizon.
+- Added `scripts/build_next_day_dataset.py`. It reads `data/processed/feature_panel.csv`, creates next-session labels within each ticker, removes the final unlabeled row per ticker, writes `data/processed/modeling_dataset_next_day.csv` and a JSON validation report. It does not split data or train models.
+- Dataset generation has not yet been run on the user's Mac; local output files are not yet verified.
+- Hardware plan: use the Mac M4/16 GB for ingestion, feature engineering, EDA and classical ML; consider the HP Victus for neural-network training only after confirming its exact NVIDIA GPU model, VRAM and CUDA availability. A one-day full PRD training/testing run cannot be promised; scope and runtime depend on GPU model, libraries, model sizes, tuning and news/portfolio work.
+- Remaining data families from the PRD: macro/market context (e.g. VIX, rates, inflation, unemployment) and timestamped financial news/sentiment. The current market panel is not the complete PRD dataset.
