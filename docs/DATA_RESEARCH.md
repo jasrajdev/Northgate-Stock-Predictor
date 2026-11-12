@@ -668,3 +668,11 @@ Official source references:
 - October 2025 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12nov25.pdf
 
 The official FAQ currently states a general 5:30 PM schedule, but contemporaneous PDFs show a 4:00 PM embargo for the later regime. For backtesting, use each PDF's dated embargo/release time, not the FAQ's generic schedule or the ARC's expected date. Both regimes are after the NSE cash close (3:30 PM); the first eligible NSE session after the actual release timestamp is the conservative feature-availability date. Verify holidays/session mapping separately.
+
+
+#### Additional date verification
+- November 2025 CPI: released 12 Dec 2025, embargoed until 4:00 PM. The release explicitly states that December 2025 CPI is scheduled for 12 Jan 2026. Source: https://www.mospi.gov.in/uploads/latestreleasesfiles/1765535702131-Press%20Release_CPI_November_2025.pdf
+- December 2025 CPI: released 12 Jan 2026, embargoed until 4:00 PM; this was the last release on base 2012=100. Source: https://mospi.gov.in/uploads/release_calendar/1768214980837_Press_Release_of_CPI_for_December_2025.pdf
+- The March 2025 release (dated 15 Apr 2025) says April 2025 CPI was due 12 May 2025. The corresponding April PDF's actual embargo/date has not yet been independently retrieved, so 12 May remains a scheduled date rather than a verified actual timestamp in this register. Source for scheduled date: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_15Apr25.pdf
+
+The remaining gap in the release-date register is the direct PDF confirmation for the April 2025 reference-month workbook. Keep its timestamp blank until that PDF is located. The other 17 workbook reference months now have an official PDF date/time or a release PDF explicitly establishing the next scheduled date; only direct-confirmed timestamps should be used for production as-of joins.
