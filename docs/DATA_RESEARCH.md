@@ -493,3 +493,11 @@ The combined year-on-year inflation rate is 0.25% in both releases at published 
 3. Parse each paired PDF to capture exact release date/time and provisional/final/revision status, including the early 2011 two-month revision rule.
 4. Compare each reference month across successive releases and retain immutable observation-vintage records.
 5. Only then create the final point-in-time macro feature table; do not treat the Dec 2025 historical snapshot as vintage-safe.
+
+
+### CPI press-release archive inventory confirmed from full pagination — 2026-11-13
+- User supplied screenshots of all four pages of the official MoSPI CPI Press Releases archive, with page size set to 50.
+- Pagination shows 4 pages: 50 + 50 + 50 + 30 = **180 monthly release entries**, matching the displayed archive range January 2011 through December 2025 inclusive. This confirms the count of release-list entries, not the count of downloadable Excel files.
+- The screenshots show both PDF (red) and Excel (green) action icons on recent entries, while many older entries show only the PDF icon. Therefore do not claim 180 Excel annexure workbooks exist. Exact monthly XLS coverage and the first/last month with an XLS link remain to be inventoried from the archive itself.
+- Practical retrieval plan: use the green XLS action wherever present; where only PDF exists, preserve the PDF and extract annexures from it if the tables are available. Record per-month file availability and format explicitly (XLS, PDF-only, missing entry, or inaccessible).
+- This archive is the authoritative discovery index for monthly release documents. Its existence does not prove that every listed release has comparable annexures, consistent table layouts, or directly comparable base-year series. Treat Jan 2011–Dec 2014 and later base periods separately, and inspect each release's own metadata before combining.
