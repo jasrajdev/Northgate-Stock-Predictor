@@ -501,3 +501,28 @@ The combined year-on-year inflation rate is 0.25% in both releases at published 
 - The screenshots show both PDF (red) and Excel (green) action icons on recent entries, while many older entries show only the PDF icon. Therefore do not claim 180 Excel annexure workbooks exist. Exact monthly XLS coverage and the first/last month with an XLS link remain to be inventoried from the archive itself.
 - Practical retrieval plan: use the green XLS action wherever present; where only PDF exists, preserve the PDF and extract annexures from it if the tables are available. Record per-month file availability and format explicitly (XLS, PDF-only, missing entry, or inaccessible).
 - This archive is the authoritative discovery index for monthly release documents. Its existence does not prove that every listed release has comparable annexures, consistent table layouts, or directly comparable base-year series. Treat Jan 2011–Dec 2014 and later base periods separately, and inspect each release's own metadata before combining.
+
+
+### CPI archive format inventory and PDF extraction feasibility — 2026-11-13
+**Archive inventory from user-provided full-pagination screenshots:** page size 50; four pages; 50 + 50 + 50 + 30 = 180 monthly release entries (Jan 2011–Dec 2025). On page 1, green XLS icons are visible for exactly the 18 entries from July 2024 through December 2025 inclusive. From June 2024 backwards, the screenshots show red PDF icons only. Therefore current observed archive format coverage is 180 PDF entries and 18 XLS entries (the 18 XLS are a subset of the 180 PDF entries), subject to link-level download validation. Do not describe this as 180 Excel workbooks.
+
+**PDF-only older releases are still usable for headline vintage extraction.** Official PDF examples were inspected:
+- 12 Feb 2014 release for Jan 2014 (base 2010=100) explicitly states Jan 2014 provisional and Dec 2013 final, gives rural/urban/combined general indices and inflation in the press note, and includes Annex I with rural/urban/combined group/subgroup indices. Source: https://www.mospi.gov.in/sites/default/files/press_release/t4_12feb14.pdf . It has 4 pages and Annex I begins on page 2.
+- 12 Mar 2014 release for Feb 2014 (base 2010=100) explicitly states Feb 2014 provisional and Jan 2014 final; combined headline inflation is 8.10% provisional for Feb and 8.79% final for Jan. Source: https://www.mospi.gov.in/sites/default/files/press_release/t4_12mar14.pdf .
+- 12 Jan 2017 release for Dec 2016 (base 2012=100) explicitly labels Dec 2016 provisional and Nov 2016 final, and gives rural/urban/combined headline inflation and index values in the press note and Annexure I. Source: https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR12jan17th.pdf .
+This proves PDF-only entries can support at least the headline general CPI vintage extraction; annexure depth/layout varies by period and must be checked per document. Do not assume every PDF contains the same Annexure VI/VII time-series format found in recent XLS workbooks.
+
+**Correct base-series chronology (distinguish original publication series from retrospective back-series):**
+- Original contemporaneous CPI release series: Jan 2011–Dec 2014, base 2010=100.
+- Original contemporaneous CPI release series: Jan 2015–Dec 2025, base 2012=100 (base change effective with Jan 2015 release).
+- First release of CPI base 2024=100: 12 Feb 2026, for Jan 2026. MoSPI/PIB states CPI 2012 series remains through Dec 2025; CPI 2024 inflation series starts Jan 2026. A 2025 overlap is used to calculate linking factors, and retrospective 2024-base back-series is available for Jan 2013–Dec 2024. Do not treat the 2024-base 2025 overlap/linking data as a series investors could have observed during 2025. Sources: https://mospi.gov.in/uploads/documents/productKpiIcon/1770896304774-Press%20Relase%20of%20CPI%20for%20Jan26.pdf ; PIB explanation https://www.pib.gov.in/PressReleasePage.aspx?PRID=2291051&lang=1&reg=48 ; CPI warehouse https://www.cpi.mospi.gov.in/Default1.aspx .
+- The current NMDS metadata's wording about 2024-base CPI from Jan 2025 onwards overlaps with its statement that the old 2012 series runs through Dec 2025. Resolve this using the dated first-release and PIB explanation: Jan 2025–Dec 2025 2024-base values are an overlap/linking series, not the contemporaneous official CPI release series. Preserve source vintage and release timestamp.
+
+**Historical extraction coverage status:**
+- Archive entries confirmed: 180.
+- Visible XLS entries confirmed: 18 (Jul 2024–Dec 2025).
+- PDF entries visible: 180.
+- Older PDF-only release format can contain usable provisional-current/final-previous headline data, demonstrated for 2014 and 2017.
+- Full month-by-month extracted vintage table and per-month exact publication timestamps are NOT yet built. Release dates/times must be parsed from each PDF, not imputed from a fixed monthly rule. The older MoSPI FAQ says 12th at 5:30 PM subject to next working day; the newer 2025/2026 releases use 4:00 PM, so hardcoding one time across the full history would be wrong.
+
+**Extraction method proposed:** for each release PDF/XLS, extract the current reference month provisional General CPI index (rural, urban, combined) and inflation, plus the prior month final values, source release date/time, base year, file URL and extraction confidence. Cross-check each reference month's provisional value in release t against its final value in release t+1. Keep 2010=100 and 2012=100 histories in separate series. Retain raw PDF/XLS and a provenance log; flag OCR/manual corrections for review.
