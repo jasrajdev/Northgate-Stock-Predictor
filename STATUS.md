@@ -83,3 +83,12 @@ Update this file only for verified progress and decisions the user has confirmed
 
 ## Next action
 Map each supplied CPI workbook to its official MoSPI release date/time, verify the release-time regime and next eligible NSE session, then construct a point-in-time CPI feature table. Keep the 2024-base snapshot separate from the contemporaneously available 2012-base series.
+
+
+### CPI publication-time and market-availability mapping
+- Added `data/external/cpi_mospi_2012_release_availability_map_2024-07_to_2025-12.csv` (18 rows), with reference month, release date/time, evidence status, next eligible NSE session and source URL.
+- 17 rows have direct official PDF support. April 2025 reference-month CPI remains scheduled-only (12 May 2025 cited as the expected date by the previous release); its own PDF must be found before the timestamp is considered verified.
+- All verified release times are after the 15:30 NSE cash close. Next-session mapping accounts for weekends and official NSE equity-market holidays.
+- GitHub copy fetched back and verified at 18 data rows. Details and sources are in `docs/DATA_RESEARCH.md`.
+
+**Current CPI status:** extraction and release/session mapping are documented; not yet integrated into market features. Next: locate/verify April 2025's PDF, join the availability map to the two vintage datasets, create a leakage-safe as-of feature table, then validate null handling and chronological availability.
