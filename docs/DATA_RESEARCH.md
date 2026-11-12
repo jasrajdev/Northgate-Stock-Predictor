@@ -419,3 +419,23 @@ This is a small, deliberately selected sample, not a frequency estimate. It esta
 - Store at minimum: reference_month, series/sector, base_year, value_type (index/inflation), value, publication_timestamp, vintage_status (as published by MoSPI), source_release_url, retrieved_at, and original status/asterisk markers. Keep unrounded precision only if the source actually supplies it; do not infer it from rounded releases.
 - The sample supports point-in-time vintage handling as a prudent data-engineering safeguard. It does not yet prove that CPI vintage changes materially affect Northgate model performance. That requires a later paired experiment comparing latest-vintage history against as-published point-in-time history on identical chronological splits, without touching the held-out test set during development.
 - Do not label these provisional-to-final updates as evidence of post-final revisions. The inspected documents show the provisional current month and final previous month being published together; the sample does not establish a policy or pattern of revisions after an observation is marked final.
+
+
+### Official CPI Excel annexure workbooks obtained and inspected — 2026-11-13
+The user downloaded both original Excel workbooks from the MoSPI CPI Press Releases archive (green XLS icon), and both files were inspected locally with pandas/openpyxl:
+- `Annexures for Press Release in Excel October 2025.xlsx` — sheets Annex-I through Annex-VII.
+- `Annexures for Press Release in Excel November 2025.xlsx` — sheets Annex-I through Annex-VII.
+
+The workbooks are the exact official annexure files sought. Annexure VI contains the All-India General CPI (2012=100) monthly index time series from Jan 2013; Annexure VII contains the corresponding year-on-year inflation series from Jan 2014. Annex-I provides detailed All-India group/subgroup CPI and CFPI data; Annexes II–V provide additional inflation/state/key-item breakdowns.
+
+Direct workbook comparison for October 2025 (All Groups / General Index):
+| Measure | October 2025 workbook (Oct provisional) | November 2025 workbook (Oct final) |
+|---|---:|---:|
+| Rural CPI index | 198.8 | 199.0 |
+| Urban CPI index | 194.9 | 195.4 |
+| Combined CPI index | 197.3 | 197.3 |
+| Combined YoY inflation (Annexure VII) | 0.25% | 0.25% |
+
+Thus, the aggregate combined index and inflation rate are unchanged at displayed precision, but the rural and urban general index values each increase by 0.2 and 0.5 respectively between provisional and final releases. This is important: comparing only the combined national headline would miss revisions/updates in its rural and urban components. Here, call these provisional-to-final updates, not post-final revisions. Do not infer unrounded equality from displayed rounded values.
+
+Both workbooks contain 7 sheets (Annex-I, Annex-II, Annex-III, Annex-IV, Annex-V, Annex-VI, Annex-VII). Excel files are preferable for systematic extraction versus manually parsing PDFs. The archive's monthly XLS links should be the primary retrieval path for building a historical release-vintage inventory. Preserve original files, filenames, retrieval date and release date; retain PDF release alongside each workbook when available.
