@@ -255,3 +255,22 @@ Research outcome:
 - This independently corroborates the API pilot's null inflation values for April and May 2020. The API's separate `F*` status remains unexplained; the PDF footnote explains the missing inflation values but does not define the API status code. Keep the API status field raw and preserve the inflation values as missing, not zero or interpolated.
 - The December 2025 release also explicitly labels November 2025 as final in its detailed annexures, while the November 2025 release had labelled November as provisional. This demonstrates a concrete two-vintage sequence for the same reference month: first published provisional, then final in the following monthly release. The release PDFs can therefore support a small vintage reconstruction pilot even if the warehouse's interactive Excel interface remains inaccessible. Sources: https://cpi.mospi.gov.in/PDFile/Press/PR%20November%202025.pdf ; https://cpi.mospi.gov.in/PDFile/Press/PR%20December%202025.pdf.
 - Research implication: for each month, retain the original release's provisional value and the next release's final value as separate records when both source documents are available. Do not overwrite provisional history with final values when constructing point-in-time features.
+
+
+### CPI November 2025 provisional-to-final vintage comparison — 2026-11-13
+
+A two-release pilot was completed using the official November and December 2025 MoSPI press releases:
+
+| Field (All India, Combined, CPI General, 2012=100) | November 2025 first release (provisional; 12 Dec 2025, 16:00 IST) | December 2025 release (November final; 12 Jan 2026, 16:00 IST) |
+|---|---:|---:|
+| CPI index | 197.9 | 197.9 |
+| Year-on-year inflation | 0.71% | 0.71% |
+
+- November 2025 release labels November provisional and reports combined CPI General index 197.9 and year-on-year inflation 0.71%. It states the December CPI release date as 12 January 2026. Source: https://www.mospi.gov.in/uploads/latestreleasesfiles/1765535702131-Press%20Release_CPI_November_2025.pdf ; PIB mirror: https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2202940&lang=2&reg=48.
+- December 2025 release labels November final and reports the same combined index 197.9 and year-on-year inflation 0.71%, while December 2025 itself is provisional. It is embargoed until 4:00 PM on 12 January 2026. Source: https://mospi.gov.in/uploads/release_calendar/1768214980837_Press_Release_of_CPI_for_December_2025.pdf ; PIB mirror: https://www.pib.gov.in/PressReleasePage.aspx?PRID=2213736&lang=2&reg=3.
+- At the one-decimal index and two-decimal inflation precision exposed in the press-release tables, no revision is visible for November 2025 between provisional and final. This does not prove that unrounded underlying values were identical; the public tables may round values.
+- This is a valid proof-of-process for storing separate provisional and final vintage records, but not yet evidence that revisions are large or frequent. Retain both records even when their displayed values match; their availability dates differ by one month.
+- Availability: November provisional became public at 16:00 IST on 12 Dec 2025; November final became public at 16:00 IST on 12 Jan 2026. Both timestamps are after the NSE cash-market close, so for a daily close-based model the earliest eligible use is the next NSE trading session after each release.
+- The December 2025 press release also states April and May 2020 inflation was not compiled/released due to the COVID-19 pandemic. Preserve those observations as missing; do not impute zero. This matches the API pilot's null inflation values, but does not decode its `F*` status code.
+
+Research limitation: this pilot compares the headline All India Combined CPI General values as printed in two press releases. It does not yet extract Excel annexures, access unrounded data, reconstruct all monthly vintages, or validate the API status codes.
