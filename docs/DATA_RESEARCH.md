@@ -292,3 +292,18 @@ A second vintage comparison found an actual visible revision, unlike the Novembe
 - Thus, at published precision, September 2018's combined index was revised downward by 0.1 index point and combined year-on-year inflation by 0.07 percentage points between the provisional and final releases. Rural index also changed by -0.1; urban index was unchanged.
 - Point-in-time consequence: a backtest using the September 2018 final value before 17:30 IST on 12 Nov 2018 would leak later information. The provisional vintage is the correct value for earlier decision dates; the final vintage becomes available only after its actual release timestamp. For a close-based daily stock model, use it from the next eligible NSE session.
 - This establishes that revisions are not merely theoretical and that using the latest API history alone can introduce look-ahead bias. Keep each vintage as a separate record with its own release timestamp and source document. The magnitude and frequency of revisions across all months remain unmeasured; this is one concrete historical example, not a full revision study.
+
+
+### CPI additional vintage check — October 2020 provisional versus final — 2026-11-13
+
+A further same-month comparison was checked using the original October 2020 release and MoSPI's subsequent November 2020 release summary:
+
+| October 2020 CPI General, Combined | First release (12 Nov 2020, 17:30 IST) | Final release (14 Dec 2020) |
+|---|---:|---:|
+| Year-on-year inflation | 7.61% provisional | 7.61% final |
+
+- The 12 Nov 2020 release labels October 2020 provisional and reports combined CPI General year-on-year inflation of 7.61%. Its headline index table reports combined index 158.4. Source: https://mospi.gov.in/uploads/documents/CPI/Press/PR%20October%202020.pdf.
+- MoSPI's subsequent monthly summary states that October 2020 was finalised on 14 Dec 2020 and reports final combined year-on-year inflation of 7.61%. Source: https://mospi.gov.in/sites/default/files/publication_reports/Summary_Nov_Dec20_22jan21.pdf.
+- This is a no-visible-change result for the published combined inflation rate (two decimal places). The final combined index value was not independently extracted from the November 2020 press-release annexure in this check, so no claim is made that the index itself was unchanged.
+- Evidence set now contains two months with visible published changes (September 2018 and September 2020? Correction: the September 2020 release pair has not yet been checked through its final release here; only October 2020 inflation is a no-visible-change example) and two no-visible-change examples (November 2025 and October 2020 combined inflation). The September 2018 pair is the only confirmed visible revision in the tested examples.
+- These are purposively selected examples, not a random or representative sample. They cannot estimate the frequency, average size, or distribution of revisions.
