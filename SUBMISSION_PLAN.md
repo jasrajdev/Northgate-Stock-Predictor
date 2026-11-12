@@ -177,3 +177,11 @@ Append concise dated entries here after meaningful, verified progress:
 - The output is user-verified via pasted terminal log, not independently inspected by the assistant. No model has been trained.
 - Next preparation: macro/market context and timestamped financial news/sentiment. Preserve publication/release timestamps, deduplicate news, and map after-close information to the next eligible trading session. Compare price/volume-only versus price/volume+sentiment on identical chronological dates.
 - Work can proceed in parallel after the stable datasets exist: EDA, baseline modelling, dashboard scaffolding, report methodology, and documentation. Training performance is not yet known.
+
+
+### 2026-11-13 — Chronological split plan and script
+- User approved the first next-session chronological split: training target dates through 2023-12-31; validation thereafter up to the final six-calendar-month test cutoff; final six months reserved for untouched testing.
+- Added `scripts/create_chronological_splits.py` and fetched it back from GitHub to verify its saved contents.
+- The script assigns rows by `target_date_t1`, derives the cutoff from the latest target date, creates three CSV partitions and a JSON report, and checks ordering, duplicate keys, and target-column exclusion.
+- Current reported latest target date: 2026-11-09; expected calendar cutoff: 2026-05-09. Actual first test trading date and row counts are pending local execution.
+- No training or model evaluation has been performed.
