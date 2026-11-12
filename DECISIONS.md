@@ -56,3 +56,12 @@ The earlier 70% profitable-BUY figure is an aspiration discussed by the user, no
 - Rationale: the PRD's primary objective is forward closing-price forecasting and it identifies adjusted close as the preferred target basis. The PRD also lists next-day log return as an example target, but the first dataset will preserve the forward adjusted-price target explicitly.
 - Multi-day forecasting remains required by the PRD, but exact horizons are not specified. Do not invent horizons; settle them before building those labels.
 - Revisit condition: user may explicitly change the target/horizon later. Until then, implement the PRD-first convention.
+
+
+## 2026-11-13 — Chronological evaluation split
+
+- Decision: for the first next-session forecasting experiment, use target-date-based chronological partitions: training outcomes through 2023-12-31; validation outcomes after 2023-12-31 and before the final six-calendar-month test cutoff; final test outcomes in the last six calendar months of available labelled data.
+- Decision: calculate the final test cutoff from the latest available target date at dataset-build time, rather than hard-coding a future calendar date. For the currently reported latest target date of 2026-11-09, the calendar cutoff is 2026-05-09; the first observed test target session should be the next eligible trading session.
+- Rationale: preserve an untouched, recent out-of-sample period while allowing all earlier data to be used for training and validation. Assign by target date because that is when the forecast outcome becomes known.
+- Safeguards: keep the test period untouched during tuning; fit scalers/imputers/feature selection on training data only; never pass any `target_*` column as an input feature. Multi-session targets will require an explicit horizon and a corresponding purge/embargo review.
+- Scope: this is the agreed working split for the current one-session-ahead dataset. It does not define multi-day horizons, walk-forward folds, recommendation holding periods, or trade rules.
