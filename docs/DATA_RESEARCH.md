@@ -148,3 +148,7 @@ Pilot MOSPI CPI, one RBI series, NSE India VIX, and a small GDELT company-news s
 - User queried year=2021 for the 2012-base All India / Combined / General-Overall headline series (`series=Current`, `limit=100`, `page=1`). API returned HTTP 200, `totalRecords=12`, `totalPages=1`, covering January–December 2021.
 - Index / year-on-year inflation pairs (Jan–Dec): Jan 156.3 / 4.06%; Feb 156.6 / 5.03%; Mar 156.8 / 5.52%; Apr 157.8 / 4.23%; May 160.4 / 6.30%; Jun 161.3 / 6.26%; Jul 162.5 / 5.59%; Aug 162.9 / 5.30%; Sep 163.2 / 4.35%; Oct 165.5 / 4.48%; Nov 166.7 / 4.91%; Dec 166.2 / 5.66%. All records have `status=F`.
 - This confirms full-year 2021 retrieval. Unlike April/May 2020, all 2021 monthly inflation values are populated and all statuses are `F`. No CPI data has been merged into modelling data.
+### MOSPI CPI 2012-base 2022 coverage test — 2026-11-13
+- User queried year=2022 for the 2012-base All India / Combined / General-Overall headline series (`series=Current`, `limit=100`, `page=1`). API returned HTTP 200, `totalRecords=12`, `totalPages=1`, covering January–December 2022.
+- Index / year-on-year inflation pairs (Jan–Dec): Jan 165.7 / 6.01%; Feb 166.1 / 6.07%; Mar 167.7 / 6.95%; Apr 170.1 / 7.79%; May 171.7 / 7.04%; Jun 172.6 / 7.01%; Jul 173.4 / 6.71%; Aug 174.3 / 7.00%; Sep 175.3 / 7.41%; Oct 176.7 / 6.77%; Nov 176.5 / 5.88%; Dec 175.7 / 5.72%. All records have `status=F`.
+- This confirms full-year 2022 retrieval. No CPI data has been merged into modelling data.
