@@ -324,3 +324,19 @@ The September 2020 vintage comparison is now verified from two consecutive offic
 - The provisional release's reported price coverage is a relevant data-quality caveat, but the release does not establish that lower reporting coverage caused the revision. Do not infer causation.
 - Point-in-time rule: September provisional values became public at 17:30 IST on 12 Oct 2020; final values became public at 17:30 IST on 12 Nov 2020. A close-based daily model must not use the final vintage before the next eligible NSE session after the latter timestamp.
 - This comparison is one further purposively selected example, not a representative sample or estimate of typical revision size/frequency.
+
+
+### CPI September 2019 provisional-to-final comparison — 2026-11-13
+
+The September 2019 vintage pair was checked using consecutive MoSPI releases:
+
+| All India CPI General, Combined (2012=100) | First release: Sep 2019 provisional (14 Oct 2019, 17:30 IST) | Next release: Sep 2019 final (13 Nov 2019, 17:30 IST) |
+|---|---:|---:|
+| Combined index | 145.8 | 145.8 |
+| Combined year-on-year inflation | 3.99% | 3.99% |
+
+- The 14 Oct 2019 MoSPI release identifies September 2019 as provisional and reports combined General CPI index 145.8 and combined annual inflation 3.99%. Source: https://www.mospi.gov.in/sites/default/files/press_release/Press%20statement_1.pdf.
+- The 13 Nov 2019 MoSPI release identifies September 2019 as final and reports combined annual inflation 3.99%; Annexure I reports September combined General CPI index 145.8 (final). Source: https://www.mospi.gov.in/sites/default/files/press_release/cpi_oct.pdf. PIB mirror: https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1591469&lang=2&reg=48.
+- No visible revision is present at published precision for either the combined index (one decimal) or annual inflation (two decimals). This does not establish that unrounded underlying values were identical.
+- Both releases were embargoed until 17:30 IST. For a close-based daily model, the final vintage is usable only from the next eligible NSE session after 13 Nov 2019's release timestamp; before then the provisional vintage is the latest available observation.
+- This is another selected example, not a representative sample or an estimate of CPI revision frequency.
