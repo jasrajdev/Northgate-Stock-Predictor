@@ -274,3 +274,21 @@ A two-release pilot was completed using the official November and December 2025 
 - The December 2025 press release also states April and May 2020 inflation was not compiled/released due to the COVID-19 pandemic. Preserve those observations as missing; do not impute zero. This matches the API pilot's null inflation values, but does not decode its `F*` status code.
 
 Research limitation: this pilot compares the headline All India Combined CPI General values as printed in two press releases. It does not yet extract Excel annexures, access unrounded data, reconstruct all monthly vintages, or validate the API status codes.
+
+
+### CPI historical revision example — September 2018 provisional versus final — 2026-11-13
+
+A second vintage comparison found an actual visible revision, unlike the November 2025 example:
+
+| All India CPI General, 2012=100 | First release: Sep 2018 provisional (12 Oct 2018, 17:30 IST) | Next release: Sep 2018 final (12 Nov 2018, 17:30 IST) |
+|---|---:|---:|
+| Rural index | 142.2 | 142.1 |
+| Urban index | 138.1 | 138.1 |
+| Combined index | 140.3 | 140.2 |
+| Combined year-on-year inflation | 3.77% | 3.70% |
+
+- The 12 Oct 2018 press release labels September 2018 provisional and reports the General CPI indices as Rural 142.2, Urban 138.1, Combined 140.3; its combined year-on-year inflation is 3.77%. It was embargoed until 17:30 IST on 12 Oct 2018. Source: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12oct18f.pdf.
+- The 12 Nov 2018 press release labels September 2018 final and reports the same reference month's General CPI indices as Rural 142.1, Urban 138.1, Combined 140.2; combined year-on-year inflation is 3.70%. It was embargoed until 17:30 IST on 12 Nov 2018. Source: https://mospi.gov.in/sites/default/files/press_release/Press%20Statement.pdf (page 1 and Annexure I, page 2).
+- Thus, at published precision, September 2018's combined index was revised downward by 0.1 index point and combined year-on-year inflation by 0.07 percentage points between the provisional and final releases. Rural index also changed by -0.1; urban index was unchanged.
+- Point-in-time consequence: a backtest using the September 2018 final value before 17:30 IST on 12 Nov 2018 would leak later information. The provisional vintage is the correct value for earlier decision dates; the final vintage becomes available only after its actual release timestamp. For a close-based daily stock model, use it from the next eligible NSE session.
+- This establishes that revisions are not merely theoretical and that using the latest API history alone can introduce look-ahead bias. Keep each vintage as a separate record with its own release timestamp and source document. The magnitude and frequency of revisions across all months remain unmeasured; this is one concrete historical example, not a full revision study.
