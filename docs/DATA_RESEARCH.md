@@ -131,3 +131,7 @@ Pilot MOSPI CPI, one RBI series, NSE India VIX, and a small GDELT company-news s
 - User queried year=2017 for the 2012-base All India / Combined / General-Overall headline series (`series=Current`, `limit=100`, `page=1`). API returned HTTP 200, `totalRecords=12`, `totalPages=1`, covering January–December 2017.
 - Index / year-on-year inflation pairs (Jan–Dec): Jan 130.3 / 3.17%; Feb 130.6 / 3.65%; Mar 130.9 / 3.89%; Apr 131.1 / 2.99%; May 131.4 / 2.18%; Jun 132.0 / 1.46%; Jul 134.2 / 2.36%; Aug 135.4 / 3.28%; Sep 135.2 / 3.28%; Oct 136.1 / 3.58%; Nov 137.6 / 4.88%; Dec 137.2 / 5.21%. All records have `status=F`.
 - This confirms full-year 2017 retrieval. No CPI data has been merged into modelling data.
+### MOSPI CPI 2012-base 2018 coverage test — 2026-11-13
+- User queried year=2018 for the 2012-base All India / Combined / General-Overall headline series (`series=Current`, `limit=100`, `page=1`). API returned HTTP 200, `totalRecords=12`, `totalPages=1`, covering January–December 2018.
+- Index / year-on-year inflation pairs (Jan–Dec): Jan 136.9 / 5.07%; Feb 136.4 / 4.44%; Mar 136.5 / 4.28%; Apr 137.1 / 4.58%; May 137.8 / 4.87%; Jun 138.5 / 4.92%; Jul 139.8 / 4.17%; Aug 140.4 / 3.69%; Sep 140.2 / 3.70%; Oct 140.7 / 3.38%; Nov 140.8 / 2.33%; Dec 140.1 / 2.11%. All records have `status=F`.
+- This confirms full-year 2018 retrieval. No CPI data has been merged into modelling data.
