@@ -628,3 +628,43 @@ Comparing each month's Provisional index in its own workbook with the next workb
 
 ### Revised next step
 The extraction layer is now present in the repository. Before merging CPI into market features, map each monthly workbook to its official MoSPI press-release publication date/time (and confirm the post-close NSE availability session), reconcile the historical Annex-V/VI/VII tables with the monthly Annex-I/II vintages, and then build an as-of CPI feature table. Do not use the current 2024-base snapshot as a substitute for the 2012-base values that investors actually saw in 2025.
+
+
+### Official CPI release-date/time cross-check — 2026-11-13
+The monthly Excel files do not contain publication timestamps. A first cross-check against official MoSPI press-release PDFs and its Advance Release Calendar confirms that actual release dates must be stored separately from the workbook's reference month:
+- July 2024 CPI: released 12 Aug 2024, embargoed until 5:30 PM.
+- August 2024 CPI: released 12 Sep 2024, embargoed until 5:30 PM.
+- September 2024 CPI: released 14 Oct 2024, embargoed until 5:30 PM (not the nominal 12th; the ARC allowed the 14th).
+- October 2024 CPI: released 12 Nov 2024, embargoed until 4:00 PM.
+- November 2024 CPI: released 12 Dec 2024, embargoed until 4:00 PM.
+- December 2024 CPI: released 13 Jan 2025, embargoed until 4:00 PM.
+- January 2025 CPI: released 12 Feb 2025, embargoed until 4:00 PM.
+- February 2025 CPI: released 12 Mar 2025, embargoed until 4:00 PM.
+- March 2025 CPI: released 15 Apr 2025, embargoed until 4:00 PM (the expected ARC date was 14 April, so the actual PDF date must take precedence).
+- May 2025 CPI: released 12 Jun 2025, embargoed until 4:00 PM.
+- June 2025 CPI: released 14 Jul 2025, embargoed until 4:00 PM.
+- July 2025 CPI: released 12 Aug 2025, embargoed until 4:00 PM.
+- August 2025 CPI: released 12 Sep 2025, embargoed until 4:00 PM.
+- September 2025 CPI: released 13 Oct 2025, embargoed until 4:00 PM.
+- October 2025 CPI: released 12 Nov 2025, embargoed until 4:00 PM.
+- Dates for the remaining workbook months still need direct official-PDF verification; do not fill them solely from a planned calendar.
+
+Official source references:
+- MoSPI Advance Release Calendar (updated 1 Aug 2024; expected dates, explicitly subject to change): https://www.mospi.gov.in/sites/default/files/main_menu/CPI_ARC/ARC_PSD_1aug2024.pdf
+- July 2024 PDF: https://www.cpi.mospi.gov.in/PDFile/Press/PR%20July%202024.pdf
+- August 2024 PDF: https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR_12sep24.pdf
+- September 2024 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_14oct24.pdf
+- October 2024 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12nov24.pdf
+- November 2024 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12dec24.pdf
+- December 2024 PDF: https://www.cpi.mospi.gov.in/PDFile/Press/PR%20December%202024.pdf
+- January 2025 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12Feb25.pdf
+- February 2025 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12Mar25.pdf
+- March 2025 PDF: https://www.cpi.mospi.gov.in/PDFile/Press/PR%20March%202025.pdf
+- May 2025 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12Jun25.pdf
+- June 2025 PDF: https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR_14Jun25.pdf (the PDF itself states 14 July 2025; preserve the content's date, not the filename)
+- July 2025 PDF: https://www.cpi.mospi.gov.in/PDFile/Press/PR%20July%202025.pdf
+- August 2025 PDF: https://www.cpi.mospi.gov.in/PDFile/Press/PR%20August%202025.pdf
+- September 2025 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_13oct25.pdf
+- October 2025 PDF: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12nov25.pdf
+
+The official FAQ currently states a general 5:30 PM schedule, but contemporaneous PDFs show a 4:00 PM embargo for the later regime. For backtesting, use each PDF's dated embargo/release time, not the FAQ's generic schedule or the ARC's expected date. Both regimes are after the NSE cash close (3:30 PM); the first eligible NSE session after the actual release timestamp is the conservative feature-availability date. Verify holidays/session mapping separately.
