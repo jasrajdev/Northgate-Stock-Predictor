@@ -585,3 +585,34 @@ Official CPI warehouse documentation describes downloadable time-series, item-le
 The official PIB notice dated 5 Nov 2024 states that MoSPI changed the CPI release time from 5:30 PM to 4:00 PM on the 12th (or next working day if holiday), effective with the October 2024 CPI release on 12 Nov 2024. Source: https://www.pib.gov.in/PressReleasePage.aspx?PRID=2070932 . Therefore the timestamp parser must use at least two time regimes for the modern monthly schedule: pre-change 5:30 PM, and from 12 Nov 2024 onward 4:00 PM, while still reading the actual date/time on each release. Both scheduled times are after the regular NSE cash-market close (3:30 PM), so for a close-to-close daily feature the earliest usable market observation is normally the next eligible NSE session. Holiday shifts, exceptional releases, and any evidence of earlier public availability must be checked individually; do not infer exact publication time from the scheduled convention alone.
 
 The official CPI metadata states provisional monthly figures are disseminated on the 12th of the following month (next working day if holiday) and final indices for the penultimate month are released alongside the provisional previous month. This describes the modern dissemination convention, not the earlier 2011 two-month finalisation regime documented in the original releases. Keep both the general metadata rule and explicit historical release-level labels; the latter take precedence for point-in-time reconstruction. Sources: https://mospi.gov.in/sites/default/files/CPI/National_Metadata_Structure_for_CPI.pdf ; https://www.pib.gov.in/PressReleasePage.aspx?PRID=2070932 .
+
+
+## MoSPI monthly CPI workbook extraction — 2026-11-13
+
+### Source files inspected
+- Materialized and inspected all 18 Project-backed monthly Excel workbooks from July 2024 through December 2025. The workbooks were already present in Project files; no further upload was needed.
+- Each workbook's Annex-I and Annex-II were inspected. The extraction uses the `General Index (All Groups)` row: Annex-I contains rural, urban and combined index values for the previous reference month (Final) and current reference month (Provisional); Annex-II contains the current reference month's year-on-year inflation rates.
+- Created `data/external/cpi_mospi_2012_release_vintages_2024-07_to_2025-12.csv`: 108 rows, 10 columns, 18 release-workbook months, 19 distinct reference months (June 2024–December 2025), and three sectors (rural, urban, combined). Each release contributes three prior-month Final rows and three current-month Provisional rows. The CSV was fetched back from GitHub and verified to contain 108 data rows.
+- The CSV preserves the source workbook name and release-workbook month. `publication_timestamp` is intentionally blank because the Excel annexures do not encode the actual release date/time. This dataset is an extraction of published values, not yet a point-in-time-ready macro feature table.
+
+### Provisional-to-final index revision check
+Comparing each month's Provisional index in its own workbook with the next workbook's Final index for the same reference month gives 17 matched months (July 2024–November 2025):
+- Combined index changed in 4/17 months; largest absolute change 0.2 index points.
+- Rural index changed in 1/17 months; largest absolute change 0.1 points.
+- Urban index changed in 5/17 months; largest absolute change 0.4 points.
+- Combined examples: July 2024 192.9 to 193.0; January 2025 193.5 to 193.4; July 2025 196.0 to 196.1; September 2025 197.2 to 197.0. Other matched combined months were unchanged at the workbook's displayed precision.
+- October 2025 combined index is 197.3 provisional and 197.3 final; November 2025 is 197.9 provisional and 197.9 final. The corresponding 0.25% and 0.71% figures in this extraction are provisional rates from Annex-II; do not label them as final inflation rates merely because the index later finalised unchanged.
+- This is a small, 17-month observed revision sample, not proof that revisions are generally immaterial. Preserve all vintages and do not replace provisional observations with final values in historical simulations.
+
+### Separate uploaded `cpi_33.xlsx` inspection
+- The workbook contains one sheet (`CPI Data`) with 31,460 rows and 15 columns. It contains base_year=2024, series=Current, 22 monthly periods (January 2025–October 2026), 37 state/UT labels and Rural/Urban/Combined sectors.
+- There are 1,430 rows per month and zero duplicate keys across the available geographic/sector/division/category fields.
+- All 17,160 rows in 2025 have null inflation values; all 14,300 rows in 2026 have populated inflation values. This agrees with the previously recorded limitation that the new base-year series does not provide 2025 YoY inflation in the API extract.
+- The workbook itself does not contain publication timestamps or historical release-vintage identifiers. Its origin/retrieval metadata has not been established in this extraction. Treat it as a separate current-series snapshot for validation/cross-checking, not as an as-published 2025 vintage archive.
+- Do not join 2024-base 2025 observations into 2025 market decisions: the new series was first published in February 2026. Keep the 2012 and 2024 bases separate.
+
+### Extraction limitations and next work
+1. The monthly Excel workbooks identify the reference month and provisional/final status, but not the actual publication timestamp. Populate release dates/times from the corresponding official MoSPI press-release PDFs/archive before using CPI in a leakage-sensitive market backtest.
+2. The CSV currently includes YoY inflation for the Provisional current-month rows only; previous-month Final rows have blank inflation fields. Annex-VI/VII historical tables should be extracted separately and reconciled by vintage before creating a final macro feature table.
+3. Preserve source precision (the workbooks generally display one decimal for index levels and two decimals for inflation) and explicit missing values; do not infer unavailable observations.
+4. The 17-month revision comparison is restricted to July 2024–November 2025 because the December 2025 provisional has no January 2026 2012-base follow-up workbook in the supplied set.
