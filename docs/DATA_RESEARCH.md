@@ -439,3 +439,57 @@ Direct workbook comparison for October 2025 (All Groups / General Index):
 Thus, the aggregate combined index and inflation rate are unchanged at displayed precision, but the rural and urban general index values each increase by 0.2 and 0.5 respectively between provisional and final releases. This is important: comparing only the combined national headline would miss revisions/updates in its rural and urban components. Here, call these provisional-to-final updates, not post-final revisions. Do not infer unrounded equality from displayed rounded values.
 
 Both workbooks contain 7 sheets (Annex-I, Annex-II, Annex-III, Annex-IV, Annex-V, Annex-VI, Annex-VII). Excel files are preferable for systematic extraction versus manually parsing PDFs. The archive's monthly XLS links should be the primary retrieval path for building a historical release-vintage inventory. Preserve original files, filenames, retrieval date and release date; retain PDF release alongside each workbook when available.
+
+
+### CPI archive coverage, base transitions and first structured extract — 2026-11-13
+
+#### Archive coverage: what is established vs not yet counted
+- The MoSPI page is explicitly titled **“CPI Press Releases (Jan 2011 to Dec 2025)”**. At monthly frequency, that date span contains **180 possible reference months** (Jan 2011–Dec 2025 inclusive). The archive UI shows a paginated list of monthly release records and separate PDF/XLS actions.
+- **Important limitation:** the live archive page's machine-readable response did not expose a complete list/count of XLS links during this research run. Therefore 180 is the number of monthly slots implied by the advertised coverage, **not yet a verified count of successfully downloadable Excel files**. A complete per-month link audit is still required before claiming 180 files exist.
+- Official MoSPI metadata states that monthly releases include a PDF press release and an Excel annexure; it also says final indices for the penultimate month are released alongside provisional indices for the previous/current month. Sources: https://mospi.gov.in/sites/default/files/CPI/National_Metadata_Structure_for_CPI.pdf and https://mospi.gov.in/faq .
+- Official CPI warehouse page describes the historical coverage: old 2010-base series Jan 2011–Dec 2014; revised 2012-base series from Jan 2013 onward; and 2012-base back series Jan 2011–Dec 2012. Source: https://cpi.mospi.gov.in/ . The back series is retrospective and must not be mistaken for what was available to users in 2011–2012.
+
+#### Base-year regimes — do not concatenate raw index levels
+| Publication/reference period | Base | Treatment |
+|---|---|---|
+| Jan 2011–Dec 2014 contemporaneous old series | 2010=100 | Preserve as its own series/vintage |
+| Jan 2015–Dec 2025 contemporaneous revised series | 2012=100 | Preserve as a separate series |
+| Jan 2026 onward | 2024=100 | New series; separate series identifier |
+| Jan 2011–Dec 2012 2012-base back series | 2012=100 | Retrospective back series; not contemporaneously available in 2011–2012 |
+| Jan 2013–Dec 2024 2024-base back series | 2024=100 | Retrospective back series; not contemporaneously available before its publication |
+
+MoSPI FAQ confirms CPI began with base 2010=100 from January 2011 and changed to 2012=100 effective with January 2015; the first 2024-base release was January 2026. Sources: https://mospi.gov.in/faq and https://mospi.gov.in/sites/default/files/press_release/Press%20Release%20of%20CPI%20for%20January%202026.pdf (first 2024-base release; official PDF is also indexed at https://www.mospi.gov.in/uploads/latestreleasesfiles/1770893247472-Press%20Relase%20of%20CPI%20for%20Jan26.pdf).
+- Do not join the three index levels directly or apply an undocumented linking factor. If a continuous index is required, select a documented official linked/back series and retain its derivation and availability date. For model features, inflation rates may be more comparable but still require base/regime and methodology flags.
+
+#### First machine-readable extract from the supplied official November 2025 workbook
+The November 2025 workbook (release dated 12 Dec 2025) was parsed from Annexure VI and VII:
+- Annexure VI: **155 monthly combined General CPI index observations**, Jan 2013–Nov 2025 (2012=100).
+- Annexure VII: **141 non-missing monthly combined General CPI year-on-year inflation observations**, Jan 2014–Nov 2025. April and May 2020 are explicit dashes because inflation was not compiled during the COVID-19 interruption; they remain missing, not zero.
+- November 2025 is marked provisional in both series. October 2025 is final in this release.
+- This is one **latest-vintage snapshot as of the 12 Dec 2025 release**, not a point-in-time archive of each month’s original publication vintage. It is useful for a non-vintage historical series, but cannot alone support a leakage-safe backtest.
+
+#### Critical correction — October 2025 workbook comparison
+An earlier note in this document incorrectly compared September 2025 final values from the October workbook with October 2025 provisional values, and incorrectly described them as the October provisional-to-final change. The workbook column labels show:
+- October 2025 release (12 Nov 2025): September final → October provisional. General CPI index: Rural **198.8 → 199.0**, Urban **194.9 → 195.4**, Combined **197.0 → 197.3**.
+- November 2025 release (12 Dec 2025): October final → November provisional. General CPI index: Rural **199.0 → 199.6**, Urban **195.4 → 195.9**, Combined **197.3 → 197.9**.
+Therefore the actual October 2025 provisional-to-final comparison is:
+| Sector | 12 Nov 2025 October provisional | 12 Dec 2025 October final | Difference |
+|---|---:|---:|---:|
+| Rural | 199.0 | 199.0 | 0.0 |
+| Urban | 195.4 | 195.4 | 0.0 |
+| Combined | 197.3 | 197.3 | 0.0 |
+The combined year-on-year inflation rate is 0.25% in both releases at published precision. The earlier claimed rural/urban differences (198.8→199.0 and 194.9→195.4) were a month-alignment error and must not be used.
+- The workbook Annexure VI/VII historical time series in the November 2025 workbook ends at Nov 2025; it is not an all-history vintage database.
+- Source files supplied by user: `Annexures for Press Release in Excel October 2025.xlsx` and `Annexures for Press Release in Excel November 2025.xlsx`. Matching release PDFs are dated 12 Nov and 12 Dec 2025 respectively.
+
+#### Release timing and vintage schedule caveats
+- Do not hardcode “12th at 5:30 PM” for every historical release. Current MoSPI FAQ describes a regular 12th-day/next-working-day schedule and 5:30 PM, but actual inspected release PDFs include 4:00 PM releases (e.g. 12 Nov and 12 Dec 2025). Use each PDF's explicit date and embargo/publication time.
+- The earliest 2011 releases used a different provisional revision convention: the official February 2011 release says January 2011 provisional indices had been released on 18 Feb 2011 and “would be revised with a time lag of two months”; it gives 18 Mar 2011 as the next release date. Source: https://mospi.gov.in/sites/default/files/press_release/t4_18mar11.pdf . Therefore the later “final previous month + provisional current month” schedule must not be assumed to describe all 2011 releases.
+- The archive inventory must store the reference month separately from the release date and record the actual status/revision language in each document. Do not automatically infer that every next-month publication finalises the previous month across all eras.
+
+#### Remaining work to reach a complete vintage dataset
+1. Obtain a machine-readable inventory of every monthly archive row and its XLS/PDF URLs; verify actual link count (expected 180 slots, not yet proven 180 files).
+2. Download and parse each Excel annexure, accommodating different sheet names/layouts across 2011–2014 (2010 base), 2015–2025 (2012 base), and 2026 onward (2024 base).
+3. Parse each paired PDF to capture exact release date/time and provisional/final/revision status, including the early 2011 two-month revision rule.
+4. Compare each reference month across successive releases and retain immutable observation-vintage records.
+5. Only then create the final point-in-time macro feature table; do not treat the Dec 2025 historical snapshot as vintage-safe.
