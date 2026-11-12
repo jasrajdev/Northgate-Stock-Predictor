@@ -50,3 +50,30 @@ See `docs/RESEARCH_PAPER_REVIEW.md` for the paper-specific notes and limitations
 
 ## Current recommendation
 Proceed with macro/market data and timestamped news/sentiment collection. Before merging, verify source coverage, licensing/usage terms, historical availability and timestamps. Treat revised macro releases and after-close news as available only from their actual publication time. Compare sentiment features incrementally against a price/volume-only baseline on identical chronological dates. The exact multi-day forecast horizons remain open.
+
+
+## Macro and news source research — 2026-11-13
+These are research candidates, not final provider decisions. Coverage, terms, revision history and reproducible access still require a local pilot.
+
+### Indian macroeconomic and market-context candidates
+- **MOSPI eSankhyiki CPI API** — official CPI/inflation endpoint. The published API description covers CPI base years 2010, 2012 and 2024; it is described as open, with bearer token optional and per-IP rate limits. Endpoint documented as `/api/cpi/getCPIData`. Need inspect the OpenAPI schema and test pagination, date coverage, base-year breaks and release dates before use. Source: https://esankhyiki.mospi.gov.in/macroindicators?product=cpi&tab=api
+- **MOSPI eSankhyiki IIP API** — official industrial-production endpoint documented as `/api/iip/getIIPData`. Parameters, historical depth, revisions and release timestamps remain to be verified. Source: https://esankhyiki.mospi.gov.in/macroindicators?product=iip&tab=api
+- **RBI Database on Indian Economy (DBIE)** — official historical repository; RBI says it contains time-series data and publications across national income, prices, money, banking, markets, public finances and foreign trade. DBIE is at https://data.rbi.org.in/. RBI's Data Releases page also exposes daily, weekly, monthly, quarterly and annual releases: https://www.rbi.org.in/scriptS/Statistics.aspx. Export format, automation, historical depth and actual release timestamps must be tested series by series.
+- **NSE India VIX historical page** — NSE exposes a custom-period historical page with CSV download. A web snapshot displayed no records, so availability and automated retrieval are not yet verified. Source: https://www.nseindia.com/reports-indices-historical-vix
+- **NIFTY Indices historical data** — official portal exposes historical index values and a separate Total Returns Index/Net Total Returns Index report. This is worth investigating for benchmark TRI rather than relying only on the downloaded NIFTY price index. Source: https://www.niftyindices.com/reports/historical-data
+
+### News and event candidates
+- **GDELT 2.0** — strongest no-key research candidate so far. Official project documentation describes 15-minute updates and a historical archive beginning in February 2015; the GKG provides article-level entities/themes/tone and a publication timestamp, while event data has a separate DATEADDED field that should be used as the time GDELT first observed the item. The archive is very large (the 2015 GKG alone has been reported at multi-terabyte scale); do not attempt a full archive download. Start with a small date/ticker pilot and test whether relevant Indian company stories are captured. Preserve original publication time, GDELT first-seen time, URL, language/translation status, source and duplicate/story identifiers. Sources: https://blog.gdeltproject.org/gdelt-2-0-our-global-world-in-realtime/ ; https://data.gdeltproject.org/documentation/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf ; https://data.gdeltproject.org/documentation/GDELT-Event_Codebook-V2.0.pdf
+- **NewsAPI.org free Developer plan** — unsuitable as the main historical backfill: its official pricing page says search is limited to articles up to one month old, has a 24-hour delay and 100 requests/day; use is limited to development/testing. Source: https://newsapi.org/pricing
+- **Alpha Vantage News & Sentiment** — API documentation describes historical news/sentiment queries, but explicitly marks the NEWS_SENTIMENT endpoint as premium. Not a zero-budget default. Source: https://www.alphavantage.co/documentation/
+- **NewsAPI.ai** — free allowance is a finite 2,000 searches; historical archive access is a paid-tier feature according to its pricing page. Not selected for the full backfill. Source: https://newsapi.ai/plans
+
+### Point-in-time rules for every macro/news feature
+1. Store at least `observation_period`, `published_at` or `released_at`, `first_seen_at` (where supplied), `retrieved_at`, `source`, and `revision/version` where available.
+2. Never join a macro observation to dates before its actual public release. The month/quarter being measured is not its availability date. If historical release timestamps or vintage values cannot be recovered, either lag conservatively and disclose the limitation, or exclude the series from leakage-sensitive backtests.
+3. For news, use the earliest defensible public publication timestamp; where the data provider only supplies a crawl/first-seen time, use that as a conservative availability timestamp. Convert timestamps consistently to Asia/Kolkata and map after-market-close items to the next eligible NSE session.
+4. Deduplicate syndicated/repeated stories before calculating daily article counts or sentiment. Keep article-level raw records separate from derived daily ticker features.
+5. Evaluate price/volume-only and price/volume-plus-context models on the same dates. Do not assume sentiment adds predictive value.
+
+### Current research recommendation (not yet a user-approved decision)
+Pilot MOSPI CPI, one RBI series, NSE India VIX, and a small GDELT company-news sample before bulk collection. Do not download the complete GDELT archive. If the pilot cannot establish reliable point-in-time timestamps and relevant coverage, report the limitation rather than manufacture a 10-year sentiment history.
