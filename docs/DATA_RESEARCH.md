@@ -208,3 +208,26 @@ Point-in-time dataset decision proposal (not yet user-approved):
 - Store reference_month, base_year, release_date, release_time_local, timestamp_precision/source (exact vs date-only vs estimated), provisional/final, value, source_url, retrieved_at, and source-vintage notes.
 - For modelling, join a value only after its known publication timestamp. If exact time is missing, use next eligible NSE session rather than same-day market use.
 - Keep each published vintage/version where obtainable. Do not overwrite earlier provisional values with later final values in the research archive.
+
+### Three-release primary-source timestamp pilot — 2026-11-13
+
+The three proposed sample releases have now been checked against the original MoSPI press-release PDFs:
+
+| Reference month | Official document date | Embargo / publication time | Evidence |
+|---|---|---|---|
+| January 2015 (2012-base) | 12 Feb 2015 | 17:30 IST | https://mospi.gov.in/sites/default/files/press_release/cpi_pr_12feb15t.pdf |
+| January 2017 (2012-base) | 13 Feb 2017 | 17:30 IST | https://mospi.gov.in/sites/default/files/press_release/CPI_PR_13feb17m.pdf |
+| December 2025 (2012-base) | 12 Jan 2026 | 16:00 IST | https://www.cpi.mospi.gov.in/PDFile/Press/PR%20December%202025.pdf |
+
+Observed details:
+- January 2015 release explicitly says it is embargoed until 5:30 PM on 12 Feb 2015; it labels January 2015 provisional and December 2014 final. It gives next release date 12 Mar 2015.
+- January 2017 release explicitly says it is embargoed until 5:30 PM on 13 Feb 2017; it labels January 2017 provisional and December 2016 final. It gives next release date 14 Mar 2017. This is a concrete example of the actual release date moving beyond the nominal 12th.
+- December 2025 release explicitly says embargoed until 4:00 PM on 12 Jan 2026; December 2025 is provisional and November 2025 final. It identifies itself as the last CPI release on base 2012=100.
+- These examples establish that the release time changed over time and that reference-month and finalisation status must be stored separately. They do not establish the timestamp for every intervening month.
+- A 4:00 PM or 5:30 PM publication is after the NSE regular cash-market close. For a daily model using close-timestamped observations, conservatively make the new CPI value usable from the next eligible NSE trading session, not the release-date close.
+- MoSPI's NMDS says the monthly annexure Excel is published with the press release and that the CPI warehouse offers downloadable Excel time-series data. This pilot used the PDF press releases only; warehouse Excel download and automated extraction remain untested. Source: https://nmds.mospi.gov.in/
+
+Implementation status:
+- Three exact historical date/time examples are verified from original official PDFs.
+- Do not extrapolate the 17:30 or 16:00 times across the entire archive. For every monthly record, capture the PDF's explicit embargo time when present; if absent, retain date-only/unknown time and use next-session availability conservatively.
+- Next pilot should validate a date-only or exceptional holiday case and inspect whether the warehouse's historical Excel table contains observation values only or any release/vintage metadata.
