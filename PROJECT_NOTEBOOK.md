@@ -51,3 +51,12 @@ Use the original PRD for exact acceptance wording. Do not silently remove requir
 - A next-session supervised dataset builder has been added to GitHub and run successfully by the user. Terminal output reports 29,473 labelled rows across 11 instruments, with one final unlabeled row removed per ticker. Checks report zero duplicate ticker/date keys, all target dates later than feature dates, zero missing target values, and zero non-positive target adjusted closes. Local CSV and JSON report paths were printed by the script; the files were not independently inspected in this session.
 - No model has been trained; no backtest, dashboard, or measured performance result has been verified. The next preparation work is macro/market data and timestamped news/sentiment, followed by time-aligned dataset merging and chronological splits.
 - Next data families required by the PRD: macro/market indicators and timestamped financial news/sentiment. Multi-day target horizons remain unspecified in the PRD and need an explicit choice.
+
+
+## Chronological evaluation split — agreed 2026-11-13
+For the first next-session forecasting dataset, use target-date-based chronological partitions:
+- Training: target dates through 2023-12-31.
+- Validation: target dates after 2023-12-31 and before the final six-calendar-month test cutoff.
+- Final test: target dates in the last six calendar months of available labelled data. Calculate the cutoff from the latest target date rather than hard-coding it.
+
+The currently reported latest target date is 2026-11-09, so the calendar cutoff is 2026-05-09; the first observed test target session should be the next eligible trading session. Assign by target date (not only feature date) because that is when the prediction outcome becomes known. Keep test results untouched until model choices are frozen. Fit all learned preprocessing on training data only. Exclude every `target_*` column from model inputs. This protocol covers the existing one-session target only; multi-day horizons and their purge/embargo rules remain open.
