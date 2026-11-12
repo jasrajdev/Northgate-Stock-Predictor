@@ -87,3 +87,12 @@ Prepare the PRD's macro/market context data and timestamped financial news/senti
 
 ## Timeline risk
 The recorded deadline is 15 November 2026. The complete PRD scope may not be achievable to its intended standard in the remaining time. Preserve methodological correctness; if prioritisation is necessary, document the proposed scope change and get approval rather than pretending incomplete work is complete.
+
+
+## Chronological split protocol agreed (2026-11-13)
+For the existing one-session-ahead target, the working split is:
+- Training outcomes through 2023-12-31.
+- Validation outcomes after 2023-12-31 and before the final six-calendar-month test cutoff.
+- Final six calendar months of labelled data reserved as the untouched test window.
+
+The cutoff is computed from the latest `target_date_t1` in the dataset. Rows are assigned by target date, because that is when the forecast outcome becomes known. The script `scripts/create_chronological_splits.py` writes the three partitions and a quality report. Do not fit scalers, imputers, or feature selectors on validation/test data; do not use any `target_*` column as an input. The current script handles the one-session target only. Multi-session horizons require an explicit decision and review of overlapping-label purge/embargo requirements.
