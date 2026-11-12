@@ -1,0 +1,19 @@
+release_workbook_month,reference_month,base_year,actual_release_date,embargo_time_ist,timestamp_status,next_nse_session,source_url,notes
+2024-07,2024-07,2012,2024-08-12,17:30,verified_pdf,2024-08-13,https://www.cpi.mospi.gov.in/PDFile/Press/PR%20July%202024.pdf,
+2024-08,2024-08,2012,2024-09-12,17:30,verified_pdf,2024-09-13,https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR_12sep24.pdf,
+2024-09,2024-09,2012,2024-10-14,17:30,verified_pdf,2024-10-15,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_14oct24.pdf,Actual date differs from nominal 12th because release calendar allowed 14 Oct.
+2024-10,2024-10,2012,2024-11-12,16:00,verified_pdf,2024-11-13,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12nov24.pdf,
+2024-11,2024-11,2012,2024-12-12,16:00,verified_pdf,2024-12-13,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12dec24.pdf,
+2024-12,2024-12,2012,2025-01-13,16:00,verified_pdf,2025-01-14,https://www.cpi.mospi.gov.in/PDFile/Press/PR%20December%202024.pdf,
+2025-01,2025-01,2012,2025-02-12,16:00,verified_pdf,2025-02-13,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12Feb25.pdf,
+2025-02,2025-02,2012,2025-03-12,16:00,verified_pdf,2025-03-13,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12Mar25.pdf,
+2025-03,2025-03,2012,2025-04-15,16:00,verified_pdf,2025-04-16,https://www.cpi.mospi.gov.in/PDFile/Press/PR%20March%202025.pdf,"Actual date is 15 Apr, not the expected 14 Apr."
+2025-04,2025-04,2012,,,scheduled_only,,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_15Apr25.pdf,Previous release says next CPI (April reference month) was scheduled for 12 May 2025; direct April PDF not yet verified.
+2025-05,2025-05,2012,2025-06-12,16:00,verified_pdf,2025-06-13,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12Jun25.pdf,
+2025-06,2025-06,2012,2025-07-14,16:00,verified_pdf,2025-07-15,https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR_14Jun25.pdf,
+2025-07,2025-07,2012,2025-08-12,16:00,verified_pdf,2025-08-13,https://www.cpi.mospi.gov.in/PDFile/Press/PR%20July%202025.pdf,
+2025-08,2025-08,2012,2025-09-12,16:00,verified_pdf,2025-09-15,https://www.cpi.mospi.gov.in/PDFile/Press/PR%20August%202025.pdf,
+2025-09,2025-09,2012,2025-10-13,16:00,verified_pdf,2025-10-14,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_13oct25.pdf,
+2025-10,2025-10,2012,2025-11-12,16:00,verified_pdf,2025-11-13,https://mospi.gov.in/sites/default/files/press_release/CPI_PR_12nov25.pdf,
+2025-11,2025-11,2012,2025-12-12,16:00,verified_pdf,2025-12-15,https://www.mospi.gov.in/uploads/latestreleasesfiles/1765535702131-Press%20Release_CPI_November_2025.pdf,
+2025-12,2025-12,2012,2026-01-12,16:00,verified_pdf,2026-01-13,https://mospi.gov.in/uploads/release_calendar/1768214980837_Press_Release_of_CPI_for_December_2025.pdf,Last CPI release on base 2012=100.
