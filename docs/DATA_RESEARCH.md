@@ -526,3 +526,18 @@ This proves PDF-only entries can support at least the headline general CPI vinta
 - Full month-by-month extracted vintage table and per-month exact publication timestamps are NOT yet built. Release dates/times must be parsed from each PDF, not imputed from a fixed monthly rule. The older MoSPI FAQ says 12th at 5:30 PM subject to next working day; the newer 2025/2026 releases use 4:00 PM, so hardcoding one time across the full history would be wrong.
 
 **Extraction method proposed:** for each release PDF/XLS, extract the current reference month provisional General CPI index (rural, urban, combined) and inflation, plus the prior month final values, source release date/time, base year, file URL and extraction confidence. Cross-check each reference month's provisional value in release t against its final value in release t+1. Keep 2010=100 and 2012=100 histories in separate series. Retain raw PDF/XLS and a provenance log; flag OCR/manual corrections for review.
+
+
+### PDF-only vintage extraction pilot — 2014 and 2016 — 2026-11-13
+Two PDF-only historical month pairs were parsed directly from the official MoSPI PDFs, confirming the older archive is usable for headline General CPI vintages even without XLS files.
+
+| Reference month | First release provisional (Rural / Urban / Combined index) | Following release final (Rural / Urban / Combined index) | First release inflation (R/U/C) | Following release final inflation (R/U/C) |
+|---|---|---|---|---|
+| Jan 2014 (base 2010) | 139.3 / 135.0 / 137.4 | 139.2 / 135.0 / 137.4 | 9.43 / 8.09 / 8.79% | 9.35 / 8.09 / 8.79% |
+| Dec 2016 (base 2012) | 132.8 / 127.6 / 130.4 | 132.8 / 127.6 / 130.4 | 3.83 / 2.90 / 3.41% | 3.83 / 2.90 / 3.41% |
+
+Jan 2014 evidence: 12 Feb 2014 PDF gives Jan provisional index and inflation (https://www.mospi.gov.in/sites/default/files/press_release/t4_12feb14.pdf); 12 Mar 2014 PDF gives Jan final index in Annex I and Jan final inflation in the press note (https://www.mospi.gov.in/sites/default/files/press_release/t4_12mar14.pdf). At displayed precision, only the rural index and rural inflation change (each down 0.1 index point / 0.08 percentage point); urban and combined are unchanged.
+
+Dec 2016 evidence: 12 Jan 2017 PDF gives Dec provisional index and inflation (https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR12jan17th.pdf); 13 Feb 2017 PDF gives Dec final index and inflation (https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR_13feb17m.pdf). No displayed change in rural, urban, combined index or inflation.
+
+These examples are extraction pilots only, not a complete vintage dataset or a statistically representative sample. PDF text extraction exposes the key headline tables for these periods; automated extraction across the full 180-PDF archive remains unimplemented and needs validation against page/table layout changes.
