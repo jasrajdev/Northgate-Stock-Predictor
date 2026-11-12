@@ -307,3 +307,20 @@ A further same-month comparison was checked using the original October 2020 rele
 - This is a no-visible-change result for the published combined inflation rate (two decimal places). The final combined index value was not independently extracted from the November 2020 press-release annexure in this check, so no claim is made that the index itself was unchanged.
 - Evidence set now contains two months with visible published changes (September 2018 and September 2020? Correction: the September 2020 release pair has not yet been checked through its final release here; only October 2020 inflation is a no-visible-change example) and two no-visible-change examples (November 2025 and October 2020 combined inflation). The September 2018 pair is the only confirmed visible revision in the tested examples.
 - These are purposively selected examples, not a random or representative sample. They cannot estimate the frequency, average size, or distribution of revisions.
+
+
+### CPI September 2020 COVID-period provisional-to-final comparison — 2026-11-13
+
+The September 2020 vintage comparison is now verified from two consecutive official MoSPI releases:
+
+| All India CPI General, Combined (2012=100) | First release: Sep 2020 provisional (12 Oct 2020, 17:30 IST) | Next release: Sep 2020 final (12 Nov 2020, 17:30 IST) |
+|---|---:|---:|
+| Combined index | 156.5 | 156.4 |
+| Combined year-on-year inflation | 7.34% | 7.27% |
+
+- The 12 Oct 2020 release identifies September 2020 as provisional. It reports combined CPI General index 156.5 and combined year-on-year inflation 7.34%. It also reports that prices were collected from 98.0% of villages and 97.8% of urban markets, while prices were reported for 83.0% of rural and 87.9% of urban markets. Source: https://www.mospi.gov.in/sites/default/files/press_release/Press%20Statementsept20.pdf.
+- The 12 Nov 2020 release identifies September 2020 as final. Its comparison table reports September combined CPI General index 156.4 and combined year-on-year inflation 7.27%. Source: https://mospi.gov.in/uploads/documents/CPI/Press/PR%20October%202020.pdf.
+- At published precision, the combined index was revised downward by 0.1 point and year-on-year inflation by 0.07 percentage points. This is a confirmed visible revision during the COVID-affected period.
+- The provisional release's reported price coverage is a relevant data-quality caveat, but the release does not establish that lower reporting coverage caused the revision. Do not infer causation.
+- Point-in-time rule: September provisional values became public at 17:30 IST on 12 Oct 2020; final values became public at 17:30 IST on 12 Nov 2020. A close-based daily model must not use the final vintage before the next eligible NSE session after the latter timestamp.
+- This comparison is one further purposively selected example, not a representative sample or estimate of typical revision size/frequency.
