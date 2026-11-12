@@ -185,3 +185,11 @@ Append concise dated entries here after meaningful, verified progress:
 - The script assigns rows by `target_date_t1`, derives the cutoff from the latest target date, creates three CSV partitions and a JSON report, and checks ordering, duplicate keys, and target-column exclusion.
 - Current reported latest target date: 2026-11-09; expected calendar cutoff: 2026-05-09. Actual first test trading date and row counts are pending local execution.
 - No training or model evaluation has been performed.
+
+
+#### Local execution verification — 2026-11-13
+- User ran `python scripts/create_chronological_splits.py` and confirmed 29,473 input rows were partitioned into 21,708 training, 6,379 validation, and 1,386 final-test rows.
+- Each partition contains 11 tickers and 39 columns. Target-date ranges: train 2016-01-04–2023-12-29; validation 2024-01-01–2026-05-08; test 2026-05-11–2026-11-09.
+- All six script checks passed. User inspected each CSV and confirmed shapes, target columns, date ranges, and existence of the local JSON report.
+- Feature-date ranges intentionally meet/overlap at boundaries because rows are assigned by target date. The validation row with target 2024-01-01 has feature date 2023-12-29; the test row with target 2026-05-11 has feature date 2026-05-08. This is the correct one-session forecasting convention.
+- Generated split CSVs and JSON report are local outputs; they have not been committed to GitHub. No model training has occurred.
