@@ -300,3 +300,11 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Found the latest official PLFS quarterly bulletin: July–September 2026, published 10 November 2026. It reports LFPR, WPR, UR and worker distributions under CWS for rural, urban and combined areas. April–June 2025 was the first quarterly bulletin extending estimates to rural and urban India; earlier quarterly bulletins covered urban areas only.
 - Corrected the project wording: September 2026 is not a “monthly bulletin”; it is the reference end month of the monthly API coverage and also the end month of the latest quarterly bulletin. No PLFS data has yet been retrieved or merged.
 - Next PLFS step: execute the official MCP sequence (list_datasets → get_indicators → get_metadata → get_data), then retain monthly and quarterly records as separate products and validate release/publication dates before any time-series merge.
+
+
+## 2026-11-13 — Victus model-training handoff prepared
+- Added `docs/MODEL_TRAINING_GUIDE.md`, linked from the README. It explains which repository files to read, confirms no PDF is required as a training input, describes the price/volume-only first dataset, target and chronological partitions, model sequence, commands, outputs, metrics and limitations.
+- Existing `docs/GPU_LAPTOP_SETUP.md` remains the exact Windows/PowerShell setup for the HP Victus. It records the RTX 3050 Laptop GPU (4 GiB VRAM) and conservative PyTorch/CUDA setup. The model scripts rebuild market data locally; CSV datasets are not stored in GitHub.
+- Updated `scripts/train_baseline_models.py` to report the PRD's full regression metrics: MAE, RMSE, MAPE, R² and directional accuracy, including the naive baseline. This is a code change only; it has not yet been executed or tested on the Victus.
+- No model has been trained and no performance result is claimed. The final six-month test partition remains unopened by both training scripts.
+- User's next machine-side step is to follow the GPU setup guide, run the data rebuild and share the data-quality report before beginning model training.
