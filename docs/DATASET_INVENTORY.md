@@ -89,3 +89,10 @@ These outputs were generated from the conversation's supplied workbooks and are 
 - This is an acquisition scaffold only; it has not yet been executed in this session. Yahoo Finance is secondary-vendor data. NSE provides official historical India VIX downloads and describes India VIX as the options-implied expected volatility over the next 30 calendar days. Prefer validating the downloaded series against NSE before model use.
 - RBI DBIE's Key Rates table provides historical policy-rate event data (repo, reverse repo, SDF, MSF, bank rate and CRR, among others) with downloadable CSV/JSON; it is the preferred source for Indian policy rates. The RBI policy-rate history is irregular/event-based, so it must be converted to a daily effective-rate panel using forward-fill only after each effective date.
 - No macro/context data has been merged into the stock modelling dataset yet.
+
+
+### CPI cross-validation result (2026-11-13)
+- Compared the latest supplied Annex-I Combined index values against the December 2025 workbook's Annex-VI full time-series values for all 19 overlapping reference months (June 2024–December 2025): 19/19 exact matches; maximum absolute difference 0.0.
+- Annex-VI/Annex-VII base-2012 Combined history contains 156 monthly index values from January 2013–December 2025. Fourteen YoY inflation values are missing: all 12 months of 2013 (no prior-year comparison in the sheet) and April–May 2020.
+- The base-2024 current workbook contains 66 headline rows from January 2025–October 2026; 36 YoY inflation values are missing in the supplied workbook rows.
+- The committed extractor now reports missingness and the Annex-I vs Annex-VI overlap check in its QA JSON.
