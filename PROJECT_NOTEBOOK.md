@@ -158,3 +158,15 @@ NSE's Data for Research page, updated 04-Nov-2026, offers an official applicatio
 SEBI Circular 2024/178 provides a two-basket data-sharing framework. NSE's published Basket 1 list includes daily security-wise OHLC/turnover, Bhavcopy archives, historical index data, FII/FPI/DII activity, financial results, shareholding, corporate announcements and corporate actions. Up to 2 GB per researcher/year is the reasonable free amount where no extra computation is required; high-volume or processed data may be charged. NSE classifies voluminous historical EOD/Bhavcopy and corporate data as chargeable above 2 GB. Basket 2 includes identifiable/re-identifiable client data and is unnecessary for this project.
 
 The older NSE Data Sharing & Usage Policy definition mentions students/researchers among non-commercial users, but the current Data for Research disclaimer sets an institutional eligibility condition. Do not assume individual student eligibility. Written confirmation is needed. No request was sent, no eligibility or licence was confirmed, and no data was received. This is an official-source candidate, not a verified dataset.
+
+
+## Official historical-data page audit (2026-11-14)
+Official NSE pages expose several potentially useful manual CSV routes:
+- Security-wise Archives: per-symbol/series date filters, up to 5Y preset plus Custom, with OHLC, VWAP, traded quantity, turnover, trades, deliverable quantity and delivery percentage.
+- Corporate Actions: company/purpose/date filters and CSV, including ex-date, record date and book-closure dates. Ex-date does not reveal when an announcement first became public.
+- NIFTY Indices Historical Data: date-range selection and CSV, including separate Total Returns Index and Net Total Return Index values. This is a candidate official benchmark series.
+- India VIX: date-range presets and Custom with CSV.
+- FII/FPI and DII: separate NSE-only and combined-exchange CSV downloads; aggregate market context only, not stock-level flows.
+- Historical All Reports: date-filtered CM UDiFF ZIP and related Bhavcopy/delivery reports; old CM CSV formats discontinued from 08-Jul-2024.
+
+These pages demonstrate that official UI routes exist, but not that every date/symbol is covered, that a full 2016–2026 history is freely downloadable, or that scripted retrieval is permitted. No files were downloaded or validated. Use manual UI or approved research access; do not reverse-engineer protected endpoints.
