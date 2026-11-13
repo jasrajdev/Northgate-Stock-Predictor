@@ -382,3 +382,8 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Opened official MoSPI July–September 2026 quarterly bulletin (published 10-Nov). Age 15+ CWS combined LFPR 55.5%, WPR 52.7%, UR 5.1%; rural/urban splits are recorded in DATA_RESEARCH.md.
 - Same bulletin gives five quarters of combined UR from 5.2% (Jul-Sep 2025) to 5.1% (Jul-Sep 2026). Sample size 11,229 FSUs / 133,570 households / 555,593 persons; combined UR RSE 1.72%.
 - These are actual quarterly bulletin values, not monthly API rows. Monthly API observations remain unacquired; October monthly bulletin is scheduled for 15-Nov-2026.
+
+### Corporate actions, trading calendar and survivorship research — 2026-11-14
+- NSE Corporate Actions page has CSV export and ex-date/record-date/book-closure fields; investor-relations archive shows announcement date and attachment links back to 2012. No export acquired.
+- NSE official holiday calendar includes special Muhurat Sunday sessions; calendar must flag special sessions and use observed trading dates.
+- Found NSEDATA4ME (2005+ EOD, delisted stocks, 232 indices, breadth) and two community reconstructions of historical NSE index membership. All are candidates; licences/source rights/QA not yet established. No files downloaded.
