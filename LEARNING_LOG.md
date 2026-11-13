@@ -21,3 +21,11 @@
 - A first overlap check compared 281 repeated month/series keys across available workbook snapshots and found no differences at stored precision. This is a limited consistency check, not evidence that revisions never occur.
 - The next engineering step is a tidy parser with release timestamp/vintage metadata and cross-checks against each workbook's provisional/final headline table. No normalized dataset has been generated yet.
 
+## CPI parser implementation pilot — 2026-11-13
+
+- Added a reusable parser that detects cumulative CPI index and YoY tables by title, reshapes year/month cells into tidy monthly records, and preserves both the release reference month (vintage) and observation month.
+- Tested against 18 uploaded workbooks: 3,948 records across 14 cumulative vintages; 2,078 index and 1,870 inflation records.
+- Checks passed for unique vintage/observation/series keys and no future observation months relative to the release reference month.
+- Exact publication timestamps remain blank rather than guessed. The pilot CSV is temporary and not yet a modelling input.
+- Next: test the parser automatically, reconcile headline provisional/final values to cumulative endpoints, and attach verified publication timestamps before session alignment.
+
