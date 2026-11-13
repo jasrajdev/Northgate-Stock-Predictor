@@ -550,3 +550,12 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Observed close changes are not corporate-action-adjusted returns. F&O rights formula reference calculations are recorded separately and explicitly not applied to cash prices.
 - Corrected earlier provisional Yahoo interpretation: doubling Yahoo's 2020 RELIANCE Close is not a valid raw-price reconstruction because multiple corporate actions, including the 2023 Jio Financial demerger, may affect historical vendor series.
 - Next: inspect local market-panel rows and forward labels around these dates. No prices or labels modified; no model training.
+
+
+### 2026-11-14 — Yahoo raw-download versus processed-panel comparison
+- User inspected the two original Yahoo CSVs under `data/raw/yahoo/` and compared them with `data/processed/market_panel.csv` for BHARTIARTL.NS on 2019-04-23 and RELIANCE.NS on 2020-05-13.
+- Original raw CSV and processed panel values match exactly for both rows. This verifies that the panel-building step preserved the values returned by Yahoo; it did not create the observed price-scale discrepancies.
+- The Yahoo-supplied `Close` still differs materially from the user's verified NSE EQ Bhavcopy close: BHARTIARTL 2019-04-23, ₹310.667236 vs ₹316.50; RELIANCE 2020-05-13, ₹690.611450 vs ₹1,496.45. The RELIANCE historical scale is consistent with retrospective corporate-action adjustment, but the exact vendor methodology across its bonus and demerger history has not been reconstructed. BHARTIARTL's difference also remains unexplained.
+- Ingestion script review found `auto_adjust=False`, `actions=True`, and no explicit OHLC price rescaling in the script. Installed yfinance version reported by the user: 1.8.0.
+- Conclusion is limited: our processed-panel copy is faithful to the raw Yahoo CSV for these two rows; Yahoo's supplied historical OHLC basis is not interchangeable with the official unadjusted NSE Bhavcopy values. Do not describe the panel `Close` as raw exchange close without further validation.
+- No raw files, prices, labels, or model code were modified. Model training remains paused pending a defined price-basis and corporate-action treatment.
