@@ -83,7 +83,7 @@ def evaluate(y,pred,current):
       "directional_accuracy":float(np.mean(np.sign(y)==np.sign(pred))),
     }
 
-def train_one(name,model,train_data,val_data,device):
+def train_one(name,model,train_data,val_data,device,preprocess):
     X,y,_,_=train_data; Xv,yv,pv,_=val_data
     loader=DataLoader(TensorDataset(torch.from_numpy(X),torch.from_numpy(y)),
                       batch_size=BATCH,shuffle=True,pin_memory=device.type=="cuda")
@@ -110,7 +110,7 @@ def train_one(name,model,train_data,val_data,device):
     model.load_state_dict(best_state); model.eval()
     with torch.no_grad(): pred=model(xv).cpu().numpy()
     torch.save({"state_dict":best_state,"model":name,"feature_count":X.shape[2],
-                "sequence_length":SEQ,"ticker_map":ticker_map_global},
+                "sequence_length":SEQ,"ticker_map":ticker_map_global,\n                "preprocessing":preprocess},
                OUT/f"{name.lower()}_best.pt")
     return evaluate(yv,pred,pv),history
 
@@ -148,7 +148,7 @@ def main():
     }
     for name,build in constructors.items():
         model=build(tr[0].shape[2])
-        metrics,history=train_one(name,model,tr,va,device)
+        preprocess={"feature_columns":features,"medians":med.to_dict(),\n                    "means":means.to_dict(),"stds":stds.to_dict()}\n        metrics,history=train_one(name,model,tr,va,device,preprocess)
         results.append({"model":name,"device":str(device),**metrics})
         histories[name]=history
         print(name,metrics)
