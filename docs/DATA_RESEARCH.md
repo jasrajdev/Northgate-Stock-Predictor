@@ -1118,3 +1118,41 @@ This is a manual extraction of a published bulletin. No raw MCP API response has
 
 ### Implication for Northgate's macro feature table
 The PRD lists DGS3MO, DGS10, CPIAUCSL, UNRATE and VIX as examples. For an India-first model, keep PRD-specified US series where required but separately evaluate Indian equivalents: RBI policy repo/short-term money-market rate, India 10Y government yield, MoSPI CPI, PLFS unemployment, India VIX, and USD/INR. Do not silently replace US features with India equivalents; document both and compare ablations. Low-frequency series must be released-time aligned and should not be interpolated into fictional daily observations.
+
+## 2026-11-14 — Financial-news corpus search expanded
+
+### GDELT GKG 2.1: strongest open historical metadata candidate
+- GDELT's official data portal offers raw Event and Global Knowledge Graph (GKG) files. The GKG 2.1 codebook describes document-level rows with a globally unique record ID whose first portion encodes the 15-minute processing batch timestamp, a separate document publication timestamp (V2.1DATE), source URL, extracted people/organizations/locations/themes, and GCAM emotional/theme scores. GKG 2.1 has one row per document rather than grouping articles with identical extracted metadata.
+- This is materially more useful than DOC API search for historical features: GKG 2.1 has a long-running downloadable archive (since Feb 2015), can support company/entity-specific article counts and broad tone/theme aggregates without storing full article text, and preserves a processing/publication time distinction. However, article coverage is global and noisy; company alias resolution, source relevance, duplicates, language/translation, and exact article timestamps must be tested. Publication time may be missing/zero for some special collections.
+- Scale warning: GDELT says the 2015 GKG alone requires more than 2.5 TB. A full local mirror is inappropriate for Northgate. Better route: use bounded GDELT BigQuery queries (public dataset; check the current 1 TB/month free query allowance and cloud billing safeguards), or filter daily files to Indian financial/business domains and relevant company aliases before retaining compact event rows. Query-cost and data-retention controls are essential.
+- GDELT DOC API remains a rolling full-text search tool (three-month search horizon), not a substitute for the historical GKG archive.
+- Sources: https://www.gdeltproject.org/data.html ; https://data.gdeltproject.org/documentation/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf ; https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/
+
+### India-focused news datasets: candidates and limits
+- **IN-FINews (Zenodo)**: 3,348 English Indian e-news articles, early Feb–late Aug 2025, across auto, banking, healthcare, IT and other sectors. Suitable for a sentiment-model smoke test/domain vocabulary review; far too short for 8–10 years of historical features. Licence/individual article provenance should be checked before training.
+- **Financial News Headlines (Mendeley, CC BY 4.0)**: 18k labelled headlines, published Aug 2024, extracted from Financial Express market pages with positive/negative/neutral labels. It is a labelled sentiment corpus, not a demonstrated 8–10-year timestamped company-news feed. Reuse the labels/headlines only under the dataset's stated CC BY 4.0 terms and independently consider the underlying publisher's rights.
+- **Indian_Financial_News (Hugging Face)**: publisher card describes 26,000 Indian-market article rows with URL, scraped content, T5-generated summary and GPT-labelled sentiment, last updated Jan 2024. The card does not establish reliable publication timestamps, historical completeness, company ticker mapping or the underlying publisher's permission. Candidate for qualitative NLP experimentation only until those are verified.
+- **FLAME multilingual financial sentiment v2**: publisher card claims 145,637 labelled headlines across 10 languages including Hindi, 2024–2026, with local-investor-perspective labels. This is a sentiment classifier training/benchmark corpus, not an event feed with a long historical article archive. Useful for comparing sentiment models, but label provenance, dataset licence and time split must be checked before use.
+- **Webz.io weekly financial news datasets**: global English financial article datasets with publication metadata and sentiment; provider describes free research/journalistic use and an API Lite tier. Terms and retention rights need inspection; weekly sample datasets do not by themselves establish 8–10 years of historical coverage.
+- **FNSPID / multi-source finance news**: a large US-oriented corpus includes ticker-linked news from 1999–2023 and multiple other news collections, but it is not an India-specific coverage source. Could support general model pretraining/benchmarking only, not Indian company event backtests.
+- **Reuters Corpus (RCV1/RCV2)**: extensive timestamped historical full-text archives (1996–97 and 2008–09) exist through institutional licensed access; not free public data and not aligned to current Indian listed companies.
+
+### Recommended news architecture for a realistic MVP
+1. Use GDELT GKG 2.1 as a **metadata/event-volume/tone** source for historical broad and company-specific context, after a small query proves Indian issuer coverage and ticker-alias quality.
+2. Use IN-FINews, FinancialPhraseBank-style open corpora, and/or FLAME only to benchmark/train sentiment classifiers; do not mistake a labelled training corpus for a historical market-news feed.
+3. Keep official company announcements as a distinct regulatory-disclosure stream. Do not conflate issuer filings with independent editorial news.
+4. Store source URL, original publication timestamp, GDELT processing timestamp, publisher/domain, entity/ticker mapping confidence, language, duplicate cluster, tone/sentiment model version, retrieval timestamp and source licence. If only a date is known, do not fabricate intraday order; map to next eligible session conservatively.
+5. Evaluate the news feature ablation on exactly the same dates and baseline: price/volume only vs price/volume + broad news vs price/volume + company news. Use only headlines available before the prediction cutoff; after-close news rolls to the next session. Sentiment may reduce performance; report that honestly.
+
+Links:
+- GDELT portal and archive: https://www.gdeltproject.org/data.html
+- GDELT GKG 2.1 codebook: https://data.gdeltproject.org/documentation/GDELT-Global_Knowledge_Graph_Codebook-V2.1.pdf
+- IN-FINews: https://zenodo.org/records/16991843
+- Mendeley Financial News Headlines: https://data.mendeley.com/datasets/fk37gb6dmp/1
+- Indian_Financial_News: https://huggingface.co/datasets/pranali96/Indian_Financial_News
+- FLAME: https://huggingface.co/datasets/Kenpache/multilingual-financial-sentiment-v2
+- Webz.io weekly financial news: https://github.com/Webhose/financial-news-dataset
+- FNSPID: https://huggingface.co/datasets/Zihan1004/FNSPID
+- Reuters Corpus: https://www.library.hbs.edu/databases-cases-and-more/datasets/reuters-corpus
+
+No news corpus or GDELT query output has been downloaded or benchmarked in this pass.
