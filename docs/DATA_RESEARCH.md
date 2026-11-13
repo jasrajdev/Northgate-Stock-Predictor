@@ -1694,3 +1694,10 @@ Official references:
 - NSE All Reports: https://www.nseindia.com/all-reports
 - NSE archive naming/route technical lead (non-official): https://github.com/jugaad-py/jugaad-data/blob/master/jugaad_data/nse/archives.py
 - Alternative full-bhavdata route technical lead (non-official): https://github.com/aditya-jha/nse-historical-membership/blob/main/nse_eod/code/fetch_bhavcopy.py
+
+
+## 2026-11-14 — NSE archive connectivity confirmed from user's Mac
+
+The user ran a Python `requests` test against the candidate official NSE archive URL for 22-Apr-2019: `https://nsearchives.nseindia.com/content/historical/EQUITIES/2019/APR/cm22APR2019bhav.csv.zip`. Their terminal output reported HTTP 200, 68,955 response bytes and ZIP signature `PK`. This confirms successful retrieval of a ZIP-formatted response from the user's Mac for this one date. The archive has not yet been extracted or inspected; no CSV schema, ticker row, raw close or file checksum has been verified. It does not yet establish availability of the other four dates.
+
+Next: download and validate the five required dates (BHARTIARTL 22/23-Apr-2019; RELIANCE 12/13/14-May-2020), inspect ZIP integrity and CSV headers, then extract only the correct equity-series rows. Keep raw files local pending a review of exchange data licensing/redistribution terms. No prices, labels or models changed.
