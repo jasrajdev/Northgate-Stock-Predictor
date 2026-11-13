@@ -568,3 +568,12 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - No target change approved. The PRD-aligned next-session adjusted-close target remains the current implementation until the user explicitly approves any change. A shareholder-wealth return label is only a candidate companion experiment.
 - No price data, labels, features, or code were modified; no model training or backtest occurred.
 - Next: run a small, read-only audit of every known corporate-action event against the original Yahoo CSVs, calculating raw/adjusted price ratios and adjacent-session returns, then decide which events need official Bhavcopy coverage or remain unresolved.
+
+
+### 2026-11-14 — Yahoo corporate-action event-window diagnostic reviewed
+- User ran the read-only diagnostic for eight known rights, bonus and demerger events; all eight event dates were found in the original Yahoo CSVs.
+- `Adj Close / Close` was effectively constant within each displayed seven-session window, and the two daily-return columns therefore matched or differed only by rounding. This does not validate event treatment or point-in-time correctness across longer history.
+- Yahoo's `Stock Splits` field records 2.0 on the RELIANCE 2024 and HDFCBANK 2025 bonus dates, while displayed Yahoo Close does not halve. This is consistent with a split-normalised historical share basis, but official before/after Bhavcopy comparisons are still required to establish it.
+- Rights and demerger entitlements are not validated by the absence of dividend/split entries. No adjustment factors or new labels are inferred.
+- No source data, features, labels or code changed. Model training remains paused.
+- Next: compare Yahoo Close with official NSE EQ Bhavcopy across pre/post bonus dates and gather event-window Bhavcopy for the remaining actions.
