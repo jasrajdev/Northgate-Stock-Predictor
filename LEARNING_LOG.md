@@ -36,3 +36,12 @@
 - Compare Ridge, Random Forest, SVR and XGBoost against the naive last-adjusted-close predictor on identical validation rows.
 - Keep the final six-month test set unopened during model selection. No training metrics are available until the local script is run.
 
+
+
+## MoSPI CPI OpenAPI specification — 2026-11-13
+
+- User successfully retrieved the official CPI OpenAPI YAML using Python requests (HTTP 200). The endpoint is GET /api/cpi/getCPIData on api.mospi.gov.in; guest access is supported, but requests are rate-limited per IP.
+- API covers base years 2010, 2012 and 2024. Filter sets differ by base year and group/item level. Filter codes should be discovered from the documented filter endpoint because invalid codes can return HTTP 200 with an empty result.
+- Pagination is page 1-based with a maximum of 100 rows per page. viz_req=true asks for all matching rows. The OpenAPI's 2024 example is 1.445 million records, so bounded filters and hard limits are mandatory.
+- The API specification does not document historical release vintages/as-of access. Current API rows must not be used as if they were the contemporaneous values known to a historical investor. Preserve the separate release-vintage annexure pipeline.
+- No API observation rows were downloaded or merged during this research step.
