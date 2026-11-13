@@ -1093,3 +1093,28 @@ Sources:
 - Official 2026–27 advance release calendar updated through October: https://www.mospi.gov.in/uploads/documents/releaseCalender/1793948871564-ARC%202026-27%20updated%20till%20October%202026.pdf
 
 This is a manual extraction of a published bulletin. No raw MCP API response has yet been acquired; the quarterly values must not be described as monthly observations.
+
+## 2026-11-14 — FRED/ALFRED point-in-time macro and market-breadth research
+
+### FRED vs ALFRED: a practical leakage-control distinction
+- FRED's current observation view generally returns the latest known/revised value. The official FRED API documents `realtime_start`, `realtime_end` and `vintage_dates` so a user can request the information known during a historical real-time period. ALFRED preserves the history of when series values were released or revised.
+- The FRED API's `series/vintagedates` endpoint lists dates when values changed or new values were released; `series/observations` can request observations for one or more vintage dates. This is exactly the mechanism needed to avoid using today's revised macro values in historical backtests.
+- FRED API requires a registered API key (free registration); the existing Northgate FRED graph-CSV script retrieves latest observations, not ALFRED vintages. The script's current output must remain labelled latest-vintage / not point-in-time until it is extended to store vintage dates or real-time periods.
+- For each macro series, store observation date, value, realtime_start, realtime_end or vintage_date, source release date/time, retrieval timestamp, units, seasonal adjustment and series ID. Join to Indian trading sessions only after the data's actual release timestamp in IST. If the exact release timestamp is unavailable, apply conservative next-session availability.
+- Official docs: https://fred.stlouisfed.org/docs/api/fred/realtime_period.html ; https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html ; https://fred.stlouisfed.org/docs/api/fred/series_observations.html ; https://fred.stlouisfed.org/docs/api/fred/
+
+### CBOE VIX and India VIX are complementary, not interchangeable
+- FRED series VIXCLS is daily CBOE VIX close. FRED's series notes describe it as the market's expected near-term volatility implied by S&P 500 option prices; the source is CBOE and the series carries CBOE copyright/citation conditions.
+- India VIX from NSE is the local NIFTY options-implied 30-calendar-day volatility measure. For Indian equities, India VIX is the directly local volatility regime feature; CBOE VIX may add global risk-appetite context.
+- CBOE's close occurs after the Indian cash session. For a next-Indian-session forecast, the latest completed US close before the Indian session can be available before the Indian market opens, but exact US holiday/timezone/DST alignment must be handled. Never align same-calendar-date US VIX close to an Indian close without checking timestamps.
+- Keep both series separate and test incremental out-of-sample value rather than assuming one substitutes for the other.
+- Sources: https://fred.stlouisfed.org/series/VIXCLS ; https://www.nseindia.com/all-reports
+
+### Market breadth: an additional low-cost context feature
+- NSE's historical reports archive explicitly lists daily/monthly Advances/Declines as well as historical index, VIX, price-volume, delivery and total-return-index reports. SEBI's equity-cash-market data directory independently lists NSE and BSE Daily and Monthly Advancing and Declining Stocks.
+- A third-party Indian-market breadth study publishes a daily breadth.csv since October 2015 under CC BY 4.0 and describes it as derived from NSE daily price/index files. This is a potential comparison dataset, but its raw constituent prices remain exchange-origin and subject to exchange terms; its calculations and exact methodology should be reviewed before reuse.
+- Preferred Northgate approach: calculate breadth internally from a documented, point-in-time universe (e.g., advances/declines, % above 20/50/200-day moving averages, equal-weight vs cap-weight return spread) after verifying survivorship-safe membership. Never compute historical breadth from today's surviving constituents only.
+- Candidate source: https://markets.ashwinraghavan.com/research.html ; NSE archive: https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives ; SEBI data directory: https://www.sebi.gov.in/curation/equity_cash_market.html
+
+### Implication for Northgate's macro feature table
+The PRD lists DGS3MO, DGS10, CPIAUCSL, UNRATE and VIX as examples. For an India-first model, keep PRD-specified US series where required but separately evaluate Indian equivalents: RBI policy repo/short-term money-market rate, India 10Y government yield, MoSPI CPI, PLFS unemployment, India VIX, and USD/INR. Do not silently replace US features with India equivalents; document both and compare ablations. Low-frequency series must be released-time aligned and should not be interpolated into fictional daily observations.
