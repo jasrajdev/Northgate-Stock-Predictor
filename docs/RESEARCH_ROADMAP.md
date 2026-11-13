@@ -209,3 +209,10 @@ A new structural break is approaching. PIB's 23 October 2026 notice describes PL
 NSE Corporate Filings Summary Documents exposes company/subject/date filters, CSV download and `BROADCAST DATE/TIME`. A displayed example records broadcast at 19-Sep-2026 14:47:29 and exchange dissemination at 14:47:34 (five seconds later). This is promising direct evidence for timestamped regulatory events. Validate the main announcements archive's historical depth, categories, CSV schema and attachment access before adopting it. It is not a replacement for editorial news.
 
 No raw PLFS, VIX, RBI or NSE filing data have been downloaded. This is source metadata and timestamp-contract research only. Sources: official e-Sankhyiki catalogue; NSO MCP implementation; PIB 23-Oct-2026 PLFS change notice; NSE Corporate Filings Summary Documents page.
+
+
+## 2026-11-13 — User-supplied CPI OpenAPI specification inspected
+
+The user fetched MoSPI's official swagger_user_cpi.yaml from e-Sankhyiki using Python requests; HTTP 200. The API is for CPI, not PLFS. It exposes GET https://api.mospi.gov.in/api/cpi/getCPIData, supports guest requests (optional bearer token), base years 2010/2012/2024, base-year-specific filters, and paginated results (page starts at 1, limit 10–100). A filter-code endpoint is documented. Invalid filter codes may still return HTTP 200 with No Data Found. viz_req=true requests all filtered rows.
+
+The OpenAPI's broad 2024 example is 1,445,316 rows / 144,532 pages. Therefore any Northgate API pull must be bounded by verified filters and a hard page/row limit. Crucially, the specification does not document release-vintage or historical as-of retrieval. Keep current API snapshots separate from the existing point-in-time CPI release-vintage dataset; never backtest with current revised values as if historically known. No API observations have yet been downloaded.
