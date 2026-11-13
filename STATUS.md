@@ -387,3 +387,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - NSE Corporate Actions page has CSV export and ex-date/record-date/book-closure fields; investor-relations archive shows announcement date and attachment links back to 2012. No export acquired.
 - NSE official holiday calendar includes special Muhurat Sunday sessions; calendar must flag special sessions and use observed trading dates.
 - Found NSEDATA4ME (2005+ EOD, delisted stocks, 232 indices, breadth) and two community reconstructions of historical NSE index membership. All are candidates; licences/source rights/QA not yet established. No files downloaded.
+
+### Macro vintages, market breadth and news research — 2026-11-14
+- FRED/ALFRED official API supports historical real-time periods and vintage-date observations. Existing FRED graph-CSV downloader captures latest values only; it is not point-in-time. Extend only if using FRED series in backtests, with vintage dates and release availability.
+- Keep CBOE VIX (FRED VIXCLS) and India VIX separate. CBOE close is after the Indian cash session; use prior completed US session for next-India-session features, with timezone/DST handling.
+- NSE historical archives list Advances/Declines; a community breadth dataset exists since Oct-2015 under CC BY 4.0, but price inputs remain exchange-origin. Preferred method is to calculate breadth from a point-in-time survivorship-aware universe.
+- GDELT GKG 2.1 offers long-history document metadata (publication/processing timestamps, organizations, themes and tone) but 2015 GKG alone is >2.5 TB. Use bounded query/filtering rather than a full local mirror. Indian labelled sentiment corpora are small or lack full timestamped historical coverage.
+- No GDELT data, FRED vintages or breadth series downloaded.
