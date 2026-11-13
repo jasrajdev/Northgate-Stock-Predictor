@@ -1618,3 +1618,28 @@ The two previously open rights-event records have now been resolved from issuer 
 - Record these as known high-risk event windows. Keep raw Close and vendor Adj Close unchanged until event-window rows, entitlement value and the vendor's treatment are independently reconciled.
 - BHARTIARTL's 2019 event was not in the latest short-list of the original event-window tests; it must now be included alongside the 2021 rights issue.
 - No market-panel rows were inspected and no model labels or data were modified in this research pass.
+
+
+## 2026-11-14 — Rights adjustment methodology: important distinction established
+
+NSE's published corporate-action methodology provides a rights-issue adjustment formula for **equity-derivatives contract positions**. It is useful to understand the economic value of rights, but it is not evidence that Yahoo/yfinance applies the same factor to historical cash-equity OHLC/Adj Close.
+
+For a rights ratio of A new shares for every B existing shares, last cum-date underlying close P and rights issue price S, NSE defines:
+- Benefit per right entitlement: C = (P − S) × A
+- Benefit per existing share: E = C / (A + B)
+- Derivatives adjustment factor: (P − E) / P
+
+NSE says the adjustment aims to preserve position value across cum/ex dates and may modify strike price, market lot/multiplier and position. Its public guidance lists rights, bonus, splits, mergers/demergers and other actions, but this is an F&O contract adjustment framework.
+
+Additional relevant distinction: NSE's Rights Entitlement Trading FAQ says rights entitlements have a separate ISIN and trade in the equity market; the first-day entitlement base price is calculated as underlying stock closing price minus the rights entitlement price. This reinforces that the entitlement itself is a separately traded instrument, not simply an ordinary share split.
+
+Primary references checked 2026-11-14:
+- NSE, Adjustments in case of Corporate Actions: https://www.nseindia.com/static/products-services/equity-derivatives-corporate-actions-adjustments
+- NSE Clearing, Corporate Actions Adjustment: https://www.nseclearing.in/clearing-settlement/equity-derivatives/corporate-actions-adjustment
+- NSE, FAQs — Rights Entitlement Trading: https://www.nseindia.com/static/trade/members-faqs-rights-entitlement-trading
+
+Application to our two verified historical events:
+- BHARTIARTL 2019: A=19, B=67, S=₹220; P must be the actual 22-Apr-2019 cum-rights close from a verified price source.
+- RELIANCE 2020: A=1, B=15, S=₹1,257; P must be the actual 12-May-2020 cum-rights close. Because the rights shares were partly paid, do not assume the simple F&O factor alone fully represents cash-equity total-return economics; the ₹942.75 subsequent call obligation and separate partly-paid security need explicit treatment.
+
+No numerical factor has been calculated because the corresponding raw close values and the applicable historical circular details have not been joined to the local panel. Do not use the formula to silently rewrite vendor prices. First compare official event terms, actual cum/ex closes, separately traded rights-entitlement prices (where available), and the vendor series. Keep raw and vendor data immutable; store any research-adjusted series as a separately named derived dataset with documented methodology.
