@@ -256,3 +256,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Verified official NSE historical India VIX page and RBI DBIE Key Rates table as the primary source references. Yahoo Finance remains the downloader's initial secondary source and needs validation against NSE.
 - RBI Key Rates are effective-date events, not daily observations. A later merge must forward-fill only after the effective date and preserve the original event table.
 - No market-context or macro series has yet been merged into daily stock features.
+
+
+## 2026-11-13 — CPI extraction cross-validation
+- Cross-checked the 19 overlapping Combined CPI months (June 2024–December 2025) between monthly Annex-I release vintages and the December 2025 Annex-VI full time series: 19/19 exact matches, zero index difference.
+- Confirmed 156 monthly Combined index values from January 2013–December 2025. Fourteen YoY inflation cells are missing (2013 Jan–Dec and 2020 Apr–May) and remain missing.
+- The generated downloadable bundle contains the full base-2012 Combined time series, recent release vintages, base-2024 current headline series and QA report.
+- Added the same cross-validation and missingness checks to the committed CPI extractor; source read-back verified, but the committed script has not yet been run end-to-end locally.
