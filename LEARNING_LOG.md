@@ -29,3 +29,10 @@
 - Exact publication timestamps remain blank rather than guessed. The pilot CSV is temporary and not yet a modelling input.
 - Next: test the parser automatically, reconcile headline provisional/final values to cumulative endpoints, and attach verified publication timestamps before session alignment.
 
+## Start modelling before optional feature enrichment — 2026-11-13
+
+- The first supervised price/volume dataset and chronological splits are sufficient to start a baseline experiment. CPI and news/sentiment are important PRD components but do not need to block initial model training.
+- A per-stock first benchmark avoids directly fitting one pooled raw-price target across companies with different nominal price scales. Pooled learning can be tested later as a separate experiment.
+- Compare Ridge, Random Forest, SVR and XGBoost against the naive last-adjusted-close predictor on identical validation rows.
+- Keep the final six-month test set unopened during model selection. No training metrics are available until the local script is run.
+
