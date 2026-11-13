@@ -202,3 +202,30 @@ No macro or market-context series has yet been downloaded by the committed scrip
 
 ### Retrieval status
 No new PLFS, VIX, RBI or news rows were downloaded in this research pass. These updates correct the source map and manual export procedure only.
+
+
+## 2026-11-13 — PLFS CWS definition correction, 2027 survey transition, and NSE timestamp evidence
+
+### Correction: monthly PLFS is explicitly CWS
+- The official e-Sankhyiki catalogue lists September 2026 monthly PLFS LFPR, WPR and UR records. Each catalogue entry explicitly defines the monthly estimates as **Current Weekly Status (CWS)**, All India, disaggregated by gender, sector and broad age group, with release date 15 October 2026 and table IDs PLFSFY26001SEP / 002SEP / 003SEP.
+- This supersedes the earlier caution in this inventory and older notes suggesting that the monthly series must not be labelled CWS. That caution arose because the MCP Swagger parameter `weekly_status_code` is annual-only; the monthly CWS definition is supplied by the official catalogue/product metadata and does not require passing that annual filter to the monthly API.
+- Use the official catalogue as the semantic authority for monthly bulletin tables. Keep monthly frequency and CWS status explicitly recorded. For MCP data retrieval, call `get_metadata` for each single indicator code with `frequency_code=3`, then pass the returned `filter_values` to `get_data`; do not guess or pass annual-only `weekly_status_code` filters into monthly calls.
+- The official e-Sankhyiki catalogue currently displays monthly September 2026 reference-period records and release date. The API implementation docs identify frequency_code=3 as monthly and indicators 1–3. Capture the actual metadata and returned data schema before designing the final raw table.
+
+### New structural break / transition: January 2027 PLFS changes
+- PIB's 23 October 2026 note announces proposed PLFS sampling-design and schedule changes from January 2027. It describes a new second-stage stratum for digital-platform workers; a refreshed sampling frame for Panel 6 (2027–28); refinements to allocation/stratification; and additional questions on digital platform work and unpaid activities.
+- During the first three months from January 2027, the sample will combine FSUs from Panel 5 and updated Panel 6 frames. Monthly bulletins are expected to publish pooled estimates and omit RSE estimates for those three months.
+- Treat January 2027 onward as a documented methodology/sample-frame transition. Store release version, panel/frame, and transition flag if available; do not blindly stitch the 2027 series to the 2025–26 series. The PIB item was an invitation for comments on proposed changes, so verify the final implementation note before treating every proposal as final.
+
+### NSE announcements: stronger timestamp evidence
+- NSE's official Corporate Filings Summary Documents page provides filters for company/symbol, subject and date range, CSV export, and a `BROADCAST DATE/TIME` field. Its rendered example shows 19-Sep-2026 14:47:29, plus an exchange dissemination time 14:47:34 and time taken 00:00:05.
+- This is direct official evidence that at least this NSE filing product exposes broadcast and dissemination timestamps to second-level precision. It materially strengthens NSE corporate filings as a free/manual candidate event source. It is still necessary to test the main Corporate Announcements archive for historical date-range depth, category coverage, downloadable CSV fields and attachment retrieval. Do not assume the summary-documents page is a complete editorial news archive.
+- Proposed raw fields: exchange, symbol, company, filing category, subject, attachment URL, broadcast timestamp, dissemination timestamp, time taken, submission type, exchange record ID, retrieval timestamp. Keep original timestamp strings and timezone assumption documented; verify timezone from NSE documentation or sample responses before normalizing.
+
+### Source links
+- e-Sankhyiki PLFS catalogue: https://esankhyiki.mospi.gov.in/catalogue-main/catalogue?page=1&product=PLFS
+- Official NSO MCP implementation: https://github.com/nso-india/esankhyiki-mcp/blob/main/mospi_server.py
+- PIB PLFS 2027 change note: https://www.pib.gov.in/PressReleasePage.aspx?PRID=2327153&lang=1&reg=3
+- NSE Corporate Filings Summary Documents: https://www.nseindia.com/companies-listing/corporate-filings-summary-documents
+
+No raw PLFS API response, RBI export, VIX CSV or NSE filings CSV was downloaded in this pass. This is metadata/source-contract verification only.
