@@ -150,3 +150,11 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - No API data or Parquet downloaded, no official sample acquired, no data comparison run, no panel changed, no model trained.
 
 - Target-specific events strengthen the corporate-action caveat: ITC demerger 2025-01-06; HINDUNILVR demerger 2025-12-05; RELIANCE demerger 2023-07-20 and rights 2020-05-13; BHARTIARTL rights 2019-04-23 and 2021-09-27. Current TejHQ factor code leaves rights/demerger at 1.0. Test event windows before adjusted-close labels are accepted.
+
+
+## NSE official data access research (2026-11-14)
+NSE's Data for Research page, updated 04-Nov-2026, offers an official application route for academic/non-commercial research. Requests are sent with a Data Seeking Request Form to nseri@nse.co.in. NSE's disclaimer restricts research data access/download to individuals from accredited academic institutions, recognised research organisations and think tanks; an NDA involving the researcher/parent institution may be required, and periodic progress reporting may be imposed.
+
+SEBI Circular 2024/178 provides a two-basket data-sharing framework. NSE's published Basket 1 list includes daily security-wise OHLC/turnover, Bhavcopy archives, historical index data, FII/FPI/DII activity, financial results, shareholding, corporate announcements and corporate actions. Up to 2 GB per researcher/year is the reasonable free amount where no extra computation is required; high-volume or processed data may be charged. NSE classifies voluminous historical EOD/Bhavcopy and corporate data as chargeable above 2 GB. Basket 2 includes identifiable/re-identifiable client data and is unnecessary for this project.
+
+The older NSE Data Sharing & Usage Policy definition mentions students/researchers among non-commercial users, but the current Data for Research disclaimer sets an institutional eligibility condition. Do not assume individual student eligibility. Written confirmation is needed. No request was sent, no eligibility or licence was confirmed, and no data was received. This is an official-source candidate, not a verified dataset.
