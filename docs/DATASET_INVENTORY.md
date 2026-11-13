@@ -310,3 +310,9 @@ Neither candidate replaces the current Northgate 29,473-row labelled dataset. A 
 - **NSEDATA4ME** (ancap97/NSEDATA4ME): claims 2005+ NSE EOD, 4,583 securities including 1,037 delisted/inactive, 232 indices and 5,407 breadth days; documents source reports and corporate-action adjustment pipeline. Code is GPL-3.0; this does not license exchange-derived data. No data downloaded or independently tested.
 - **BKKB20/nse-index-history**: claims 28 NSE index membership histories 2004–2026 reconstructed from ~100 exchange circulars; 3 scanned circulars unprocessed and pre-2010 mapping weaker; no declared licence found. **aditya-jha/nse-historical-membership** claims reliable membership from Apr-2018 for major indices with best-effort earlier history; no declared licence verified. Both require circular-level validation.
 - Candidate datasets are not authoritative until independently checked. Use them to cross-check PIT membership and survivorship handling, not as established facts. No new data acquired.
+
+### FRED/ALFRED and news metadata additions
+- FRED latest-value CSV is not point-in-time. ALFRED/FRED API provides real-time periods and vintage dates; preserve vintage/release metadata for revised macro series. No vintages acquired.
+- CBOE VIXCLS daily close is a US-market feature; keep distinct from India VIX and align to the latest completed US session before the Indian prediction session.
+- GDELT GKG 2.1 is a historical document metadata/tone source, but its raw archive is enormous (2015 GKG alone >2.5 TB). Bounded BigQuery or filtered downloads are more practical than mirroring all data. No query output acquired.
+- News sentiment corpora (IN-FINews, Financial News Headlines, FLAME, Indian_Financial_News) can support classifier tests, but none currently establishes a complete 8–10-year India-specific timestamped article feed.
