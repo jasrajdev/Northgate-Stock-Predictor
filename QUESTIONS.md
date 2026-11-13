@@ -44,3 +44,7 @@ Only unresolved questions belong here. Do not treat a question or candidate opti
 - What written permission/licence, if any, is required for persistent storage and backtesting/simulation using NSE-origin data, given NSE website terms restricting automated collection and simulation?
 - If academic access is unavailable, which source can provide licensed OHLCV, VIX, sector indices and historical corporate disclosures within the zero/low budget?
 - Does the user have an institutional supervisor/contact who can submit a research-data request and confirm the institution's accreditation?
+
+### NSE academic data request
+- Which institution should be named on the NSE Data Seeking Request Form, and can an academic supervisor/department support the application?
+- What date range and exact fields should the request prioritize (daily EOD OHLCV, corporate actions, historical indices, VIX, company announcements, FII/DII activity)?
