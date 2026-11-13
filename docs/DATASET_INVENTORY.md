@@ -339,3 +339,6 @@ Neither candidate replaces the current Northgate 29,473-row labelled dataset. A 
 | Historical index membership | BKKB20/nse-index-history | Publisher claims 28 indices, 2004–2026; circular-based reconstruction | Audit lead only: 3 scanned circulars unprocessed, pre-2010 mappings weaker, no licence identified in reviewed page. No data verified. |
 
 No new raw data file has been acquired from these sources in this research pass.
+
+- TejHQ Hugging Face listing is mutable and inconsistent across the indexed result and opened page (1.25 GB / Nov-2026 update versus 222 MB / Aug-2026 visible snapshot). Pin a revision and inspect file manifests before recording fixed size/coverage or using it for reconciliation.
+- Dataful's separate RBI annual securities-yield table has 90 rows for FY1980-81–FY2024-25; annual aggregate only, not a maturity-specific daily 10Y yield: https://dataful.in/datasets/17685/.
