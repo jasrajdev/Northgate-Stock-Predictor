@@ -398,3 +398,7 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 ### Official RBI daily FX source — 2026-11-14
 - RBI DBIE daily interbank USD/INR table covers 08-Aug-2000 to 30-Jun-2026 (6,319 rows), with OHLC and RBI Reference Rate; CSV/JSON export visible. No export acquired.
 - RBI Reference Rate Archive supports date-range Excel download; FBIL took over major-currency reference rates from 10-Jul-2018. CC0 Zenodo mirror is a convenience candidate, not source of record. Preserve provider transition and release availability.
+
+### RBI daily money-market rate — 2026-11-14
+- RBI Handbook Table 27 / current-statistics Table 225 documents daily weighted-average call/notice money rates, ranges and turnover. This is a strong India short-term liquidity feature candidate; monthly DBIE call money aggregates are a different frequency. No daily export retrieved.
+- Official daily 10Y generic G-Sec yield download not confirmed; the broad public dataset's daily 10Y series remains unverified. Continue using monthly OECD/FRED India 10Y as a separate low-frequency feature; do not interpolate.
