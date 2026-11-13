@@ -471,3 +471,11 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Confirmed target-universe examples of unadjusted action types: ITC demerger 2025-01-06; HINDUNILVR demerger 2025-12-05; RELIANCE demerger 2023-07-20 and rights 2020-05-13; BHARTIARTL rights 2019-04-23 and 2021-09-27.
 - TejHQ's inspected factor code returns 1.0 for rights and demergers. These are actual target-universe events, so adjusted-close labels may contain artificial discontinuities at these event dates if our modelling target expects economically comparable prices.
 - Next validation must compare raw/adjusted close and target labels in event windows. Do not change the PRD target without approval.
+
+
+### 2026-11-14 — NSE official research-data route
+- Found NSE's dedicated Data for Research page (updated 04-Nov-2026), with application via Data Seeking Request Form to nseri@nse.co.in.
+- NSE disclaimer restricts research-data access/download to individuals from accredited academic institutions, recognised research organisations and think tanks; NDA and periodic progress reports may be required.
+- SEBI Circular 2024/178 and NSE's published Basket 1 list provide up to 2 GB per researcher/year free where no extra computation is needed; high-volume/processed requests may be charged. Historical EOD/Bhavcopy and corporate data are listed as chargeable when voluminous (>2 GB).
+- Published eligible datasets include security-wise OHLC/turnover, Bhavcopy archives, index history, FII/FPI/DII activity, company results, announcements and corporate actions. Restricted client-identifiable datasets are not relevant.
+- Eligibility, exact requested fields/period, charges, local storage/backtesting rights and UDiFF schema access remain unconfirmed. No application sent and no data received.
