@@ -117,6 +117,50 @@ def extract_base2024(path: Path) -> list[dict]:
     return rows
 
 
+def extract_base2012_full_timeseries(path: Path) -> list[dict]:
+    """Read the official monthly CPI 2012 headline index and YoY sheets."""
+    workbook = load_workbook(path, read_only=True, data_only=True)
+    try:
+        def read_sheet(sheet_name: str, value_name: str) -> dict[str, tuple[float, bool]]:
+            sheet = workbook[sheet_name]
+            values = list(sheet.iter_rows(values_only=True))
+            months = [str(value).strip() for value in values[2][1:13]]
+            result: dict[str, tuple[float, bool]] = {}
+            for row in values[3:]:
+                year = row[0]
+                if not isinstance(year, int):
+                    continue
+                for month_number, month_name in enumerate(months, start=1):
+                    value = row[month_number]
+                    if value in (None, ""):
+                        continue
+                    provisional = str(value).strip().endswith("*")
+                    number = float(str(value).strip().replace("*", ""))
+                    result[month_start(year, month_number).isoformat()] = (number, provisional)
+            return result
+
+        indices = read_sheet("Annex-VI", "cpi_index")
+        inflation = read_sheet("Annex-VII", "inflation_yoy_pct")
+        rows = []
+        for reference_month, (index_value, provisional) in sorted(indices.items()):
+            inflation_value = inflation.get(reference_month, (None, False))[0]
+            rows.append({
+                "reference_month": reference_month,
+                "sector": "Combined",
+                "cpi_index": index_value,
+                "inflation_yoy_pct": inflation_value,
+                "status_in_latest_snapshot": "Provisional" if provisional else "Historical/final",
+                "snapshot_release_date": "2026-01-12",
+                "snapshot_release_time_ist": "16:00",
+                "base_year": 2012,
+                "source_file": path.name,
+                "source_sheet": "Annex-VI + Annex-VII",
+            })
+        return rows
+    finally:
+        workbook.close()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input-dir", type=Path, required=True)
@@ -127,10 +171,13 @@ def main() -> None:
     base12, files = extract_base2012(args.input_dir)
     base24_path = args.input_dir / "cpi_33.xlsx"
     base24 = extract_base2024(base24_path)
+    base12_full = extract_base2012_full_timeseries(base24_path.parent / "Annexures for Press Release in Excel December 2025.xlsx")
 
     fields12 = ["reference_month", "sector", "cpi_index", "status_in_release",
                 "release_month", "release_date_exact", "base_year", "source_file",
                 "source_sheet", "source_row"]
+    fields_full = ["reference_month", "sector", "cpi_index", "inflation_yoy_pct", "status_in_latest_snapshot", "snapshot_release_date", "snapshot_release_time_ist", "base_year", "source_file", "source_sheet"]
+    write_csv(args.output_dir / "india_cpi_base2012_combined_full_timeseries.csv", base12_full, fields_full)
     fields24 = ["reference_month", "sector", "cpi_index", "inflation_yoy_pct",
                 "base_year", "series", "release_date_exact", "source_file",
                 "source_sheet", "source_filter"]
@@ -158,8 +205,10 @@ def main() -> None:
     qa = {
         "source_files_base2012": files,
         "base2012_release_vintages": coverage(base12),
+        "base2012_combined_full_snapshot": coverage(base12_full),
         "base2024_current_headline": coverage(base24),
         "exact_publication_timestamps_available": False,
+        "base2012_full_snapshot_release": "2026-01-12 16:00 IST (from the December 2025 MoSPI CPI press release)",
         "controls": [
             "Base-2012 and base-2024 series are kept separate; no splicing is performed.",
             "Prior-month Final and current-month Provisional observations are retained as release vintages.",
