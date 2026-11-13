@@ -60,3 +60,12 @@ For the first next-session forecasting dataset, use target-date-based chronologi
 - Final test: target dates in the last six calendar months of available labelled data. Calculate the cutoff from the latest target date rather than hard-coding it.
 
 The currently reported latest target date is 2026-11-09, so the calendar cutoff is 2026-05-09; the first observed test target session should be the next eligible trading session. Assign by target date (not only feature date) because that is when the prediction outcome becomes known. Keep test results untouched until model choices are frozen. Fit all learned preprocessing on training data only. Exclude every `target_*` column from model inputs. This protocol covers the existing one-session target only; multi-day horizons and their purge/embargo rules remain open.
+
+
+## PRD v1.0 requirements reference and dataset audit (2026-11-13)
+
+The original 30-page PRD v1.0 has now been supplied in the Northgate project context. A traceable condensed requirements reference is committed as `docs/PRD_REQUIREMENTS.md`. The PRD's full data contract includes 8–15 equities plus benchmark, 8–10 years daily OHLCV/adjusted close, market/volatility indices, macro series, timestamped company and broad-market news, four classical models, four deep architectures, FinBERT/VADER, portfolio optimisation, recommendations, seven dashboard panels and a 10–15 page report.
+
+The uploaded market panel was independently inspected in this conversation: 29,484 rows, ten provisional Indian equities plus ^NSEI, with OHLCV/adjusted-close and corporate-action columns. The uploaded CPI workbook has 31,460 rows for base-2024 Current data from Jan 2025 through Oct 2026 in the inspected records. Neither upload has been committed as a raw binary data file to GitHub. The user's previously reported feature panel, labelled dataset and split CSVs are not in the GitHub repository.
+
+A reproducible GPU-laptop preparation script is now committed to regenerate the first price/volume-only dataset. This is baseline-trainable but not full PRD-complete. Macro/news/sentiment and point-in-time universe limitations remain. See `docs/DATASET_INVENTORY.md` and `docs/GPU_LAPTOP_SETUP.md`.
