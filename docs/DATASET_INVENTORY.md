@@ -174,3 +174,31 @@ No macro or market-context series has yet been downloaded by the committed scrip
 - Correction to earlier shorthand in project notes: do not describe the September 2026 PLFS publication as a “monthly bulletin”. It is the July–September 2026 **quarterly bulletin**. Monthly API observations and quarterly bulletin estimates are distinct products/frequencies and must be kept separately.
 - The MCP source says frequency_code=3 monthly indicators 1–3 cover Apr 2025–Sep 2026; frequency_code=2 quarterly indicators 1–4 cover calendar years 2018–2026, but availability by quarter is uneven. Quarterly CWS results have a documented methodology/coverage change from April–June 2025 when rural estimates were added. Retain frequency, status concept, geography, publication date, and source release as separate fields.
 - No PLFS rows have been retrieved through MCP yet. This is source/coverage verification only; actual retrieval and row-level QA remain pending.
+
+
+## 2026-11-13 — PLFS release-calendar correction; NSE VIX and RBI export paths rechecked
+
+### PLFS: monthly bulletins and quarterly bulletins are separate products
+- The official MoSPI 2026–27 Advance Release Calendar (updated through October 2026) explicitly lists Monthly Bulletin of PLFS – September 2026, released 15 October 2026 (PIB PRID 2323828). Therefore the earlier wording that treated September 2026 only as the endpoint of monthly API coverage and described the July–September quarterly bulletin as the latest PLFS publication was incomplete.
+- The same calendar separately lists the Quarterly Bulletin for July–September 2026, dated 10 November 2026, and the Monthly Bulletin of PLFS – October 2026, scheduled for 15 November 2026. As of this review (13 November 2026), October's monthly bulletin is scheduled but not yet due.
+- Keep three distinct artefacts: (1) monthly PLFS API observations, (2) monthly PLFS bulletin/release PDFs, and (3) quarterly CWS bulletin tables. Do not infer one product's definitions or availability from another.
+- The calendar documents that scheduled and actual release dates can differ. Store actual publication date from the linked PIB/MoSPI release separately from the advance scheduled date. It does not provide exact intraday release timestamps.
+
+### India VIX: official interface confirmed, export requires date selection
+- NSE's official Historical Data – India VIX page exposes date presets/custom range and a Download (.csv) control. Its unfiltered page may show No Records; this is not evidence that the historical archive is empty. Select a date range, submit/view the results, then download the CSV.
+- NSE's Historical Reports navigation separately links Historical Data – India VIX, Historical Index Data, Total Returns Index Values, and daily/monthly index reports. Use official NSE downloads as the preferred VIX source; compare coverage and values with the existing yfinance fallback before replacing it.
+- No VIX CSV has been downloaded into Northgate yet. Browser evidence establishes the official UI/export path only.
+
+### RBI DBIE Key Rates: direct table and export controls re-confirmed
+- Official RBI DBIE table financial_sector.r531_key_rates is indexed at https://dbie.rbihub.in/tables?table=financial_sector.r531_key_rates. It reports 271 rows, period 06-07-1935 to 07-10-2026, frequency As and When, and visible Download CSV / JSON controls.
+- Fields include Effective Date, Fix Range LAF Rates, Bank Rate, Repo, Reverse Repo, SDF, MSF and CRR. This is an event-based table, not daily. Download CSV or JSON from the table controls; preserve effective date and original missing/change markers. Create daily session-aligned values only by forward-filling from the effective date, never backward or interpolated.
+- The source is considered download-path identified / export ready, not downloaded. Remaining uncertainty concerns automated export, not whether an official export control exists.
+
+### Company news / announcements: candidate data contract
+- NSE corporate filings dashboard and public filing pages expose company filings/announcements. A third-party scraper description reports separate filing and dissemination timestamps, but this is not an official API specification and does not establish a free, supported bulk API.
+- Treat exchange corporate announcements as a separate regulatory-disclosure/event stream, not a complete substitute for editorial financial news. Store exchange, symbol/ISIN, subject, summary, attachment URL, filing timestamp, dissemination timestamp, retrieval timestamp and source ID where actually available.
+- Do not commit to third-party paid scraping. Continue investigating official NSE/BSE public access, licensing/terms and timestamp coverage. Apply FinBERT/VADER only after text eligibility and event-availability mapping are validated.
+- No announcement corpus has been downloaded.
+
+### Retrieval status
+No new PLFS, VIX, RBI or news rows were downloaded in this research pass. These updates correct the source map and manual export procedure only.
