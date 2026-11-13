@@ -926,3 +926,15 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Rechecked official RBI DBIE Key Rates: the indexed table reports 271 effective-date rows through 7 October 2026 and CSV/JSON controls. No export has been downloaded in this session. NSE's official India VIX page still exposes date-range controls and CSV download; an unfiltered “No Records” display is not proof of an empty archive. No VIX CSV has been downloaded.
 - NSE Corporate Filings Summary Documents exposes company/subject/date filters and CSV download; indexed page evidence displays broadcast and exchange-dissemination timestamps. This remains a regulatory-disclosure candidate, not a complete editorial-news dataset; archive depth and machine-readable timestamp/timezone semantics remain to be tested.
 - No PLFS, RBI, VIX or corporate-announcement observations were downloaded or merged in this recheck. This entry records source and release verification only.
+
+
+## 2026-11-13 — MoSPI direct CPI API vs public MCP route discrepancy
+
+A fresh inspection of the official NSO India esankhyiki-mcp source exposed an integration detail that must be resolved before automating CPI retrieval:
+
+- The user's retrieved portal OpenAPI notes in this repository describe direct CPI endpoint GET /api/cpi/getCPIData.
+- The current official MCP server source maps CPI Group requests to /api/cpi/getCPIIndex and CPI Item requests to /api/cpi/getItemIndex; PLFS maps to /api/plfs/getData.
+- These are not interchangeable endpoint contracts. The direct CPI API pilot already performed by the user should remain recorded as a direct-REST pilot. A future MCP call should follow the server's ordered list_datasets → get_indicators → get_metadata → get_data workflow and let the MCP server select its endpoint.
+- The official MCP source documents PLFS frequency codes: 1 annual, 2 quarterly, 3 monthly; monthly indicator codes 1–3 cover April 2025–September 2026. It warns that frequency_code selects the indicator set and that exact valid filters must come from get_metadata. Monthly bulletin catalogue metadata defines the published monthly estimates as CWS; do not infer that definition from an annual-only weekly_status_code parameter.
+- Sources: https://github.com/nso-india/esankhyiki-mcp/blob/main/mospi_server.py ; https://github.com/nso-india/esankhyiki-mcp/blob/main/README.md
+- Open question: determine whether the portal's getCPIData route is a parallel/legacy/current direct endpoint and whether its output matches the MCP Group/Item routes for identical bounded filters. Compare a small common month set before choosing a production route. Do not silently replace the already documented pilot endpoint or combine outputs until reconciled.
