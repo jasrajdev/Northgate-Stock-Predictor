@@ -1,75 +1,161 @@
 # GPU Laptop Training Handoff
 
+## Hardware confirmed from the user's 2026-11-13 PowerShell screenshot
+
+- Machine: HP Victus, Windows PowerShell.
+- GPU: NVIDIA GeForce RTX 3050 Laptop GPU.
+- Dedicated VRAM: 4,094 MiB (4 GiB).
+- NVIDIA driver: 592.82.
+- Driver-reported CUDA compatibility: 13.1.
+
+The driver is new enough for a CUDA 12.8 PyTorch wheel. CUDA 13.1 shown by `nvidia-smi` is the driver's maximum supported CUDA level; it does not mean PyTorch must be installed with CUDA 13.1. The instructions below use the official PyTorch CUDA 12.8 wheel index.
+
 ## What is ready
 
-The first reproducible experiment uses ten provisional Indian equities plus NIFTY 50, daily OHLCV and adjusted close, 24 backward-looking price/volume features, and the next observed session's adjusted close as target.
+The repository can rebuild a first **price/volume-only baseline experiment** for ten provisional Indian equities plus NIFTY 50, with daily OHLCV/adjusted close, 24 backward-looking features, next-session labels, and target-date chronological train/validation/test splits.
 
-The repository includes:
-- `config/northgate_universe.json`: the exact provisional universe and date/split settings.
-- `scripts/prepare_gpu_training_data.py`: downloads and rebuilds raw/processed price data, features, labels, and chronological splits.
-- `scripts/train_baseline_models.py`: fits per-equity Ridge, Random Forest, SVR and XGBoost; XGBoost requests CUDA and falls back to CPU if needed; compares against last adjusted close; uses validation only.
-- `scripts/train_deep_models.py`: fits LSTM, GRU, BiLSTM and Transformer with PyTorch, early stopping and CUDA detection; saves best validation checkpoints and never loads the final test set.
+- `config/northgate_universe.json`: provisional universe and split settings.
+- `scripts/prepare_gpu_training_data.py`: downloads and rebuilds all price/volume data locally.
+- `scripts/train_baseline_models.py`: Ridge, Random Forest, SVR and XGBoost; validation only; compares with naive last-adjusted-close.
+- `scripts/train_deep_models.py`: LSTM, GRU, BiLSTM and Transformer; validation only; final test partition is never loaded. Defaults are reduced for 4 GB VRAM (batch 16, hidden size 32, one recurrent/encoder layer, sequence length 30, mixed precision on CUDA).
 
-## Important: what is NOT in the GitHub repository
+**Important:** the raw and processed CSVs previously generated on the Mac are not committed to GitHub. The Victus rebuilds them from the scripts. This avoids assuming the data files are already downloadable and avoids redistributing vendor data.
 
-The Mac's generated CSVs are not committed. The uploaded `market_panel.csv` was inspected in the ChatGPT project: 29,484 rows, 11 tickers (ten equities and `^NSEI`), 2016 onward. But only the raw market panel was uploaded to this conversation; the 17 MB feature panel and 18 MB labelled modelling dataset remain local to the Mac and were not found in the GitHub repository. Therefore the GPU laptop must rebuild them using the committed preparation script. Do not assume the CSVs are already downloadable from GitHub.
+## Exact Windows PowerShell steps
 
-Raw Yahoo Finance downloads are not committed because redistribution terms/rights have not been established. The script recreates the dataset on the machine where it is run.
+Run these commands in a new PowerShell window. Do not paste the `PS C:\...` prompt itself.
 
-## GPU laptop setup
+### 1. Clone or update the repository
 
-1. Install 64-bit Python 3.11 or 3.12 and Git.
-2. Install the current NVIDIA driver. Open a terminal and run `nvidia-smi`; record the exact GPU name and driver/CUDA version.
-3. Clone the repository:
-   ```bash
-   git clone https://github.com/jasrajdev/Northgate-Stock-Predictor.git
-   cd Northgate-Stock-Predictor
-   ```
-4. Create and activate a virtual environment:
-   - Windows PowerShell:
-     ```powershell
-     py -3.11 -m venv .venv
-     .venv\Scripts\Activate.ps1
-     python -m pip install --upgrade pip
-     ```
-   - Linux:
-     ```bash
-     python3.11 -m venv .venv
-     source .venv/bin/activate
-     python -m pip install --upgrade pip
-     ```
-5. Install project requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```
-6. Rebuild the first dataset:
-   ```bash
-   python scripts/prepare_gpu_training_data.py
-   ```
-7. Train and compare classical baselines:
-   ```bash
-   python scripts/train_baseline_models.py
-   ```
-8. Install the CUDA-enabled PyTorch build selected for the exact GPU laptop OS/driver using https://pytorch.org/get-started/locally/ . Then run:
-   ```bash
-   pip install -r requirements-dl.txt
-   python scripts/train_deep_models.py
-   ```
-9. Send the contents of `reports/data_quality/gpu_data_build_report.json`, `reports/validation/model_summary_validation.csv`, `reports/validation/deep_model_comparison_validation.csv`, and the `nvidia-smi` output back for review.
+If the folder does not exist:
 
-## GPU expectations
+```powershell
+git clone https://github.com/jasrajdev/Northgate-Stock-Predictor.git
+cd Northgate-Stock-Predictor
+```
 
-The current Ridge, Random Forest and SVR implementations use scikit-learn and run on CPU. XGBoost can use CUDA only when the installed XGBoost build and NVIDIA driver support it; verify the actual GPU before assuming acceleration. The deep-learning script uses PyTorch and automatically selects CUDA when available. The exact NVIDIA GPU and OS are still required to choose the correct PyTorch build. The scikit-learn models remain CPU-based; XGBoost attempts CUDA and falls back to CPU.
+If it already exists:
 
-## Data limitations still open
+```powershell
+cd $HOME\Northgate-Stock-Predictor
+git pull origin main
+```
 
-- CPI 2024 series and the official linked back series; old and new base-year series must not be concatenated without documented linking.
-- RBI/FRED macro series with actual release timestamps/vintages; forward-filling by observation month alone can leak.
-- Historical timestamped company/market news across the full period. GDELT has a large historical archive but is broad news metadata, not a guaranteed complete financial-news archive or article-text corpus.
-- FinBERT and VADER daily sentiment features, aligned to the next eligible session after market close.
-- Point-in-time historical constituents / delisted stocks to address survivorship bias.
-- Multi-day labels, which require an explicit horizon and purge/embargo rules.
+### 2. Create the Python environment
 
-## Reproducibility and safety
+Install 64-bit Python 3.11 first if it is not already installed. Then:
 
-The final six-calendar-month test partition is reserved. Tune only on training/validation. The training script must never read `splits/test.csv` until model selection is frozen. No profit or accuracy is promised.
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+```
+
+If PowerShell blocks activation, run this once in that PowerShell window and activate again:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
+
+### 3. Install project dependencies and CUDA PyTorch
+
+```powershell
+python -m pip install -r requirements.txt
+python -m pip install torch --index-url https://download.pytorch.org/whl/cu128
+```
+
+Verify CUDA before downloading data:
+
+```powershell
+python -c "import torch; print('PyTorch:',torch.__version__); print('CUDA build:',torch.version.cuda); print('CUDA available:',torch.cuda.is_available()); print('GPU:',torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'NOT DETECTED'); print('VRAM GiB:',round(torch.cuda.get_device_properties(0).total_memory/1024**3,2) if torch.cuda.is_available() else 'n/a')"
+```
+
+**Stop and send me the output if `CUDA available: False` or the GPU is not detected.** Do not start deep training until this check passes.
+
+### 4. Rebuild the dataset on the Victus
+
+```powershell
+python scripts/prepare_gpu_training_data.py
+```
+
+This downloads the ten equities and NIFTY 50 and creates:
+- `data/processed/market_panel.csv`
+- `data/processed/feature_panel.csv`
+- `data/processed/modeling_dataset_next_day.csv`
+- `data/processed/splits/train.csv`
+- `data/processed/splits/validation.csv`
+- `data/processed/splits/test.csv`
+- `reports/data_quality/gpu_data_build_report.json`
+
+Check that the script reports zero duplicate ticker/date keys, all target dates after feature dates, zero missing targets, and all rows assigned once. Do not open or use the test CSV for model selection.
+
+### 5. Run classical baselines first
+
+```powershell
+python scripts/train_baseline_models.py
+```
+
+This fits Ridge, Random Forest, SVR and XGBoost (CUDA is attempted; XGBoost may fall back to CPU if the installed build cannot use CUDA). It compares all models against the naive last-adjusted-close forecast on validation data only.
+
+### 6. Run deep models
+
+The conservative defaults are appropriate for the confirmed 4 GB RTX 3050:
+
+- sequence length: 30 sessions
+- batch size: 16
+- hidden size: 32
+- one recurrent/Transformer layer
+- 30 maximum epochs, early stopping patience 6
+- CUDA mixed precision enabled when CUDA is detected
+
+```powershell
+python scripts/train_deep_models.py
+```
+
+If CUDA runs out of memory, rerun with smaller settings:
+
+```powershell
+$env:NORTHGATE_BATCH_SIZE="8"
+$env:NORTHGATE_HIDDEN_SIZE="24"
+python scripts/train_deep_models.py
+```
+
+To restore defaults in the current PowerShell session:
+
+```powershell
+Remove-Item Env:NORTHGATE_BATCH_SIZE -ErrorAction SilentlyContinue
+Remove-Item Env:NORTHGATE_HIDDEN_SIZE -ErrorAction SilentlyContinue
+```
+
+### 7. Send back these outputs
+
+Upload or paste:
+- `reports/data_quality/gpu_data_build_report.json`
+- `reports/validation/model_summary_validation.csv`
+- `reports/validation/deep_model_comparison_validation.csv`
+- `reports/validation/deep_training_report.json`
+- Full output of `nvidia-smi` and the PyTorch CUDA verification command
+
+Model checkpoints are saved locally under `models/deep/`. Do not upload large model files to GitHub unless specifically requested; keep them backed up separately.
+
+## Dataset limitations — not hidden
+
+This is **baseline-trainable, not PRD-complete**. Still outstanding:
+- CPI/macro variables with actual release timestamps and historical vintages.
+- Volatility/sector/breadth context series.
+- Timestamped historical company and market news, FinBERT/VADER sentiment and an ablation against the price-only baseline.
+- Point-in-time historical constituents / delisted equities to address survivorship bias.
+- Official-source adjusted-price validation and full EDA/finance-math checks.
+- Multi-day targets; horizons and purge/embargo rules are not yet agreed.
+
+Commodity prices are not an explicit mandatory series in PRD v1.0 and are not a blocker for this first training run.
+
+## Reproducibility and evaluation safeguards
+
+- Training and validation only are loaded by both model scripts; the final test file is not opened.
+- The chronological split is assigned by target date.
+- Learned preprocessing is fit on training rows only in the deep-learning script.
+- Compare all models on identical validation dates and targets.
+- Do not report validation results as final out-of-sample performance. Freeze choices before evaluating the reserved test set.
+- No profit or accuracy is promised.
