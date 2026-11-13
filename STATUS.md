@@ -271,3 +271,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - The script writes a separate observation-date panel and QA report, and explicitly warns that FRED graph CSV is not a point-in-time vintage archive. It must not merge macro series into daily stock rows by observation date alone.
 - Confirmed NSE's official historical India VIX download page and its definition (NIFTY-options-implied expected volatility over the next 30 calendar days). Yahoo market-context downloader remains a fallback pending validation.
 - India PLFS monthly data and RBI DBIE effective-date policy-rate event data remain pending actual extraction. No macro data has been merged into the stock modelling dataset.
+
+
+## 2026-11-13 — Release-time and official India source verification
+- Verified MoSPI's official CPI release rule: 16:00 IST on the 12th of the following month, next working day if the 12th is a holiday; an advance release calendar gives scheduled dates. This is essential for point-in-time CPI features.
+- Verified RBI DBIE Key Rates has effective-date history and CSV/JSON downloads for repo, reverse repo, SDF, MSF, bank rate and CRR; preserve source events before deriving a daily forward-filled policy-rate panel.
+- Verified revised PLFS monthly bulletins begin April 2025; September 2026 bulletin is available and October 2026 is scheduled for 15 November 2026. Methodology changed from January 2025; retain a structural-break flag.
+- Syntax-compiled `scripts/download_macro_context.py` successfully. No network download was run, so no FRED dataset row counts are claimed.
