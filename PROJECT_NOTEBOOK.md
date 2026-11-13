@@ -108,3 +108,10 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - PLFS MCP metadata rules reconfirmed: annual 1, quarterly 2, monthly 3; monthly Apr-2025–Sep-2026 All India indicators 1–3; one indicator_code per request.
 - Google BigQuery's documented 1 TB/month free query processing allowance could support a bounded GDELT GKG pilot with strict bytes-scanned limits.
 - No raw data was downloaded or merged in this pass.
+
+
+## Research continuation — 2026-11-14 (NSE bhavcopy and PLFS release calendar)
+- Confirmed the official NSE All Reports page lists the final CM-UDiFF Common Bhavcopy ZIP/CSV and Full Bhavcopy + Security Deliverable CSV. NSE states older CM Bhavcopy CSV formats were discontinued from 08-Jul-2024. This creates a clear official post-transition candidate but requires schema inspection and a pre/post-transition compatibility plan.
+- The NSE Historical Reports directory lists historical India VIX, index, TRI and valuation archives. The dedicated VIX page has date-range controls and CSV export; an unfiltered “No Records” view is inconclusive. No raw file acquired.
+- MoSPI's October-2026-updated release calendar schedules the October monthly PLFS bulletin for 15-Nov-2026. This is a future scheduled date as of 14-Nov, not a verified publication. Keep it separate from the July-Sep quarterly bulletin and MCP API series.
+- No raw observations downloaded, validated or merged. No change to market panel, splits or model status.
