@@ -283,3 +283,17 @@ No new rows or files were downloaded in this pass. Official NSE pages and their 
 - NSE Terms of Use prohibit systematic/automated website data collection and include restrictions on virtual trading/simulation. Do not automate public website/API extraction pending written permission or applicable licence. See DATA_RESEARCH.md for exact terms, SEBI circular interpretation and sources.
 - News: GDELT long-history metadata/tone is a possible contextual signal, but DOC full-text search only covers a recent rolling window; IN-FINews (3,348 articles, Feb–Aug 2025) is a small supplemental corpus only. Publisher RSS storage/training rights vary and must be checked.
 - TejHQ/tej-bazaar offers a promising public EOD cross-check candidate (NSE from 2010; BSE from 2024-07-08), but the data is not MIT-licensed and TejHQ holds no exchange licence. No sample data has been downloaded or reconciled.
+
+## 2026-11-14 — Two broad public Indian-market datasets discovered
+
+### aswinv90/indian-market-historical-data
+- Publisher claims NSE 2,577 equities and BSE 4,399 equities from 1991 to present; NIFTY/SENSEX, sector indices, India VIX, corporate actions, daily FII/DII cash and derivatives, CPI, RBI policy rates, FX, 10Y yields and other datasets.
+- Repo created 18-Sep-2026, last pushed 12-Nov-2026; large repo. The publisher's own custom licence permits personal/non-commercial/educational research but prohibits commercial use and redistribution without permission. Not an OSI open-data licence; exchange-source rights remain unverified.
+- Its verification script checks file existence, emptiness, staleness and date range but does not establish point-in-time correctness or corporate-action QA. No Parquet downloaded or validated. Candidate only.
+
+### tejhq/indian-markets
+- Hugging Face card previews 7.36M NSE rows; publisher claims NSE from 2010-01-04, BSE from 2024-07-08, with raw prices, corporate actions, adjusted prices, symbol history, metrics, liquidity universe and delivery.
+- More focused Bhavcopy-derived EOD pipeline; exchange-derived data is not covered by MIT code licence, provider terms permit personal research/backtesting/model training but prohibit redistribution and say exchange terms still apply. No data downloaded or validated.
+
+### Source decision status
+Neither candidate replaces the current Northgate 29,473-row labelled dataset. A controlled, ticker-level sample comparison is required before any replacement or augmentation. No candidate data files have been acquired in this pass.
