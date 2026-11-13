@@ -965,3 +965,38 @@ A fresh review of NSE's official All Reports / Historical Reports pages confirms
 
 ### Acquisition state and caveats
 No RBI export, India VIX CSV, sector-index CSV, official NSE bhavcopy archive, PLFS API response or announcement corpus was downloaded in this research pass. This is a source-contract and acquisition-route review, not an acquisition milestone. Official NSE UI controls and schemas are verified from rendered pages; undocumented API behavior and third-party sample counts remain provisional until independently tested.
+
+## 2026-11-14 — Financial-news feasibility and market-data usage terms
+
+### NSE/BSE data-use constraint (material)
+- NSE's current website Terms of Use prohibit systematic or automated data collection (including scraping/data mining/extraction/harvesting) on or in relation to its website. The terms also restrict copying/storing/disseminating content and explicitly mention virtual trading/simulation activities. NSE's copyright policy separately permits viewing/printing/downloading for personal, non-commercial or educational purposes with accurate reproduction and acknowledgement, but this must be read together with the Terms of Use and any product-specific rules.
+- Therefore, do **not** build an automated scraper against NSE's undocumented JSON endpoints or RSS pages as a default Northgate ingestion route. A visible CSV download control does not automatically grant bulk automated collection, model-training, storage or redistribution rights. For automated or persistent use, obtain written clarification/permission or use an appropriately licensed provider. Keep any manually downloaded research files local/private, preserve attribution and terms, and confirm whether model backtesting/simulation is permitted before relying on exchange-origin data.
+- NSE Data Sharing & Usage Policy confirms market-data access, handling, dissemination and end-user restrictions are governed by relevant agreements; redistribution is not automatically granted.
+- BSE's information-products tariff sheet identifies EOD, historical and corporate data as products offered to researchers/academicians, which indicates that free website visibility should not be equated with blanket reuse rights. A BSE RSS URL appears in third-party feed directories, but the feed itself and terms were not independently verified in this pass.
+- SEBI circular SEBI/HO/DEPA-II/DEPA-II_SRG/P/CIR/2024/178 dated 20-Dec-2024 concerns sharing data for research/analysis; review the full circular and exchange-specific implementation before concluding a particular data use is permitted.
+
+### Third-party EOD data candidate: TejHQ / tej-bazaar
+- A new public candidate was found: TejHQ's tej-bazaar pipeline and tejhq/indian-markets Hugging Face dataset. The project claims NSE EOD coverage from 2010 and BSE from 2024-07-08, with raw OHLCV, corporate actions, adjusted prices, symbol history, liquidity-universe and delivery trees; the dataset card currently previews about 7.36 million NSE rows and the full dataset reports about 34.35 million rows.
+- GitHub repository code is MIT-licensed, but its own data terms explicitly say MIT does **not** cover exchange-derived data and TejHQ holds no NSE/BSE licence or written clarification. TejHQ allows personal research/backtesting/model training and local storage under its own terms, but says raw data cannot be redistributed; the exchanges' terms apply independently. This does not resolve the NSE restriction above. Treat it as a promising validation/cross-check candidate, not a legally cleared production source.
+- Data caveats from its own dataset card: daily data is usually available next morning IST; anomalies such as close outside low/high and zero-volume rows may be dropped; corporate-action classifier can leave type=other; adjusted prices and symbol-history joins need scrutiny. Do not replace the existing 10-stock Yahoo panel until independently compare overlapping sessions, corporate actions, price conventions, gaps and delisted-symbol handling.
+- The public dataset is large (about 1.25 GB). Avoid pulling the whole corpus until a narrow 10–15 ticker sample and legal suitability are checked.
+
+### Financial news and sentiment sources
+- GDELT DOC 2.0 is a rolling full-text *search* interface, not a durable 8–10 year article archive: official GDELT documentation says the DOC API's default search window is three months and precise STARTDATETIME/ENDDATETIME searches must remain inside that window. Older full-text article retrieval is not guaranteed. GDELT GKG/Event archives provide long historical metadata, themes, entities, URLs and tone/context signals, but not a complete, reusable full article-text corpus. BigQuery public datasets have a 1 TB/month free query allowance, subject to query pricing and project setup.
+- The Zenodo Indian Stock Market News Dataset / IN-FINews is a concrete India-focused supplemental corpus: 3,348 English articles from early Feb to late Aug 2025, 13.1 MB CSV / 13.6 MB JSON. This is too short and small for the PRD's 8–10-year daily news requirement; inspect its record-level fields and licence before use. It can support a small sentiment-model smoke test or domain vocabulary analysis, not a long historical backtest.
+- Economic Times / Times Internet RSS terms say feeds are free for personal, non-commercial use but prohibit storing copies (except personal use), redistribution, aggregation/resale and commercial use. Do not assume RSS article text may be retained as a training corpus. For each publisher, verify licence/retention rights separately.
+- The current feasible free path is therefore likely a **two-stream design**: (1) timestamped official exchange disclosures as structured events, subject to rights/terms and a durable archive; (2) GDELT metadata/tone or a small licensed/open article corpus for broader media context. These are not interchangeable: filings are issuer/regulatory disclosures, not editorial reporting. Compare sentiment features against the price/volume baseline on identical dates; do not assume added value.
+
+### Evidence and source links
+- NSE Terms of Use: https://www.nseindia.com/static/nse-terms-of-use
+- NSE Copyright Policy: https://www.nseindia.com/static/nse-copyright
+- NSE Data Sharing & Usage Policy: https://www.nseindia.com/static/market-data/nse-data-policy
+- SEBI research-data circular: https://www.bseindia.com/downloads1/SEBI_circular_Policy_Sharing_Data.pdf
+- TejHQ data terms: https://tejhq.dev/data-terms
+- TejHQ dataset: https://huggingface.co/datasets/tejhq/indian-markets
+- GDELT DOC API documentation: https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/
+- GDELT data portal: https://www.gdeltproject.org/data.html
+- IN-FINews: https://zenodo.org/records/16991843
+- Economic Times RSS terms: https://economictimes.indiatimes.com/rss.cms
+
+No additional article corpus, exchange data file or third-party Parquet was downloaded in this review. Usage rights and actual record-level quality remain open.
