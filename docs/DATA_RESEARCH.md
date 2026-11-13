@@ -1786,3 +1786,21 @@ A vendor can retrospectively restate historical price levels after later corpora
 - How to treat unresolved corporate actions: exclude, sensitivity-test, or retain with a flagged limitation.
 
 No new price series, features, labels, or code were created in this research step. These are methodology proposals and open questions, not approved project decisions.
+
+
+## 2026-11-14 — Yahoo event-window audit across known corporate actions
+
+The user ran a read-only seven-session event-window diagnostic against the original Yahoo CSVs for eight known events: BHARTIARTL 2019 and 2021 rights issues; RELIANCE 2020 rights issue, 2023 Jio Financial demerger and 2024 bonus; ITC Hotels 2025 demerger; HDFCBANK 2025 bonus; HINDUNILVR 2025 ice-cream demerger. All eight event dates were found in the CSVs. No files were modified.
+
+### Observations from the supplied output
+- Within each displayed local event window, `Adj Close / Close` is effectively constant: BHARTIARTL 2019 0.961759; BHARTIARTL 2021 0.965212; RELIANCE 2020 0.974031; RELIANCE 2023 0.984606; RELIANCE 2024 0.991438; ITC 2025 0.921697; HDFCBANK 2025 0.983730; HINDUNILVR 2025 0.989931.
+- Accordingly, `Close_Return` and `Adj_Close_Return` are equal or differ only by rounding in the displayed windows. This means the adjusted-close multiplier is not changing within these particular seven-session windows. It does not establish that the series has no retrospective adjustment across longer history or across the event boundary in a broader download.
+- Yahoo's action field reports `Stock Splits = 2.0` on the RELIANCE 2024-10-28 and HDFCBANK 2025-08-26 bonus dates. The displayed Yahoo Close values do not halve on those dates. This is consistent with the Yahoo history being represented on a retrospectively split-normalised share basis, but this diagnostic alone does not prove the exact vendor adjustment convention or establish the pre-event exchange prices.
+- The rights/de-merger windows have no `Dividends` or `Stock Splits` action recorded on those dates in the supplied output. This is not proof that the corresponding entitlements or economic effects are reflected correctly in Yahoo's price/adjusted-close series.
+- The earlier official Bhavcopy comparisons remain important: the Yahoo values are faithfully copied into our panel, but they differ from official NSE unadjusted closes. The event-window audit does not resolve the historical price-basis discrepancy or validate shareholder total returns.
+
+### Interpretation and limitations
+This is a diagnostic of the vendor's returned columns, not a reconstruction of cash-market prices or shareholder wealth. A constant `Adj Close / Close` factor within a short window explains why daily returns match there; it does not certify point-in-time correctness, rights adjustment, demerger treatment, or absence of future corporate-action restatement. Do not infer a global adjustment factor, reverse-adjust historical values, or change target labels from these observations alone.
+
+### Next validation
+Compare Yahoo `Close` against official NSE EQ Bhavcopy closes for multiple dates immediately before and after the RELIANCE and HDFCBANK bonus events, and obtain official event-window Bhavcopy checks for the rights and demerger cases. In particular, test whether Yahoo's pre-bonus values are already expressed on the post-bonus share basis. Preserve original Yahoo and Bhavcopy files; no derived series or labels have been created.
