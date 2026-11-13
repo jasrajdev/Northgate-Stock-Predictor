@@ -337,3 +337,13 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 
 ### Additional official CPI 2024 methodological finding (MoSPI FAQ)
 MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, Urban and Combined covers Jan 2013–Dec 2024 and is linked using the 2025 overlap between old (2012) and new (2024) series. The general-level linking factors listed are Rural 0.5222, Urban 0.5320 and Combined 0.5267; the FAQ defines the factor as the ratio of annual-average (geometric-mean) new-series CPI to old-series CPI for the overlap year. This creates a comparable historical index scale; it does not make those linked historical values contemporaneous release vintages. Do not use the back series as point-in-time investor information for 2013–2024. Preserve source series and vintage separately. MoSPI FAQ: https://mospi.gov.in/uploads/documents/documents/1770891066052-Annexure_V.pdf (questions 36–38, pp. 4–5).
+
+
+
+## 2026-11-13 — Latest official source check (evening)
+
+- Verified MoSPI's October 2026 CPI release: published 12 November 2026 at 16:00 IST, base 2024=100; Combined General CPI index 110.05 and YoY inflation 6.09% provisional (rural 6.63%, urban 5.41%). Since publication was after the NSE cash close, it is not available to a 12 November close-time prediction; use only from the next eligible session and keep it separate from the 2012-base series.
+- PLFS publication status as of 13 November: September 2026 monthly bulletin released 15 October; July–September 2026 quarterly bulletin released 10 November; October 2026 monthly bulletin scheduled for 15 November and not yet due.
+- RBI DBIE Key Rates source is identified and reports 271 effective-date records through 7 October 2026; CSV/JSON export is available but not downloaded. NSE India VIX official date-range/CSV workflow is confirmed but no CSV is downloaded. NSE corporate filing summary page has company/subject/date filters, CSV export and timestamp display; no filing corpus has been retrieved.
+- No new PLFS, RBI, VIX or announcement observations have been downloaded or merged. Do not mark these datasets complete based on source discovery alone.
+- Immediate next action: obtain raw official exports/API responses for RBI Key Rates, India VIX and PLFS via the documented public e-Sankhyiki MCP workflow; preserve raw files and retrieval metadata, then run schema/coverage/duplicate/time-availability QA before any join. For NSE filings, test a bounded company/date CSV export and inspect timestamp fields and historical depth.
