@@ -229,3 +229,16 @@ No new PLFS, VIX, RBI or news rows were downloaded in this research pass. These 
 - NSE Corporate Filings Summary Documents: https://www.nseindia.com/companies-listing/corporate-filings-summary-documents
 
 No raw PLFS API response, RBI export, VIX CSV or NSE filings CSV was downloaded in this pass. This is metadata/source-contract verification only.
+
+
+## 2026-11-13 — MoSPI CPI API contract verified from user's terminal
+
+The user retrieved the official OpenAPI YAML successfully (HTTP 200) from https://esankhyiki.mospi.gov.in/layout/swagger_user_cpi.yaml. This is the CPI API, not the PLFS API. Official e-Sankhyiki CPI page documents the same endpoint.
+
+- Production endpoint: https://api.mospi.gov.in/api/cpi/getCPIData (GET); bearer token optional for guest access; rate-limited per IP.
+- Base years 2010, 2012 and 2024. level=Group|Item is required for base 2010/2012; not used for 2024.
+- Filters differ by base year/level. For 2024, filters include series, year, month, state, sector, division, group, class, subclass, item and imputation. Codes can be comma-separated but are not validated; discover valid values via getCpiFilterByLevelAndBaseYear first.
+- Page numbering starts at 1; limit is 10–100. viz_req=true asks for the full filtered result. API responses use a JSON envelope with statusCode, msg, data and pagination metadata.
+- The OpenAPI example shows 1,445,316 records / 144,532 pages for a broad 2024 request. This is an example, not retrieved project data. Never run unbounded requests.
+
+The API spec does not document historical vintage/as-of queries. Its current response must not replace the existing point-in-time 2012-base vintage/event archive. Use the API for a current/expanded dataset only unless historical vintages can be independently obtained. No API observation pages have been downloaded or merged yet. Existing point-in-time workbook pipeline remains the reliable CPI backtest path.
