@@ -141,3 +141,6 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 
 
 - Freshness correction: subsequent live-tree check shows TejHQ's newest observed publication is 2026-11-12 (raw NSE tree short hash `d6f1912`; adjusted NSE 2024 file short hash `8b77c06`). The prior 2026-11-11 note is superseded. Full commit SHA still unavailable, so revision pin remains incomplete.
+
+
+- Additional pipeline QA notes: TejHQ transform includes NSE EQ/BE/BZ by default, drops zero-volume rows, and deduplicates on (date,symbol) keeping first; low>0 and non-negative turnover/trades are not explicit invariants, and no rejected-row audit output is described. Need a Northgate series/zero-volume policy and raw-vs-cleaned row audit before adoption.
