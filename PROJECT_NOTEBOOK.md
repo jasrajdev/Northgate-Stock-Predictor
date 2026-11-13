@@ -91,3 +91,11 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 4. Inspect historical NSE corporate-action exports and point-in-time index-membership reconstruction against original circulars.
 5. Pilot GDELT GKG queries for selected Indian issuers, measuring entity precision, timestamp availability and data volume before any broader pull.
 6. Extend FRED retrieval to ALFRED vintage-aware observations; keep latest-value graph CSVs explicitly non-PIT.
+
+## Research continuation — 2026-11-14 (additional source verification)
+- RBI monthly government-security yield curve: monthly 1–30 year residual maturities from Apr-1996 to Aug-2026 (RBI DBIE report 1368 / Handbook Table 217). This offers a legitimate low-frequency candidate, but the daily generic 10-year benchmark remains unresolved. Never interpolate monthly yields to daily observations.
+- RBI daily call/notice money rates are documented in official daily statistics (weighted averages, ranges and turnover); a long-history machine-readable daily export was not acquired.
+- Official MoSPI PLFS MCP code documents the /api/plfs/getData workflow and monthly (Apr-2025–Sep-2026, All India, indicators 1–3) versus quarterly frequency rules. No API data rows were retrieved in this pass.
+- NSE official India VIX page exposes custom date ranges and CSV download with OHLC/change fields; actual historical export remains unacquired.
+- TejHQ is the strongest immediately inspectable private-research cross-check candidate, but provider terms acknowledge no exchange licence and prohibit raw redistribution; NSEDATA4ME and historical-membership reconstructions remain unverified candidates. Existing Northgate panel remains unchanged.
+- No new raw data was downloaded or merged. The public-source route does not depend on an academic institution or user-side contact.
