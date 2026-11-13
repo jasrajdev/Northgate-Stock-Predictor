@@ -18,7 +18,7 @@ import openpyxl
 
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 MONTH_LOOKUP = {m.lower(): i for i, m in enumerate(MONTHS, 1)}
-FILENAME_RE = re.compile(r"Annexures for Press Release in Excel ([A-Za-z]+) (20\\d{2})\\.xlsx$", re.I)
+FILENAME_RE = re.compile(r"Annexures for Press Release in Excel ([A-Za-z]+) (20\d{2})\.xlsx$", re.I)
 
 
 def release_month(path: Path) -> date:
