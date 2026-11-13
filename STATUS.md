@@ -347,3 +347,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - RBI DBIE Key Rates source is identified and reports 271 effective-date records through 7 October 2026; CSV/JSON export is available but not downloaded. NSE India VIX official date-range/CSV workflow is confirmed but no CSV is downloaded. NSE corporate filing summary page has company/subject/date filters, CSV export and timestamp display; no filing corpus has been retrieved.
 - No new PLFS, RBI, VIX or announcement observations have been downloaded or merged. Do not mark these datasets complete based on source discovery alone.
 - Immediate next action: obtain raw official exports/API responses for RBI Key Rates, India VIX and PLFS via the documented public e-Sankhyiki MCP workflow; preserve raw files and retrieval metadata, then run schema/coverage/duplicate/time-availability QA before any join. For NSE filings, test a bounded company/date CSV export and inspect timestamp fields and historical depth.
+
+
+## 2026-11-13 — MoSPI API route discrepancy identified
+
+- The official portal OpenAPI previously inspected by the user documents direct CPI retrieval at /api/cpi/getCPIData. The current official NSO India MCP server source instead maps CPI Group/Item retrieval to /api/cpi/getCPIIndex and /api/cpi/getItemIndex; PLFS maps to /api/plfs/getData.
+- Treat the user's existing CPI work as a direct-REST pilot, not proof that the MCP server uses the same endpoint. Before automating CPI ingestion, compare a bounded set of identical filters/months through both routes and reconcile schemas/values. Follow the MCP's four-step workflow for PLFS; retrieve metadata before passing filters.
+- This is a newly identified integration question, not a confirmed API failure. No new API rows were downloaded in this source-code inspection.
