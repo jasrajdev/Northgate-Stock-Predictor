@@ -233,3 +233,12 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Current official PyTorch installation matrix lists PyTorch 2.14.1 Windows wheels for CUDA 12.6, 13.0 and 13.2; CUDA 12.8 is no longer in the current matrix.
 - Corrected the Victus instructions to install `torch==2.14.1` from the official CUDA 12.6 wheel index. This is the conservative compatible choice for the reported driver CUDA 13.1; do not use the previously written cu128 command.
 - Source checked: official PyTorch previous-version installation matrix and release compatibility matrix. See the project handoff document for the exact command.
+
+
+## 2026-11-13 — CPI datasets extracted from supplied MoSPI workbooks
+- Processed 18 monthly base-2012 CPI Annex-I workbooks (July 2024–December 2025): extracted 108 headline records covering June 2024–December 2025 across Rural, Urban and Combined, preserving both prior-month Final and current-month Provisional release vintages.
+- Processed `cpi_33.xlsx`: extracted 66 All-India headline base-2024 Current records covering January 2025–October 2026 across the same three sectors. 36 selected headline inflation cells are missing and remain missing.
+- Kept base-2012 and base-2024 series separate. Exact publication timestamps are not present in these extracted tables, so neither series is yet safe to merge into historical daily model features.
+- Added `scripts/extract_mospi_cpi.py` for reproducible extraction from local workbook files. The script source was committed and read-back checked; local execution of the committed script has not yet been verified.
+- Generated local outputs: `india_cpi_base2012_release_vintages.csv`, `india_cpi_base2012_latest_available.csv`, `india_cpi_base2024_current_headline.csv`, and `india_cpi_dataset_qa.json`.
+- Next data task: recover exact MoSPI release timestamps and obtain the official base-2024 linked back series (January 2013–December 2024) as a separate dataset; then continue RBI yields/rates and India VIX.
