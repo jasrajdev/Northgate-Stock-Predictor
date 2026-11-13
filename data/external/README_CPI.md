@@ -18,3 +18,13 @@ All listed releases in this sample were published after NSE's 15:30 cash-market 
 
 ## Rebuild
 Run `scripts/build_cpi_vintages.py` against the original monthly Excel workbooks and the release availability map. The script identifies historical tables by title and validates unique (release vintage, reference month, series) keys. The original workbooks are retained in the Project source files; keep them alongside this repository-derived data as source evidence.
+
+## Market-panel join
+Use `scripts/merge_cpi_release_events.py` to merge the compact release-event file onto the actual daily market panel:
+```bash
+python scripts/merge_cpi_release_events.py \
+  --market-panel data/processed/market_panel.csv \
+  --cpi-events data/external/cpi_mospi_2012base_release_events_2024-07_to_2025-12.csv \
+  --output data/processed/market_panel_with_cpi.csv
+```
+The join is a backward as-of join on the first eligible NSE session. It preserves input row order, leaves pre-first-release rows unmatched, and rejects duplicate availability sessions or non-2012 base rows. Review `tests/test_cpi_asof.py` for boundary and integrity cases.
