@@ -101,3 +101,13 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 - Added `data/external/cpi_release_availability_map_2012base.csv` and `scripts/build_cpi_vintages.py`. The script is saved and fetched back from GitHub; local execution against the complete input folder remains pending.
 - The extracted vintage CSV and original workbook-derived snapshots are present in the working environment, but the new large generated vintage CSV has not yet been committed to GitHub through the repository connector. Do not claim it is durably saved until verified in the repository.
 - No daily NSE-aligned feature table has been built yet. The deterministic as-of join remains the next data-engineering step; it must use the next eligible NSE session after actual release and retain vintage status.
+
+
+### 2026-11-13 — CPI point-in-time data pipeline corrected and saved
+- Corrected `scripts/build_cpi_vintages.py`: MoSPI changed historical time-series annexure numbering during the sample. The script now identifies cumulative General CPI index and YoY inflation tables by title/content across all sheets, rather than assuming Annex-VI/VII.
+- Re-tested the sheet-detection logic against all 18 supplied monthly workbooks: 28 relevant historical sheets detected; 3,990 records; 14 release snapshots; 156 reference months; 26 provisional markers; zero duplicate (release vintage, reference month, series) keys. Detected sheet mapping matches the extracted snapshot data.
+- April 2025 actual release date/time is verified as 13 May 2025, 16:00 IST; first eligible NSE session is 14 May 2025.
+- Added two timestamp-enriched vintage CSV parts (3,990 rows total) and an 18-row current-release event table under `data/external/`. Added `data/external/README_CPI.md` with data dictionary and join instructions. Added detailed methodology and correction to `docs/DATA_RESEARCH.md`.
+- A single oversized combined CSV was removed because the repository connector could not read back its full content. The two smaller split CSV files have been created and their headers fetched back; full row-level GitHub verification remains incomplete.
+- No daily CPI/market feature table has been built. The actual 29,484-row market panel is not in the current Project file list or GitHub repository, so the next join must wait for that exact trading-date panel rather than inventing sessions. No CPI model has been trained or backtested.
+- Current reproducible CPI feature source: `data/external/cpi_mospi_2012base_release_events_2024-07_to_2025-12.csv`; merge by backward as-of on `next_nse_session <= market date`, never by reference month.
