@@ -1386,3 +1386,27 @@ The target-stock pages show examples of event types for which the inspected TejH
 - RELIANCE demerger, ex-date 2023-07-20; rights issue, ex-date 2020-05-13.
 - BHARTIARTL rights issues, ex-dates 2019-04-23 and 2021-09-27.
 These are not necessarily errors in raw prices: the ex-date market price reflects the corporate event. But if the model's target/return calculation expects economically comparable adjusted prices, an unadjusted event can look like an artificial price shock. This makes the adjustment gap directly relevant to our universe, not just a theoretical caveat. Compare raw close and adjusted close around each event and, where necessary, construct a separate event-aware total-return or price-continuity treatment with transparent assumptions. Do not silently overwrite the PRD target. Sources: https://tejhq.dev/stocks/itc ; https://tejhq.dev/stocks/hindunilvr ; https://tejhq.dev/stocks/reliance ; https://tejhq.dev/stocks/bhartiartl ; pipeline/actions/factors.py.
+
+
+## NSE research-data access route — verified 2026-11-14
+
+NSE now has a dedicated **Data for Research** page, marked updated 04-Nov-2026. It says access is for academic/non-commercial research and directs applicants to submit the Data Seeking Request Form to **nseri@nse.co.in**. NSE's current disclaimer further restricts research-oriented access/download to individuals from accredited academic institutions, recognised research organisations and think tanks; NSE may require a binding NDA involving the researcher, parent institution and NSE, and may require periodic usage/progress reports. This is an eligibility-controlled route, not an unrestricted free download API.
+
+SEBI Circular **SEBI/HO/DEPA-II/DEPA-II_SRG/P/CIR/2024/178**, dated 20-Dec-2024, establishes a two-basket framework for research/analysis data:
+- Public/research-shareable Basket 1 includes mandated public disclosures and specified datasets. NSE's published list includes historical reports, daily security-wise OHLC/turnover, Bhavcopy archives, historical index data, FII/FPI and DII activity, listed-company financial results, shareholding patterns, corporate announcements and corporate actions.
+- A reasonable amount of eligible research data up to **2 GB per researcher per year**, where no extra computation is required, is to be provided free. High-volume data and/or processing/value-addition may be charged on a cost basis.
+- NSE's published data list separately classifies voluminous historical EOD data (including Bhavcopy/security/trade details), corporate data, historical security/contract masters and some flow datasets as chargeable when above 2 GB. Therefore the 2 GB provision is not a blanket promise that the full Northgate history will be free.
+- The restricted basket includes personally identifiable or re-identifiable information such as PAN-wise trades, KYC, unique client codes, identifiable client/member order/trade records and client-wise positions. These are not needed for Northgate and should not be requested.
+
+The NSE Data for Research page is the operational application route; the downloadable data list currently surfaced is dated 28-Jul-2025, so treat its inventory as the latest located published list, not proof that every listed file is currently downloadable or that its coverage is complete. NSE's older Data Sharing & Usage Policy also defines non-commercial users broadly to include students/researchers, but the current research-page disclaimer applies the institutional eligibility condition. Do not infer an individual student's eligibility from the older definition; written confirmation from NSE is needed.
+
+**Northgate relevance:** a narrow request for a limited universe and date range may fit within the 2 GB threshold, but the exchange decides whether the specific records qualify, whether they require processing, and whether access is approved. A request should identify a testable research hypothesis and justify each requested field. Potential priority: daily cash-market EOD OHLCV/Bhavcopy and corporate actions for the ten provisional symbols plus NIFTY index history; add company announcements only if the requested scope/volume remains feasible. Ask for machine-readable UDiFF/legacy format metadata and permitted local storage/backtesting use in writing.
+
+**No application has been submitted, no institutional eligibility confirmed, no data granted or downloaded, and no permission to scrape NSE pages inferred.** Publicly mandated disclosure downloads and research-access data remain distinct from permission for automated collection or redistribution.
+
+Sources:
+- NSE Data for Research (page updated 04-Nov-2026): https://www.nse.in/static/research/initiatives-data-for-research
+- NSE disclaimer, research data clauses: https://www.nseindia.com/static/nse-disclaimer
+- SEBI Circular 2024/178: https://www.sebi.gov.in/legal/circulars/dec-2024/policy-for-sharing-data-for-the-purpose-of-research-analysis_90088.html
+- NSE Data List under research policy (PDF, 28-Jul-2025): https://nsearchives.nseindia.com/web/sites/default/files/inline-files/Data%20list%20under%20NSE%20Data%20Sharing%20Policy%20for%20Research%20and%20Analysis_20250728.pdf
+- NSE Data Sharing & Usage Policy: https://www.nseindia.com/static/market-data/nse-data-policy
