@@ -1,3 +1,493 @@
+# Current Status
+
+Updated: 2026-11-13
+
+## Project state
+- Repository: private GitHub repository; default branch `main`.
+- Stage: market-data ingestion, feature engineering, and first next-session supervised dataset generation have been run successfully on the user's Mac.
+- Environment: MacBook Air M4, user-reported 16 GB unified memory; project virtual environment `.venv/`. Latest terminal session used Python 3.14 according to the earlier installation output (the older Python 3.12.15 note was stale).
+- Declared dependencies: NumPy, pandas, yfinance; pytest for development.
+- Existing code: package/data-module placeholders, a market-data scaffold, and a project-structure test.
+- Verified user-reported local data: 29,484 market-panel rows across 10 provisional equities plus NIFTY 50, and a 29,484-row feature panel with 24 engineered features. Per-ticker volume anomaly handling has been added. The next-day modelling dataset was generated locally: 29,473 labelled rows across 11 instruments; 11 final per-ticker rows were removed because no next-session label exists. User-provided checks: zero duplicate ticker/date keys, all target dates after feature dates, zero missing target values, and zero non-positive target adjusted closes.
+- No models have been trained; no backtest, dashboard, or performance result has been produced. A target-date-based chronological split script has been added to GitHub and run locally. User verified all three CSV outputs and the JSON report; 29,473 rows are partitioned across 11 instruments (21,708 train; 6,379 validation; 1,386 test), with all six script checks passing.
+- The original PRD is referenced by the project notes but is not present as a standalone file in the current GitHub repository tree reviewed on this date. Keep its requirements visible until it is added or otherwise made available as a durable project file.
+
+## Confirmed project direction
+- Research focus: Indian equities.
+- NIFTY 50 is a candidate universe and benchmark family, not a final stock-selection decision.
+- Build a reproducible research and decision-support system, not a live brokerage execution bot.
+- Preserve chronological out-of-sample testing, point-in-time information, simple baselines, transaction-cost awareness, and honest reporting.
+- The PRD's requested scope remains the reference scope: 8–15 liquid equities plus a benchmark, 8–10 years of data, the specified model comparisons, sentiment/news comparison, portfolio optimisation, dashboard, and report. Any scope reduction or expansion must be explicit rather than silently assumed.
+- Recommendation principle confirmed 2026-11-12: no daily trade is required. The system must be allowed to recommend no new trade across the whole portfolio, must apply pre-defined criteria consistently, and must not force a sale/rotation simply because another asset has a higher forecast. See `DECISIONS.md`.
+
+## Not yet decided
+- Whether the PRD's 8–15 stocks are only the baseline research universe or also the eventual prediction/coverage limit.
+- Whether training on a broader multi-company panel can generalise to additional unseen Indian equities; this requires a fair out-of-sample experiment and is not assumed.
+- Exact stocks, benchmark series, historical membership method, and data providers.
+- Multi-day forecast horizon(s), recommendation thresholds, uncertainty/abstention rules, trade entry/exit convention, and what constitutes a successful BUY.
+- Whether the practical 70% BUY-win-rate aspiration previously discussed should remain an evaluation objective; it is not a verified result or a PRD acceptance criterion.
+- News sources, coverage, API provider(s), event taxonomy, model approach, and workflow scheduler/orchestrator.
+- Final model set beyond the PRD comparison requirements, and any scope trade-offs needed for the recorded 15 November 2026 deadline.
+
+## Latest research progress
+- Fieberg et al. (2023) full-paper extraction reviewed. Its useful findings and limitations have been consolidated into the single rolling document `docs/RESEARCH_ROADMAP.md`; no separate paper-summary file is maintained.
+- The paper studies monthly pooled cross-sectional returns across a broad European universe, not daily price forecasting or a small 8–15-stock universe. It does not establish transferability to Indian equities.
+- The rolling research synthesis now compares Gu–Kelly–Xiu and Fieberg and identifies the PRD's daily forward-price task versus the papers' monthly return-prediction task as a key unresolved mismatch.
+
+## Next action
+Continue EDA and prepare macro/market and timestamped news/sentiment data, aligning each item to its actual release/publication time. Define the unspecified multi-day horizons before creating those labels. Keep the final six-month test set untouched until model selection is frozen.
+
+## Progress rule
+Update this file only for verified progress and decisions the user has confirmed. Keep provisional brainstorming in the conversation; do not turn every idea into a repository entry. After any repository edit, fetch the saved file and verify its contents.
+
+
+## Hardware and execution plan (2026-11-12)
+- User reports an Apple M4 MacBook Air with 16 GB unified memory. Use it for data preparation, EDA and classical ML; Apple MPS may accelerate supported neural-network operations.
+- Friend's HP Victus reportedly has 6 GB VRAM, but exact GPU model is unknown. Confirm GPU model and CUDA support before relying on it.
+- A full PRD run (four classical models, four deep architectures, sentiment integration, portfolio/backtesting, dashboard and report) in one day is not guaranteed. Prioritise reproducible data, baseline and a defensible subset; report anything unfinished honestly.
+
+
+## Latest verified milestone — 2026-11-12
+- User ran `git pull origin main` successfully and executed `python scripts/build_next_day_dataset.py`.
+- Output: 29,484 input rows; 29,473 rows with next-session labels; 11 rows removed (one final row per each of 11 tickers); 11 tickers.
+- Validation output: duplicate ticker/feature-date keys = 0; target date after feature date = True for all rows; missing target values = 0; non-positive target adjusted close = 0.
+- Local output paths reported by user: `data/processed/modeling_dataset_next_day.csv` and `reports/data_quality/next_day_dataset_report.json`.
+- These results are user-provided terminal output; files were not independently inspected in this session. No model training has started.
+- Next datasets: macro/market context and timestamped news/sentiment. Sentiment must be compared against the price/volume baseline on the same chronological dates; no incremental value is assumed.
+
+
+## 2026-11-13 — Chronological split plan agreed; script added
+- User approved a chronological first-pass split: training target dates through 2023-12-31, validation target dates after that and before the final six-calendar-month test window, and an untouched final six-month test window.
+- Added `scripts/create_chronological_splits.py`. It calculates the test cutoff from the latest target date, assigns rows by `target_date_t1`, writes train/validation/test CSVs and a JSON report, checks chronological separation and duplicate keys, and identifies all `target_*` columns as forbidden model inputs.
+- Current user-reported latest target date is 2026-11-09, implying a calendar cutoff of 2026-05-09. The exact first test trading date and partition counts must be confirmed by running the script locally.
+- Script has been fetched back from GitHub and its saved contents verified. It has not yet been run locally; no model training has occurred.
+
+
+### 2026-11-13 — Chronological partitions generated and verified locally
+- User ran `python scripts/create_chronological_splits.py` successfully on the Mac.
+- Actual partitions: training 21,708 rows (target dates 2016-01-04 to 2023-12-29); validation 6,379 rows (2024-01-01 to 2026-05-08); final test 1,386 rows (2026-05-11 to 2026-11-09). Each partition contains 11 tickers and 39 columns.
+- All six script checks passed: no duplicate ticker/feature-date keys; all target dates after feature dates; train before validation; validation before test; all rows assigned exactly once; target columns excluded from candidate feature columns.
+- User separately inspected all three CSV files and confirmed their shapes, ticker counts, target columns and date ranges. The JSON report exists locally at `reports/data_quality/chronological_split_report.json`.
+- Feature-date ranges overlap at partition boundaries by design: rows are assigned according to when their target becomes known. For example, the first validation target on 2024-01-01 uses a feature date of 2023-12-29; the first test target on 2026-05-11 uses a feature date of 2026-05-08. This is correct for next-session forecasting.
+- Split CSVs and JSON report are local generated outputs; they have not been committed to GitHub. No models have been trained.
+
+
+## 2026-11-13 — CPI release workbook extraction completed
+- Inspected all 18 Project-backed MoSPI monthly Excel annexure workbooks from July 2024 through December 2025; no additional upload was required.
+- Added `data/external/cpi_mospi_2012_release_vintages_2024-07_to_2025-12.csv` (108 rows): monthly rural/urban/combined headline index values, provisional current-month inflation, and preceding-month final index observations.
+- Added `data/external/cpi_mospi_2012_historical_table_snapshots_2024-07_to_2025-12.csv` (3,990 rows): historical CPI index and YoY inflation table snapshots across 14 supplied release workbooks.
+- Observed revisions in the supplied provisional-to-final comparison: combined index changed in 4 of 17 matched months (max absolute change 0.2 points); rural in 1/17 (0.1); urban in 5/17 (0.4). Preserve vintage records rather than overwriting them.
+- Inspected the separate `cpi_33.xlsx`: 31,460 rows, 22 months, base 2024; 2025 inflation is null throughout. It has no release timestamps or vintage identifiers and is not an as-published 2025 archive.
+- GitHub CSV files were fetched back and row-count verified. `docs/DATA_RESEARCH.md` now documents extraction method, coverage, revision checks and limitations.
+- CPI is not yet ready to merge into market features: actual official release dates/times must be mapped, and an as-of join must assign each release to the next eligible NSE session. No CPI model feature has been built or backtested yet.
+
+## Next action
+Map each supplied CPI workbook to its official MoSPI release date/time, verify the release-time regime and next eligible NSE session, then construct a point-in-time CPI feature table. Keep the 2024-base snapshot separate from the contemporaneously available 2012-base series.
+
+
+### CPI publication-time and market-availability mapping
+- Added `data/external/cpi_mospi_2012_release_availability_map_2024-07_to_2025-12.csv` (18 rows), with reference month, release date/time, evidence status, next eligible NSE session and source URL.
+- 17 rows have direct official PDF support. April 2025 reference-month CPI remains scheduled-only (12 May 2025 cited as the expected date by the previous release); its own PDF must be found before the timestamp is considered verified.
+- All verified release times are after the 15:30 NSE cash close. Next-session mapping accounts for weekends and official NSE equity-market holidays.
+- GitHub copy fetched back and verified at 18 data rows. Details and sources are in `docs/DATA_RESEARCH.md`.
+
+**Current CPI status:** extraction and release/session mapping are documented; not yet integrated into market features. Next: locate/verify April 2025's PDF, join the availability map to the two vintage datasets, create a leakage-safe as-of feature table, then validate null handling and chronological availability.
+
+
+### 2026-11-13 — CPI vintage source and availability pipeline
+- User supplied the April 2025 MoSPI Excel annexure workbook. Verified it contains Annex-VI/VII and explicitly marks April 2025 CPI index 192.6 and YoY inflation 3.16% as provisional; March 2025 is final.
+- Verified the corresponding official April 2025 CPI release was actually published 13 May 2025 at 16:00 IST, not the previously expected 12 May. It becomes available for this project's close-based NSE features from the next eligible session, 14 May 2025.
+- Inspected all 18 monthly CPI workbooks (July 2024–December 2025). Annex-VI/VII cumulative historical time-series snapshots are available in 14 releases (November 2024–December 2025), yielding 3,990 index/inflation vintage rows. Provisional markers are preserved; duplicate vintage keys = 0.
+- Added `data/external/cpi_release_availability_map_2012base.csv` and `scripts/build_cpi_vintages.py`. The script is saved and fetched back from GitHub; local execution against the complete input folder remains pending.
+- The extracted vintage CSV and original workbook-derived snapshots are present in the working environment, but the new large generated vintage CSV has not yet been committed to GitHub through the repository connector. Do not claim it is durably saved until verified in the repository.
+- No daily NSE-aligned feature table has been built yet. The deterministic as-of join remains the next data-engineering step; it must use the next eligible NSE session after actual release and retain vintage status.
+
+
+### 2026-11-13 — CPI point-in-time data pipeline corrected and saved
+- Corrected `scripts/build_cpi_vintages.py`: MoSPI changed historical time-series annexure numbering during the sample. The script now identifies cumulative General CPI index and YoY inflation tables by title/content across all sheets, rather than assuming Annex-VI/VII.
+- Re-tested the sheet-detection logic against all 18 supplied monthly workbooks: 28 relevant historical sheets detected; 3,990 records; 14 release snapshots; 156 reference months; 26 provisional markers; zero duplicate (release vintage, reference month, series) keys. Detected sheet mapping matches the extracted snapshot data.
+- April 2025 actual release date/time is verified as 13 May 2025, 16:00 IST; first eligible NSE session is 14 May 2025.
+- Added two timestamp-enriched vintage CSV parts (3,990 rows total) and an 18-row current-release event table under `data/external/`. Added `data/external/README_CPI.md` with data dictionary and join instructions. Added detailed methodology and correction to `docs/DATA_RESEARCH.md`.
+- A single oversized combined CSV was removed because the repository connector could not read back its full content. The two smaller split CSV files have been created and their headers fetched back; full row-level GitHub verification remains incomplete.
+- No daily CPI/market feature table has been built. The actual 29,484-row market panel is not in the current Project file list or GitHub repository, so the next join must wait for that exact trading-date panel rather than inventing sessions. No CPI model has been trained or backtested.
+- Current reproducible CPI feature source: `data/external/cpi_mospi_2012base_release_events_2024-07_to_2025-12.csv`; merge by backward as-of on `next_nse_session <= market date`, never by reference month.
+
+
+### 2026-11-13 — CPI market-panel join prepared
+- Added `scripts/merge_cpi_release_events.py`: backward as-of join from actual market date to latest CPI event available from its first eligible NSE session. Preserves input row order; leaves pre-first-event dates unmatched; checks duplicate availability sessions, base-year consistency and future-dated joins.
+- Added `tests/test_cpi_asof.py` covering release-date exclusion/next-session inclusion, row-order preservation and duplicate-event rejection. Test file is committed; it has not yet been run with the repository's pytest environment.
+- Executed a synthetic boundary check for 15/16 April and 13/14 May 2025. The old CPI event remains in force on the release date and the new one becomes available on the next eligible session; check passed.
+- Added usage instructions to `data/external/README_CPI.md`; updated `docs/DATA_RESEARCH.md`.
+- Remaining blocker for actual daily integration: `data/processed/market_panel.csv` (29,484 rows, per prior user-reported local output) is not present in GitHub or the current Project file list. Do not invent or approximate its trading dates. Once available, run the committed merge script and inspect nulls, row count, ticker coverage and chronological availability.
+
+### 2026-11-13 — First CPI-to-market-panel as-of merge completed locally
+- Received and inspected the user's actual `market_panel.csv`: 29,484 rows, 11 tickers, 2016-01-01 through 2026-11-09, columns use title-case `Date` and `Ticker`.
+- Reused the locally available 18-row MoSPI 2012-base release-event CSV (July 2024–December 2025). All required event fields are present; no missing required values, no duplicate next-session availability dates, and every event is base year 2012.
+- Performed a backward as-of join on each event's `next_nse_session`, with `Date` as the market date. The market panel's original row order and all 29,484 rows were preserved; output has 22 columns and zero duplicate Date–Ticker keys.
+- CPI is unmatched before the first supplied event becomes available (2024-08-13): 23,369 rows. 6,115 rows have a CPI event, spanning all 18 supplied release months. Every ticker has 556 matched rows except NIFTY 50 (555); the one-row difference reflects the benchmark's shorter market-session coverage.
+- Boundary checks passed: no July 2024 CPI on 2024-08-12; July CPI from 2024-08-13; March 2025 remains in force on 2025-05-13; April 2025 CPI begins 2025-05-14. Every matched event's availability session and actual release date are on/before the market date; same-date rows receive one consistent CPI vintage.
+- Local output: `/mnt/data/market_panel_with_cpi.csv` (4.6 MB). This is a generated working artifact, not yet committed to GitHub. The join was executed and validated in the analysis environment using the committed script's backward-as-of logic; the repository pytest suite has not been run.
+- Important coverage limitation: the event table ends with December 2025 CPI, first available 2026-01-13. Thus the latest CPI value is carried forward through the market panel's final date, 2026-11-09 (maximum age 300 calendar days). This is stale, not a current macro feed. The 2024-base CPI series remains separate and must not be spliced into the 2012-base index.
+- Research implication: this partial CPI history cannot simply be treated as a complete feature for the full 2016–2026 training panel. Before modelling, decide whether to extend historical point-in-time release coverage, restrict CPI experiments to the supported period, or use a carefully documented missingness strategy. No model training or backtest has occurred.
+
+### 2026-11-13 — Historical CPI release-source investigation
+- Confirmed the current MoSPI eSankhyiki CPI API is a paginated endpoint covering base years 2010, 2012 and 2024; guest access is described as available, subject to rate limits. The current API documentation is not the same as the older 2023 API manual, so implementation must target the current schema only after a request-level pilot.
+- Confirmed the official eSankhyiki Data Catalogue exposes release-specific CPI records with release dates and table IDs. The official MoSPI press-release archive also provides historical PDFs.
+- Parsed an official October 2016 CPI release: published 15 November 2016 at 17:30; provisional combined General index 131.4 and YoY inflation 4.20%; preceding September final combined index 130.9 and YoY inflation 4.39%. This demonstrates the historical PDF can support release-event extraction with provisional/final status.
+- Official sample source URLs and API/catalogue findings are recorded in docs/DATA_RESEARCH.md and fetched back from GitHub after commit.
+- No historical release ledger has yet been generated. Current-vintage API observations must not be substituted for original release vintages. Next: establish stable official catalogue/table download URLs and automate a three-month pilot, reconciling all extracted values and publication times to official PDFs.
+
+### 2026-11-13 — eSankhyiki catalogue download route identified
+- New discovery: official eSankhyiki FAQ distinguishes Data Catalogue Excel downloads of released statements from Macro Indicators CSV downloads of filtered datasets. A search-indexed official catalogue URL exposes a November 2025 press-release annexure workbook (Annex-VII), hosted under `/datacatalogue/CPI/2026/`; directory year is not necessarily the release year.
+- Current CPI API page documents v2.0.0 `/api/cpi/getCPIData`; the public MoSPI MCP repository's older Swagger v1.0.11 instead documents `/api/cpi/getCPIIndex`. Treat the MCP Swagger as an older API contract, not current API documentation.
+- Catalogue currently lists 495 CPI datasets with release dates and table numbers. Findings and source URLs are documented in docs/DATA_RESEARCH.md and verified by GitHub read-back.
+- Next: retrieve and inspect the official catalogue-hosted November 2025 Annex-VII workbook; compare it against the user's November 2025 workbook; then test whether similarly named files exist for 2016–2023. No new point-in-time CPI panel generated yet.
+
+### 2026-11-13 — CPI cumulative vintage snapshots confirmed
+- Current MoSPI metadata explicitly confirms the 2012-base CPI series runs through Dec 2025 and is available in the CPI warehouse, while the 2024-base series begins Jan 2025 and the 2010-base series covers Jan 2011–Dec 2014. Keep these series separate.
+- Official MoSPI press releases contain cumulative Annexure time series for All India General CPI index since Jan 2013 and YoY inflation since Jan 2014. Confirmed in Jan 2025, May 2025, Oct 2025 and Dec 2025 release PDFs. These monthly release snapshots can support a genuine release-by-release vintage panel and revision analysis.
+- Source details, direct official URLs and implementation implications are recorded in docs/DATA_RESEARCH.md and verified by GitHub read-back.
+- Warehouse webpage itself timed out from the research environment; no warehouse Excel file downloaded. Next: obtain a small sample of official PDFs and test table extraction for index and inflation, then scale to monthly releases 2016–2025. Preserve each release snapshot and actual embargo time; do not substitute a single latest-vintage history.
+
+### 2026-11-13 — Corrected CPI cumulative-annexure coverage
+- Directly inspected official January 2016 and January 2017 CPI press releases. Both contain only Annexures I–IV and no cumulative Annexure VI/VII; they provide current provisional and preceding final headline CPI figures. This corrects the earlier overbroad assumption that cumulative historical tables existed in all monthly releases from 2016.
+- Directly inspected October 2025 CPI release: Annexures VI/VII contain cumulative combined General CPI index since Jan 2013 and YoY inflation since Jan 2014. Cumulative snapshots are verified only for late 2024/2025 in the inspected source set; exact first month still needs confirmation.
+- Updated docs/DATA_RESEARCH.md with source evidence and revised extraction strategy: pre-cumulative releases yield provisional/current + preceding final records; later releases yield full vintage snapshots. Warehouse current-vintage history remains a cross-check, not a substitute for as-published data.
+- No local file or test required from user. Next: inspect November 2024 and October 2024 official releases to establish first cumulative annexure appearance; then implement an extraction pilot that supports both early headline tables and later cumulative annexures.
+
+### 2026-11-13 — First cumulative CPI annexure release identified
+- Inspected the official November 2024 reference-month CPI press release (published 12 Dec 2024, 4 PM). It contains Annex V with cumulative 2012-base General CPI index since Jan 2013 and Annex VI with YoY inflation since Jan 2014. Combined November 2024 provisional index = 196.5 and inflation = 5.48%; October 2024 final index = 196.8 and inflation = 6.21%.
+- This is the earliest cumulative annexure release confirmed so far. Annexure numbering later changes (e.g. Oct 2025 uses VI/VII), so extraction must detect table titles rather than fixed annex numbers.
+- Earlier Jan 2016 and Jan 2017 releases and uploaded July–October 2024 workbooks have no cumulative historical annexures. Pre-Nov-2024 releases must be reconstructed from monthly provisional/final headline records; full monthly vintage snapshots begin with the Nov-2024 reference-month release, based on evidence so far.
+- Research evidence and exact official source URL saved in docs/DATA_RESEARCH.md and verified by read-back. Next: implement a title-driven PDF table parser pilot on Dec 2024 and Oct 2025 releases, then define how to ingest monthly pre-Nov-2024 headline releases.
+
+### 2026-11-13 — CPI workbook audit
+
+- Inspected 18 uploaded official MoSPI monthly annexure Excel workbooks covering July 2024–December 2025 (four months in 2024 and all twelve months in 2025).
+- July–October 2024 workbooks contain only Annex-I to Annex-IV. Cumulative historical General CPI index (2012=100, since Jan 2013) and YoY inflation (since Jan 2014) tables appear from the November 2024 release onward in the uploaded set. Annexure numbering changes, so extraction must identify sheets by title.
+- Ran an overlap consistency smoke test across the cumulative tables: 281 month/series keys were compared across available workbook vintages, with no differing values at stored precision. This is not proof that revisions never occurred and does not cover missing releases.
+- Confirmed the Annex-I headline table distinguishes prior-month Final from current-month Provisional observations. The workbook audit has not yet produced a normalized CSV or vintage dataset.
+- Detailed audit, coverage limitations, and parser requirements are in docs/DATA_RESEARCH.md.
+
+## Next action
+Implement and test a reproducible parser for the uploaded CPI workbooks. Normalize the cumulative index and inflation tables to tidy monthly observations, retain release-vintage metadata and publication timestamps, and cross-check each release's current provisional / prior final headline index against its cumulative-table endpoint. Do not merge into the Northgate model dataset until this validation passes.
+
+### 2026-11-13 — CPI parser pilot
+
+- Added scripts/parse_mospi_cpi_annexures.py and declared openpyxl in requirements.txt.
+- Ran the equivalent parser locally against all 18 uploaded workbooks: 3,948 records across 14 cumulative-table vintages; 2,078 CPI-index records (Jan 2013–Nov 2025) and 1,870 YoY-inflation records (Jan 2014–Nov 2025).
+- Checks passed: 3,948 unique vintage/observation/series keys, no duplicates, and no observation later than its workbook release reference month.
+- Pilot CSV was created under /tmp for validation only; it has not been committed or merged into the modelling dataset.
+- Exact publication timestamps remain blank by design. The parser still needs automated tests and Annex-I provisional/final endpoint cross-checks before the data can be treated as validated.
+
+## Next action
+Add tests and cross-check the cumulative series endpoint against each workbook's Annex-I current provisional and previous final Combined General Index. Then build a verified release timestamp map and align each vintage to the first eligible NSE session.
+
+## Training-first acceleration — 2026-11-13
+
+- Priority reset: begin the first price/volume-only model benchmark immediately; CPI, macro and news/sentiment are not prerequisites for baseline training. They remain later incremental-feature experiments required by the PRD.
+- Added scripts/train_baseline_models.py. It trains separate per-equity models using the existing train and validation CSV splits, excludes the ^NSEI index from stock-model fitting, uses only numeric time-t features, and evaluates next-session adjusted-close forecasts against the naive last-adjusted-close baseline.
+- Models configured: Ridge, Random Forest, SVR (RBF), and XGBoost. The script reports validation MAE, RMSE and directional accuracy. It deliberately does not load the final test partition.
+- Added scikit-learn and XGBoost to requirements.txt.
+- **Not yet run:** the training script has been committed and read-back verified, but no model has been fitted and no metrics exist yet. Local split CSVs remain on the user's Mac; GitHub currently stores the scripts, not those local data outputs.
+
+## Immediate next action
+Pull main on the Mac, install requirements in the project environment, and run scripts/train_baseline_models.py. Inspect the validation summary and errors before deciding whether to tune or add deep-learning models. Do not evaluate the final test until model selection is frozen.
+
+
+
+## Dataset and GPU handoff audit — 2026-11-13
+
+- The user-provided `market_panel.csv` was inspected from the conversation upload: 29,484 rows, 11 tickers (10 provisional Indian equities plus ^NSEI), 11 columns including adjusted close and OHLCV. The ten equities are BHARTIARTL.NS, HDFCBANK.NS, HINDUNILVR.NS, ICICIBANK.NS, INFY.NS, ITC.NS, LT.NS, RELIANCE.NS, SUNPHARMA.NS and TCS.NS.
+- The user's uploaded `cpi_33.xlsx` was inspected: 31,460 rows, 15 columns; base_year 2024 / Current series; January 2025–October 2026 in inspected records. It is granular state/sector/division data and is not by itself the complete monthly historical CPI series.
+- GitHub was checked: market_panel.csv, feature_panel.csv, modeling_dataset_next_day.csv and split CSVs are NOT present on main. The feature/model/split outputs previously reported by the user remain local to the Mac. Do not tell the user they can download those CSVs from GitHub.
+- Added `config/northgate_universe.json` and `scripts/prepare_gpu_training_data.py` so the GPU laptop can rebuild market panel, 24 backward-looking price/volume features, next-session labels and chronological splits from yfinance. Raw data are intentionally downloaded on the target machine rather than redistributed from this repository.
+- Added `scripts/train_baseline_models.py` with Ridge, Random Forest, SVR and XGBoost; XGBoost requests CUDA by default and falls back to CPU if CUDA is unavailable. It uses validation only and does not load test.csv.
+- Added `scripts/train_deep_models.py` for LSTM, GRU, BiLSTM and Transformer, with early stopping and GPU detection. It uses training-fitted preprocessing and validation only; the final test split is not loaded.
+- Added `requirements-dl.txt`, `docs/GPU_LAPTOP_SETUP.md`, `docs/DATASET_INVENTORY.md` and `docs/PRD_REQUIREMENTS.md`.
+- No new training has been run. No model artifact or metric result exists yet. The exact HP Victus GPU model and operating system remain unverified; 6 GB VRAM alone is not enough to choose the correct PyTorch/CUDA install command.
+
+## Current dataset completeness
+- **Baseline-trainable after rebuild on GPU laptop:** yes, price/volume-only experiment.
+- **Full PRD dataset:** no. Missing/incomplete items include macro series with release/vintage timing, timestamped historical news adequate for the study period, FinBERT/VADER sentiment features, point-in-time universe membership/survivorship correction, and official-source adjusted-price verification.
+- CPI source research: MoSPI e-Sankhyiki API supports base years 2010, 2012 and 2024 with Current/Back series. The base-2024 linked back series for All-India Rural/Urban/Combined covers Jan 2013–Dec 2024; preserve its linked-series status and do not silently concatenate it with contemporaneous base-2012 releases.
+- News source research: GDELT provides historical archives since 2015, but its article-search API is rolling and GDELT metadata is not a guaranteed complete financial-news text corpus. IN-FINews (Zenodo) has 3,348 India-focused articles from Feb–Aug 2025 only, useful as a small research corpus, not an 8–10-year source.
+
+## Next action
+User should use the HP Victus (not the Mac) to clone main, run the reproducible price/volume data rebuild, and send the exact GPU/OS details before installing the CUDA-specific PyTorch build. Then run classical and deep validation experiments. Keep the final test untouched.
+
+
+## 2026-11-13 — Victus hardware confirmed and deep-training blocker fixed
+
+- User-provided `nvidia-smi` screenshot confirms Windows PowerShell, NVIDIA GeForce RTX 3050 Laptop GPU, 4,094 MiB VRAM, driver 592.82 and driver CUDA compatibility 13.1. This supersedes the earlier unverified 6 GB assumption.
+- Audited `scripts/train_deep_models.py`: the committed file contained literal escaped newline sequences in Python statements and was syntactically invalid. Replaced it with a clean implementation and verified the saved GitHub content. This was a hard blocker to deep training.
+- Deep-training defaults are now conservative for 4 GB VRAM: batch 16, hidden size 32, sequence length 30, one recurrent/Transformer layer, 30 epochs, early stopping and CUDA mixed precision. Environment variables permit reducing batch/hidden size if required.
+- Updated `docs/GPU_LAPTOP_SETUP.md` with exact Windows PowerShell commands, CUDA 12.8 PyTorch installation (compatible with the reported newer driver), CUDA verification, rebuild, baseline and deep-training order, and expected outputs.
+- Important distinction: the reported CUDA 13.1 is the NVIDIA driver's compatibility level; PyTorch should be installed using the supported CUDA wheel, not by trying to install a CUDA 13.1 wheel.
+- **Not yet verified:** no Python syntax/runtime test or GPU training has been executed on the Victus. CUDA must be verified on that machine before proceeding.
+- **Next user action:** pull latest `main` on the Victus, create/activate the Python 3.11 environment, install requirements and the CUDA 12.8 PyTorch wheel, then run the one-line CUDA verification command in `docs/GPU_LAPTOP_SETUP.md`. Stop and send its output if CUDA is unavailable.
+
+
+### 2026-11-13 — PyTorch wheel compatibility rechecked
+
+- Current official PyTorch installation matrix lists PyTorch 2.14.1 Windows wheels for CUDA 12.6, 13.0 and 13.2; CUDA 12.8 is no longer in the current matrix.
+- Corrected the Victus instructions to install `torch==2.14.1` from the official CUDA 12.6 wheel index. This is the conservative compatible choice for the reported driver CUDA 13.1; do not use the previously written cu128 command.
+- Source checked: official PyTorch previous-version installation matrix and release compatibility matrix. See the project handoff document for the exact command.
+
+
+## 2026-11-13 — CPI datasets extracted from supplied MoSPI workbooks
+- Processed 18 monthly base-2012 CPI Annex-I workbooks (July 2024–December 2025): extracted 108 headline records covering June 2024–December 2025 across Rural, Urban and Combined, preserving both prior-month Final and current-month Provisional release vintages.
+- Processed `cpi_33.xlsx`: extracted 66 All-India headline base-2024 Current records covering January 2025–October 2026 across the same three sectors. 36 selected headline inflation cells are missing and remain missing.
+- Kept base-2012 and base-2024 series separate. Exact publication timestamps are not present in these extracted tables, so neither series is yet safe to merge into historical daily model features.
+- Added `scripts/extract_mospi_cpi.py` for reproducible extraction from local workbook files. The script source was committed and read-back checked; local execution of the committed script has not yet been verified.
+- Generated local outputs: `india_cpi_base2012_release_vintages.csv`, `india_cpi_base2012_latest_available.csv`, `india_cpi_base2024_current_headline.csv`, and `india_cpi_dataset_qa.json`.
+- Next data task: recover exact MoSPI release timestamps and obtain the official base-2024 linked back series (January 2013–December 2024) as a separate dataset; then continue RBI yields/rates and India VIX.
+
+
+## 2026-11-13 — Full historical CPI time series recovered
+- Found that the supplied December 2025 MoSPI workbook contains Annex-VI (monthly All-India Combined General CPI index) and Annex-VII (year-on-year inflation) time-series sheets, which were not included in the first extraction pass.
+- Extracted 156 monthly CPI index observations from January 2013 through December 2025. December 2025 is marked provisional in the source. Fourteen YoY inflation cells are blank and retained as missing.
+- The historical snapshot was released on 2026-01-12; this is the snapshot availability date, not the original availability date of each past monthly CPI observation. Point-in-time merging still requires the monthly release calendar/archived release dates.
+- Updated `scripts/extract_mospi_cpi.py` to extract Annex-VI and Annex-VII in addition to Annex-I and the separate base-2024 current series. Script source was read-back verified; execution of the committed script remains untested.
+
+
+## 2026-11-13 — Market-context acquisition scaffold
+- Added `scripts/download_market_context.py` for separate India VIX and NIFTY sector-index downloads, including coverage and missing-close QA. Source code saved and read-back check pending; data download not yet run.
+- Verified official NSE historical India VIX page and RBI DBIE Key Rates table as the primary source references. Yahoo Finance remains the downloader's initial secondary source and needs validation against NSE.
+- RBI Key Rates are effective-date events, not daily observations. A later merge must forward-fill only after the effective date and preserve the original event table.
+- No market-context or macro series has yet been merged into daily stock features.
+
+
+## 2026-11-13 — CPI extraction cross-validation
+- Cross-checked the 19 overlapping Combined CPI months (June 2024–December 2025) between monthly Annex-I release vintages and the December 2025 Annex-VI full time series: 19/19 exact matches, zero index difference.
+- Confirmed 156 monthly Combined index values from January 2013–December 2025. Fourteen YoY inflation cells are missing (2013 Jan–Dec and 2020 Apr–May) and remain missing.
+- The generated downloadable bundle contains the full base-2012 Combined time series, recent release vintages, base-2024 current headline series and QA report.
+- Added the same cross-validation and missingness checks to the committed CPI extractor; source read-back verified, but the committed script has not yet been run end-to-end locally.
+
+
+## 2026-11-13 — Macro source coverage and downloader
+- Added `scripts/download_macro_context.py` for seven FRED CSV series: PRD reference US DGS3MO, DGS10, CPIAUCSL, UNRATE plus India OECD/FRED INDIRLTLT01STM (10-year yield), INDIR3TIB01STM (3-month interbank) and IRSTCB01INM156N (central bank rate).
+- FRED metadata confirms the India 10-year and 3-month series are monthly and have recent observations through September 2026; these are not daily yields. The central-bank-rate series metadata is historical only through December 2023.
+- The script writes a separate observation-date panel and QA report, and explicitly warns that FRED graph CSV is not a point-in-time vintage archive. It must not merge macro series into daily stock rows by observation date alone.
+- Confirmed NSE's official historical India VIX download page and its definition (NIFTY-options-implied expected volatility over the next 30 calendar days). Yahoo market-context downloader remains a fallback pending validation.
+- India PLFS monthly data and RBI DBIE effective-date policy-rate event data remain pending actual extraction. No macro data has been merged into the stock modelling dataset.
+
+
+## 2026-11-13 — Release-time and official India source verification
+- Verified MoSPI's official CPI release rule: 16:00 IST on the 12th of the following month, next working day if the 12th is a holiday; an advance release calendar gives scheduled dates. This is essential for point-in-time CPI features.
+- Verified RBI DBIE Key Rates has effective-date history and CSV/JSON downloads for repo, reverse repo, SDF, MSF, bank rate and CRR; preserve source events before deriving a daily forward-filled policy-rate panel.
+- Verified revised PLFS monthly bulletins begin April 2025; September 2026 bulletin is available and October 2026 is scheduled for 15 November 2026. Methodology changed from January 2025; retain a structural-break flag.
+- Syntax-compiled `scripts/download_macro_context.py` successfully. No network download was run, so no FRED dataset row counts are claimed.
+
+
+### 2026-11-13 — RBI Key Rates and PLFS source-access audit
+- Confirmed the official RBI DBIE Key Rates table (`financial_sector.r531_key_rates`) reports 271 effective-date rows from 1935-07-06 through 2026-10-07, with repo/reverse repo/SDF/MSF/bank rate/CRR and related measures; the page advertises CSV/JSON export. RBI RTI responses independently direct users to this DBIE table for historical rate changes.
+- Automated RBI extraction remains unimplemented: DBIE supports reusable downloads, but no official public machine API route has been verified. Use official DBIE UI export as the fallback; no third-party substitute has been accepted.
+- Confirmed MoSPI's revised PLFS monthly CWS series starts April 2025; September 2026 is the 18th monthly bulletin. Identified the official API contract from the NSO India's public eSankhyiki MCP specification: `GET https://api.mospi.gov.in/api/plfs/getData`; monthly UR uses indicator_code=3 and frequency_code=3, with All India/person/15+/combined sector codes 99/3/1/3. Direct REST Swagger declares bearer authentication, but MoSPI also publishes a public hosted MCP service (`https://mcp.mospi.gov.in/`) and says public e-Sankhyiki data needs no registration. Test the MCP workflow before treating authentication as a blocker. The PLFS Swagger says CWS filter is annual-only, not monthly; preserve monthly indicator metadata rather than assuming CWS.
+- No RBI rate or PLFS data has been downloaded, committed, or merged. Preserve the January 2025 PLFS methodology break and use release dates for point-in-time joins.
+
+
+## 2026-11-13 — Official PLFS MCP and market-source follow-up
+- Identified MoSPI's hosted public MCP endpoint (`https://mcp.mospi.gov.in/`) and its documented four-step workflow: list datasets → indicators → metadata → data. The official NSO repository describes the MCP as the bridge to public e-Sankhyiki data; live calls and retrieval remain pending.
+- Corrected PLFS filter interpretation from the official Swagger: monthly UR uses frequency_code=3 and indicator_code=3, with All India/person/15+/combined-sector codes 99/3/1/3. Crucially, weekly_status_code (including CWS) is annual-only, not monthly. Do not label monthly UR as CWS unless returned metadata proves that definition. Monthly series begin in 2025.
+- Found conflicting official CPI timing references: MoSPI FAQ says 5:30 PM; recent releases show 4:00 PM embargo; scheduled and actual dates can differ. Avoid a hard-coded universal timestamp; use actual archived publication timestamps or a conservative next-session rule when only a date is known.
+- Confirmed NSE official Historical Data – India VIX page provides date-range selection and CSV download. Prefer this over the current yfinance fallback after validating coverage. RBI DBIE Key Rates remains the official effective-date event source; CSV/JSON export is advertised, but no file has been downloaded yet.
+- No PLFS, India VIX, or RBI observations have been downloaded/merged in this follow-up. Existing market/macro downloader scripts remain unexecuted locally.
+
+
+## 2026-11-13 — PLFS latest release and frequency correction
+- Checked the current official NSO India e-Sankhyiki MCP source: monthly PLFS API coverage is documented as April 2025–September 2026 (All India; indicators 1–3); quarterly bulletin coverage runs through 2026 with indicators 1–4. These are distinct frequencies and must remain separate.
+- Found the latest official PLFS quarterly bulletin: July–September 2026, published 10 November 2026. It reports LFPR, WPR, UR and worker distributions under CWS for rural, urban and combined areas. April–June 2025 was the first quarterly bulletin extending estimates to rural and urban India; earlier quarterly bulletins covered urban areas only.
+- Corrected the project wording: September 2026 is not a “monthly bulletin”; it is the reference end month of the monthly API coverage and also the end month of the latest quarterly bulletin. No PLFS data has yet been retrieved or merged.
+- Next PLFS step: execute the official MCP sequence (list_datasets → get_indicators → get_metadata → get_data), then retain monthly and quarterly records as separate products and validate release/publication dates before any time-series merge.
+
+
+## 2026-11-13 — Victus model-training handoff prepared
+- Added `docs/MODEL_TRAINING_GUIDE.md`, linked from the README. It explains which repository files to read, confirms no PDF is required as a training input, describes the price/volume-only first dataset, target and chronological partitions, model sequence, commands, outputs, metrics and limitations.
+- Existing `docs/GPU_LAPTOP_SETUP.md` remains the exact Windows/PowerShell setup for the HP Victus. It records the RTX 3050 Laptop GPU (4 GiB VRAM) and conservative PyTorch/CUDA setup. The model scripts rebuild market data locally; CSV datasets are not stored in GitHub.
+- Updated `scripts/train_baseline_models.py` to report the PRD's full regression metrics: MAE, RMSE, MAPE, R² and directional accuracy, including the naive baseline. This is a code change only; it has not yet been executed or tested on the Victus.
+- No model has been trained and no performance result is claimed. The final six-month test partition remains unopened by both training scripts.
+- User's next machine-side step is to follow the GPU setup guide, run the data rebuild and share the data-quality report before beginning model training.
+
+
+## 2026-11-13 — Dataset research continuation: release calendar and export workflow
+
+- Corrected PLFS publication chronology using MoSPI's official 2026–27 Advance Release Calendar: monthly September 2026 bulletin was released 15 October (PIB PRID 2323828); quarterly July–September 2026 bulletin is dated 10 November; monthly October 2026 bulletin is scheduled 15 November. Monthly API data, monthly bulletin PDFs and quarterly bulletin tables are separate products. The earlier status that implied September's PLFS publication was only a quarterly bulletin was incomplete.
+- Reconfirmed NSE official India VIX historical page has date-range controls and CSV download. An unfiltered page showing No Records must not be interpreted as an empty archive. No VIX CSV retrieved.
+- Reconfirmed RBI DBIE Key Rates table financial_sector.r531_key_rates displays CSV/JSON export and 271 effective-date rows through 7 October 2026. This is an identified manual export path; no CSV/JSON retrieved. Effective-date semantics remain essential.
+- Identified NSE corporate filings as a candidate regulatory-disclosure stream, distinct from editorial news. Public third-party scraper descriptions mention filing and dissemination timestamps, but no official free bulk API contract was verified. No filings/news retrieved.
+- No new PLFS/RBI/VIX/news observations downloaded or merged in this pass. Continue with official exports and preserve actual publication/effective timestamps.
+
+
+## 2026-11-13 — Corrected PLFS status and improved NSE filings candidate
+
+- Corrected an earlier overly cautious statement: official e-Sankhyiki catalogue entries for monthly PLFS LFPR/WPR/UR explicitly state **Current Weekly Status (CWS)**. September 2026 entries have release date 15 October 2026 and table IDs PLFSFY26001SEP / 002SEP / 003SEP. The annual-only `weekly_status_code` filter in MCP metadata must not be mistaken for the published monthly series definition. Retrieve each indicator separately with `frequency_code=3`, inspect metadata and use only returned filter values.
+- Added an upcoming PLFS comparability issue: PIB's 23 October 2026 notice proposes January 2027 sampling/schedule changes, new digital-platform-worker stratum and refreshed Panel 6 frame. The first three months are planned to combine Panel 5 and Panel 6 samples, with pooled monthly estimates and no RSE. Verify final implementation documentation and flag the transition before comparing across it.
+- NSE Corporate Filings Summary Documents provides date/company/subject filters, CSV export and a broadcast/dissemination timestamp display. A shown example has broadcast 19-Sep-2026 14:47:29 and dissemination 14:47:34. This strengthens it as a timestamped regulatory event candidate, subject to archive-depth, category, CSV schema, attachment and timezone validation.
+- No raw PLFS, RBI, VIX or filings observations have been downloaded. Source metadata and UI evidence only; no merge or model feature update.
+
+
+## 2026-11-13 — CPI API contract recovered from user terminal output
+
+- User successfully fetched MoSPI swagger_user_cpi.yaml (HTTP 200, application/octet-stream). This is CPI, not PLFS.
+- Endpoint GET /api/cpi/getCPIData on https://api.mospi.gov.in/; guest access (token optional), per-IP rate limits; base years 2010/2012/2024; base-year-specific filters; filter-code endpoint; page 1-based, limit 10–100; viz_req=true returns all filtered rows.
+- The OpenAPI 2024 example reports 1,445,316 records and 144,532 pages. Do not run unfiltered or unbounded requests; first fetch code metadata and pilot a tightly scoped query.
+- No API data pages have been retrieved/merged. The spec does not establish vintage/as-of support. Keep API current snapshots separate from the existing Excel-annexure point-in-time CPI vintage archive. Existing market merge remains based on the release-event table and has stale coverage beyond Dec 2025, as documented in reports/data_quality/cpi_market_panel_merge_2026-11-13.md.
+
+
+### Additional official CPI 2024 methodological finding (MoSPI FAQ)
+MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, Urban and Combined covers Jan 2013–Dec 2024 and is linked using the 2025 overlap between old (2012) and new (2024) series. The general-level linking factors listed are Rural 0.5222, Urban 0.5320 and Combined 0.5267; the FAQ defines the factor as the ratio of annual-average (geometric-mean) new-series CPI to old-series CPI for the overlap year. This creates a comparable historical index scale; it does not make those linked historical values contemporaneous release vintages. Do not use the back series as point-in-time investor information for 2013–2024. Preserve source series and vintage separately. MoSPI FAQ: https://mospi.gov.in/uploads/documents/documents/1770891066052-Annexure_V.pdf (questions 36–38, pp. 4–5).
+
+
+
+## 2026-11-13 — Latest official source check (evening)
+
+- Verified MoSPI's October 2026 CPI release: published 12 November 2026 at 16:00 IST, base 2024=100; Combined General CPI index 110.05 and YoY inflation 6.09% provisional (rural 6.63%, urban 5.41%). Since publication was after the NSE cash close, it is not available to a 12 November close-time prediction; use only from the next eligible session and keep it separate from the 2012-base series.
+- PLFS publication status as of 13 November: September 2026 monthly bulletin released 15 October; July–September 2026 quarterly bulletin released 10 November; October 2026 monthly bulletin scheduled for 15 November and not yet due.
+- RBI DBIE Key Rates source is identified and reports 271 effective-date records through 7 October 2026; CSV/JSON export is available but not downloaded. NSE India VIX official date-range/CSV workflow is confirmed but no CSV is downloaded. NSE corporate filing summary page has company/subject/date filters, CSV export and timestamp display; no filing corpus has been retrieved.
+- No new PLFS, RBI, VIX or announcement observations have been downloaded or merged. Do not mark these datasets complete based on source discovery alone.
+- Immediate next action: obtain raw official exports/API responses for RBI Key Rates, India VIX and PLFS via the documented public e-Sankhyiki MCP workflow; preserve raw files and retrieval metadata, then run schema/coverage/duplicate/time-availability QA before any join. For NSE filings, test a bounded company/date CSV export and inspect timestamp fields and historical depth.
+
+
+## 2026-11-13 — MoSPI API route discrepancy identified
+
+- The official portal OpenAPI previously inspected by the user documents direct CPI retrieval at /api/cpi/getCPIData. The current official NSO India MCP server source instead maps CPI Group/Item retrieval to /api/cpi/getCPIIndex and /api/cpi/getItemIndex; PLFS maps to /api/plfs/getData.
+- Treat the user's existing CPI work as a direct-REST pilot, not proof that the MCP server uses the same endpoint. Before automating CPI ingestion, compare a bounded set of identical filters/months through both routes and reconcile schemas/values. Follow the MCP's four-step workflow for PLFS; retrieve metadata before passing filters.
+- This is a newly identified integration question, not a confirmed API failure. No new API rows were downloaded in this source-code inspection.
+
+## 2026-11-14 — Source access and rights review
+- Official NSE historical-data pages expose date-range routes for India VIX, broad/sectoral indices, TRI and valuation series; NSE's current equity bhavcopy format is CM-UDiFF Common Bhavcopy Final (ZIP), replacing the old CSV formats from 8 July 2024. No such file has yet been downloaded or tested.
+- Official NSE filings summary UI exposes broadcast/dissemination timestamps. A third-party article describes an undocumented JSON endpoint and RSS route, but NSE Terms of Use prohibit systematic/automated collection and include restrictions on simulation. Do not automate those routes without written permission or a clearly applicable licence.
+- SEBI's 20-Dec-2024 research-data circular provides a potential route for voluminous market data (up to 2 GB/researcher/year without extra computation) specifically for research by accredited academic institutions. It does not automatically establish this user's eligibility or waive exchange terms. See DATA_RESEARCH.md.
+- GDELT DOC API is not a long-history article archive; GDELT GKG/Event metadata is more suitable for long historical context. IN-FINews is a small 3,348-article India corpus (Feb–Aug 2025), supplemental only. Publisher RSS storage/training rights must be checked.
+- TejHQ's 2010+ NSE EOD dataset is a potential free personal-research cross-check, but the provider has no exchange licence and explicitly leaves exchange terms applicable. No data downloaded or compared.
+- **No raw PLFS, RBI, VIX, NSE filing or news observations were downloaded in this pass.** Research established source routes and an important data-rights constraint, not dataset completion.
+- Next action: determine whether an accredited academic institution can sponsor a SEBI/MII research-data request, or whether Northgate must use a licensed/independently permitted data provider. In parallel, actual bounded raw exports/API responses are still needed for PLFS and RBI; no automated NSE collection should be implemented pending rights clarification.
+
+### NSE academic data request route identified — 2026-11-14
+- Found NSE's official Data for Research page, the linked 28-Jul-2025 data-basket PDF, and the official Data Seeking Request Form. NSE says approved academic/policy research can apply through its EPR team; use is limited to academic and non-commercial purposes. Requests go to nseri@nse.co.in.
+- The published data list includes first-basket daily EOD OHLC/turnover, bhavcopy/reports, historical indices, FII/FPI/DII activity, company financial results, shareholding, corporate announcements and corporate actions. A separate >2 GB voluminous basket may be chargeable; confirm exact eligibility and costs with NSE.
+- The request form requires institution, project title/objective, market relevance, data type, justification and date range. No form has been submitted and no access granted.
+- This provides a compliant route worth pursuing instead of scraping. Remaining user-side dependency: institution name and an academic supervisor/department contact who can support the request. See DATA_RESEARCH.md and QUESTIONS.md.
+
+### Daily institutional-flow candidate — 2026-11-14
+- NSE FII/FPI & DII page exposes CSV tables for NSE-only and combined NSE+BSE+MSEI Capital Market activity, with buy/sell/net ₹ crore. FII/FPI values are provisional and subject to custodial confirmation; final values are directed to NSDL/CDSL. No rows downloaded. Treat as market-wide context and use next-session availability until dissemination timing is verified.
+
+### Public market dataset candidates — 2026-11-14
+- Discovered aswinv90/indian-market-historical-data: publisher claims broad NSE/BSE coverage from 1991 plus indices/VIX/corporate actions/FII-DII/macro. Repo created Sep 2026; custom non-commercial research licence; no raw files or independent QA yet.
+- Discovered TejHQ/indian-markets: Hugging Face preview 7.36M NSE rows, publisher claims NSE 2010+ and BSE 2024+ with corporate actions/adjusted prices/delivery. Data not covered by code MIT licence; exchange terms still apply.
+- Both are candidate cross-check sources only. Existing Northgate labelled panel remains unchanged until sample-level reconciliation. No new data downloaded.
+
+### PLFS values extracted — 2026-11-14
+- Opened official MoSPI July–September 2026 quarterly bulletin (published 10-Nov). Age 15+ CWS combined LFPR 55.5%, WPR 52.7%, UR 5.1%; rural/urban splits are recorded in DATA_RESEARCH.md.
+- Same bulletin gives five quarters of combined UR from 5.2% (Jul-Sep 2025) to 5.1% (Jul-Sep 2026). Sample size 11,229 FSUs / 133,570 households / 555,593 persons; combined UR RSE 1.72%.
+- These are actual quarterly bulletin values, not monthly API rows. Monthly API observations remain unacquired; October monthly bulletin is scheduled for 15-Nov-2026.
+
+### Corporate actions, trading calendar and survivorship research — 2026-11-14
+- NSE Corporate Actions page has CSV export and ex-date/record-date/book-closure fields; investor-relations archive shows announcement date and attachment links back to 2012. No export acquired.
+- NSE official holiday calendar includes special Muhurat Sunday sessions; calendar must flag special sessions and use observed trading dates.
+- Found NSEDATA4ME (2005+ EOD, delisted stocks, 232 indices, breadth) and two community reconstructions of historical NSE index membership. All are candidates; licences/source rights/QA not yet established. No files downloaded.
+
+### Macro vintages, market breadth and news research — 2026-11-14
+- FRED/ALFRED official API supports historical real-time periods and vintage-date observations. Existing FRED graph-CSV downloader captures latest values only; it is not point-in-time. Extend only if using FRED series in backtests, with vintage dates and release availability.
+- Keep CBOE VIX (FRED VIXCLS) and India VIX separate. CBOE close is after the Indian cash session; use prior completed US session for next-India-session features, with timezone/DST handling.
+- NSE historical archives list Advances/Declines; a community breadth dataset exists since Oct-2015 under CC BY 4.0, but price inputs remain exchange-origin. Preferred method is to calculate breadth from a point-in-time survivorship-aware universe.
+- GDELT GKG 2.1 offers long-history document metadata (publication/processing timestamps, organizations, themes and tone) but 2015 GKG alone is >2.5 TB. Use bounded query/filtering rather than a full local mirror. Indian labelled sentiment corpora are small or lack full timestamped historical coverage.
+- No GDELT data, FRED vintages or breadth series downloaded.
+
+### Official RBI daily FX source — 2026-11-14
+- RBI DBIE daily interbank USD/INR table covers 08-Aug-2000 to 30-Jun-2026 (6,319 rows), with OHLC and RBI Reference Rate; CSV/JSON export visible. No export acquired.
+- RBI Reference Rate Archive supports date-range Excel download; FBIL took over major-currency reference rates from 10-Jul-2018. CC0 Zenodo mirror is a convenience candidate, not source of record. Preserve provider transition and release availability.
+
+### RBI daily money-market rate — 2026-11-14
+- RBI Handbook Table 27 / current-statistics Table 225 documents daily weighted-average call/notice money rates, ranges and turnover. This is a strong India short-term liquidity feature candidate; monthly DBIE call money aggregates are a different frequency. No daily export retrieved.
+- Official daily 10Y generic G-Sec yield download not confirmed; the broad public dataset's daily 10Y series remains unverified. Continue using monthly OECD/FRED India 10Y as a separate low-frequency feature; do not interpolate.
+
+## Additional public-source research — 2026-11-14
+- Verified a monthly RBI-derived sovereign yield curve (1–30 year maturities) from April 1996 to August 2026; this is not a daily generic 10-year yield. Daily RBI call/notice money statistics are documented, but a long-history machine-readable export remains unverified.
+- Verified official MoSPI PLFS API route and monthly/quarterly frequency rules from the NSO India MCP source; no API rows acquired in this pass.
+- Verified NSE's official India VIX custom-date CSV interface and field schema; no export acquired.
+- Sharpened candidate terms: TejHQ permits private personal research/model training under provider terms but has no exchange licence and raw redistribution is prohibited; NSEDATA4ME code is GPL but its NSE-derived data remains subject to NSE terms; historical index membership reconstruction is not yet licence/accuracy verified.
+- No raw market/macro/news data was downloaded, validated or merged during this source-research pass. Existing panel and model split remain unchanged.
+- Institutional sponsorship is not a dependency for the ongoing public-source research plan.
+
+## Additional source review — 2026-11-14
+- TejHQ landing page now provides a detailed raw-price schema, corporate-action adjustment description, ISIN symbol history and claimed point-in-time top-500 liquidity universe. Its own Yahoo comparison is only 89% within ±1%; independent sample QA is essential.
+- TejHQ landing page's MIT/open-data marketing conflicts with its dedicated data terms: MIT covers code only, personal research/model training is allowed, raw redistribution is prohibited, and exchange terms still apply. No data rights or accuracy are assumed.
+- NSE All Reports indexed preview shows historical VIX fields but has a date-range mismatch/duplicate-row anomaly; no CSV acquired. India VIX is 30-day implied volatility, not realised volatility.
+- PLFS MCP query rules reconfirmed, including monthly/quarterly coverage and single-indicator restriction. No PLFS API rows acquired.
+- BigQuery's first 1 TB/month public-dataset query allowance makes a strictly bounded GDELT pilot plausible, subject to verifying the exact table and schema.
+- No raw files downloaded or merged. Existing market panel and chronological split remain unchanged.
+
+
+## Official-source route update — 2026-11-14
+- NSE All Reports now confirmed as listing CM-UDiFF final bhavcopy ZIP/CSV and Full Bhavcopy + Security Deliverable CSV; older CM CSV formats were discontinued 08-Jul-2024. Historical Reports directory lists VIX, index, TRI and valuation archives. No historical file downloaded; pre/post-format transition and rights remain open.
+- NSE VIX page exposes custom date range and CSV download; an unfiltered “No Records” view does not establish missing coverage. The previous indexed sample anomaly remains unresolved; test a bounded manual export.
+- MoSPI's latest 2026-27 release calendar schedules October 2026 monthly PLFS bulletin for 15-Nov-2026, tomorrow relative to this update. This is a scheduled date only; verify actual release. Keep monthly bulletin, quarterly bulletin and API rows separate.
+- No new raw observations downloaded, validated or merged; market panel and chronological partitions remain unchanged.
+
+
+## TejHQ dataset revision and licence discrepancy — 2026-11-14
+- New HF page review shows a 7.36M-row NSE price subset and a 2026-11-09 price commit; the current card claims seven Parquet trees including raw prices, corporate actions, adjusted prices, symbol history, derived metrics, PIT liquidity universe and delivery data.
+- The HF viewer/card snapshots conflict: MIT badge vs provider's specific terms; 8.33M corporate-action preview vs 7.36M NSE price subset; old card says no corporate actions/adjusted prices yet, while newer card describes them. Coverage/layout claims also differ. Treat as revision/viewer drift; pin a commit and inspect manifests/files before any sample QA.
+- Dedicated TejHQ terms (2026-11-08) state MIT covers code only, no exchange licence/clarification exists, private personal research/backtesting/model training/local retention is permitted by TejHQ, raw redistribution is prohibited, and exchange terms independently apply. No raw Parquet downloaded or validated.
+
+
+## Research continuation — 2026-11-14 (live TejHQ tree + NSE UDiFF)
+- Rechecked core project docs and continued source research. Live TejHQ HF tree now shows verified 2026-11-11 revision short hash `10bd698`, ~1.25 GB, annual NSE adjusted Parquet partitions 2010–2026. Full commit SHA and raw-price tree path still need pinning.
+- TejHQ public pipeline README is stale relative to the live dataset: it describes five trees and a 2024-01-01 coverage start, while the live dataset exposes seven trees and NSE adjusted partitions from 2010. Do not assume README's old path layout is current.
+- Provider README says historical adjusted prices are recomputed from corporate actions, including dividends. These are retrospective and must not enter a PIT backtest as if future actions were known. Provider's 89% within ±1% Yahoo reconciliation is self-reported, not independent validation.
+- NSE confirms current CM-UDiFF ZIP and separate readme workbook; old CM CSV discontinued 2024-07-08. UDiFF guidance gives general encoding/date/compression conventions, but the CM readme and actual sample have not been inspected.
+- No files downloaded, no values compared, no dataset validation, no panel changes and no model training.
+
+
+## 2026-11-14 — Continued TejHQ code-level review
+- Updated finding: current HF card and current public README now agree on seven trees, NSE 2010-01-04 onward and BSE 2024-07-08 onward. Raw annual path is `nse/year=YYYY/nse_YYYY.parquet`; earlier five-tree/2024-only README snapshot is stale.
+- Read the public parser, instrument-chain and adjustment source files. Parser supports modern CMTS and legacy NSE schemas; pre-2012 ISIN/trade count remain null. Same-symbol ISIN transitions within 30 calendar days are linked as one chain.
+- Adjustment coverage is limited: split, bonus and dividend get factors; rights, buyback, demerger, merger, AGM and other currently get 1.0. Missing dividend inputs also fall back to 1.0. These cases require action-level QA before treating adjusted close as economically complete.
+- Historical adjustment is recomputed with all later actions. That revises absolute past adjusted price levels. Ratios across dates can cancel common future factors, but the PRD's absolute adjusted-close target needs an explicit leakage/scale review before training. Do not change the PRD target silently.
+- Provider's 96.88% Yahoo comparison is self-reported adjusted-close reconciliation, not independent raw NSE validation; 48 of 50 names matched and exceptions include TRENT bonus date and ITC demerger convention.
+- Legal note: pipeline README says data is not covered by MIT and provider holds no exchange licence; it describes free personal/research use subject to exchange terms. Follow dedicated TejHQ terms and do not redistribute raw data.
+- No raw parquet acquired, no independent NSE comparison, no Northgate tests, no panel change and no model training. Full HF commit SHA remains unpinned.
+
+
+### Freshness correction — 2026-11-14
+- Further live-tree checks show TejHQ published again on 2026-11-12: raw NSE tree short commit `d6f1912`, adjusted NSE 2024 file short commit `8b77c06`. This supersedes the 2026-11-11 freshness note above. Full immutable commit SHA remains unpinned.
+
+
+### 2026-11-14 — Ingestion and transform code review
+- Inspected TejHQ fetcher, parser, transform and their test source. It selects legacy NSE archive before 2024-07-08 and modern CMTS after; parser has synthetic 2010 and 2025 fixtures/tests.
+- Transform defaults to NSE EQ/BE/BZ, drops zero-volume rows, and deduplicates by (date,symbol), keeping first. It does not explicitly enforce low>0 or non-negative turnover/trades and does not create a rejected-row audit table. Northgate must test these behaviours on our symbols before adoption.
+- Need explicit Northgate decision on EQ-only vs EQ/BE/BZ and zero-volume policy. Avoid hidden missing labels caused by row drops.
+- These were source-code inspections only. Northgate did not run provider tests or download/validate any data.
+
+### 2026-11-14 — Target-universe coverage and rights review
+- TejHQ stock pages report first NSE history dates for all ten Northgate provisional equities before 2016: nine from 2010-01-04 and INFY from 2011-06-29. This is provider-claimed coverage, not row-level completeness proof. Some pages show latest 2026-11-11 while others show 2026-11-12; treat as possible page refresh lag until raw data is checked.
+- Keyless raw OHLCV endpoint is documented; adjusted prices and delivery need a free API key. Provider terms allow personal research/backtesting/local storage/private dashboards, but TejHQ holds no exchange licence, MIT covers code only, raw-data redistribution is prohibited, and exchange terms apply independently. HF search metadata says exchange-public-data while a cached rendered page says mit; rely on dedicated terms and treat badge conflict as unresolved metadata drift.
+- NSE official Forms & Formats page lists UDiFF catalogue v1–v4, CM Bhavcopy File Format and sample test file. Circular NSE/MSD/62424 confirms parallel formats through 2024-07-05 and old-format discontinuation from 2024-07-08. Actual CM workbook/ZIP binary could not be retrieved in this session; exact mapping not yet inspected.
+- TejHQ now qualifies for a bounded private data pilot, not full adoption. No API response, Parquet, or official sample acquired; no comparison, tests, panel update or model training.
+
+### 2026-11-14 — Target-specific corporate-action gap
+- Confirmed target-universe examples of unadjusted action types: ITC demerger 2025-01-06; HINDUNILVR demerger 2025-12-05; RELIANCE demerger 2023-07-20 and rights 2020-05-13; BHARTIARTL rights 2019-04-23 and 2021-09-27.
+- TejHQ's inspected factor code returns 1.0 for rights and demergers. These are actual target-universe events, so adjusted-close labels may contain artificial discontinuities at these event dates if our modelling target expects economically comparable prices.
+- Next validation must compare raw/adjusted close and target labels in event windows. Do not change the PRD target without approval.
+
+
+### 2026-11-14 — NSE official research-data route
+- Found NSE's dedicated Data for Research page (updated 04-Nov-2026), with application via Data Seeking Request Form to nseri@nse.co.in.
+- NSE disclaimer restricts research-data access/download to individuals from accredited academic institutions, recognised research organisations and think tanks; NDA and periodic progress reports may be required.
+- SEBI Circular 2024/178 and NSE's published Basket 1 list provide up to 2 GB per researcher/year free where no extra computation is needed; high-volume/processed requests may be charged. Historical EOD/Bhavcopy and corporate data are listed as chargeable when voluminous (>2 GB).
+- Published eligible datasets include security-wise OHLC/turnover, Bhavcopy archives, index history, FII/FPI/DII activity, company results, announcements and corporate actions. Restricted client-identifiable datasets are not relevant.
+- Eligibility, exact requested fields/period, charges, local storage/backtesting rights and UDiFF schema access remain unconfirmed. No application sent and no data received.
+
+
+### 2026-11-14 — Public historical-data UI audit
+- NSE Security-wise Archives page exposes symbol/series/date filters, CSV export, and OHLC/VWAP/quantity/turnover/trades/delivery fields; presets include up to 5Y plus Custom. This is a candidate per-stock validation source, not yet a downloaded dataset.
+- NSE Corporate Actions page exposes company/purpose/date filters and CSV export with ex-date, record date and book-closure fields. Ex-date is not the publication timestamp needed for news features.
+- NIFTY Indices historical page exposes historical index CSV and separate TRI/Net TRI values; a better benchmark candidate than price-only NIFTY, pending actual coverage/download checks.
+- NSE India VIX page exposes Custom range and CSV; NSE FII/FPI-DII page exposes NSE-only and combined-exchange CSV downloads. Flow data is aggregate, not stock-specific.
+- Historical All Reports page lists UDiFF ZIP, Bhavcopy and delivery reports; legacy CSV formats discontinued 2024-07-08. Exact historical coverage and UDiFF mapping remain open.
+- No CSV/ZIP downloaded, no endpoint reverse-engineered, and no data ingested. Treat as public/manual UI candidates only pending rights and access review.
 
 
 ### 2026-11-14 — Official archive follow-up
