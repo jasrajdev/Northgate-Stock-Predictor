@@ -182,3 +182,19 @@ No dataset size, universe, target, horizon, feature set, model architecture, tra
 
 ### Next research/implementation action
 Execute the official MCP sequence against the hosted service, capture raw responses and metadata, then build separate monthly and quarterly PLFS raw tables with explicit reference period, frequency, indicator definition, geography, status concept, publication date, source URL and retrieval timestamp. Test completeness and duplicate keys before creating any market-session-aligned feature.
+
+
+## 2026-11-13 — PLFS release-calendar and official export workflow correction
+
+The MoSPI 2026–27 Advance Release Calendar updated through October 2026 clarifies a previously incomplete PLFS timeline:
+- Monthly PLFS September 2026 bulletin: released 15 October 2026 (PIB PRID 2323828).
+- Quarterly PLFS July–September 2026 bulletin: dated 10 November 2026.
+- Monthly PLFS October 2026 bulletin: scheduled 15 November 2026, so it was not yet due on the review date 13 November.
+Thus monthly and quarterly bulletins are parallel products. The monthly API coverage through September 2026 is a third, distinct data-access statement. Retain each product/frequency and its actual publication date independently. Advance calendar dates are schedules, not guaranteed actual timestamps.
+
+Official export paths were rechecked:
+- NSE Historical Data – India VIX exposes a date-range selection and CSV download. An unfiltered page can display No Records; set a valid range before concluding there is no data. NSE's Historical Reports page also lists VIX, historical index, TRI and index-report archives. Official source is preferred, but no file has been retrieved.
+- RBI DBIE Key Rates table financial_sector.r531_key_rates visibly offers CSV/JSON export and reports 271 effective-date rows through 7 October 2026. The export is now considered manually accessible; automated retrieval is not yet implemented. Keep event dates and forward-fill only after each effective date.
+- NSE filings are a candidate source of timestamped regulatory disclosures, but third-party descriptions of broadcast/dissemination timestamps are not an official API contract. Treat filings separately from editorial news and do not use paid scraping without approval.
+
+No observations were downloaded in this pass. Next practical retrieval sequence: export RBI DBIE CSV; export NSE VIX in manageable annual/custom date ranges; use the official MoSPI MCP workflow (list_datasets → get_indicators → get_metadata → get_data) to retrieve monthly PLFS indicator metadata and observations; then investigate NSE/BSE filing access/terms for a timestamped event dataset.
