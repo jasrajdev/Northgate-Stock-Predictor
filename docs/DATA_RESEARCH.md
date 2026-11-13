@@ -1501,3 +1501,39 @@ Sources:
 - NIFTY Indices historical data: https://www.niftyindices.com/reports/historical-data
 - NIFTY 50 whitepaper 2024: https://nsearchives.nseindia.com/web/sites/default/files/inline-files/nifty-50-whitepaper-2024_0.pdf
 - NSE Total Returns Index explanation: https://www.nseindia.com/static/products-services/indices-total-returns-index
+
+
+## Target-universe corporate-action and filing spot-check — 2026-11-14
+
+This is a public-page/search-index spot-check, not a complete action ledger. Results below establish examples and source fields only; do not infer that the displayed recent actions are the full history.
+
+### Corporate actions and rights events
+- **HINDUNILVR:** NSE quote page currently lists dividend ex-dates and the demerger ex-date 05-Dec-2025. Its corporate filing/annual-report page shows annual-report broadcast timestamps as far back as FY2015–16 (18-Jul-2016), illustrating that some NSE issuer filing archives expose explicit broadcast time. The 05-Dec-2025 action remains an event-window check for the user's adjusted-price series.
+- **RELIANCE:** NSE quote page lists recent dividend and 1:1 bonus actions. NSE Rights page lists Reliance's 2020 rights issue offer document (filed 15-May-2020; issue dates in the rights table include 20-May/03-Jun-2020). NSE scheme-document page also surfaces Reliance scheme filings in 2020–2021. The previously identified 2023 demerger date should still be validated against the relevant scheme/ex-date circular before any label adjustment.
+- **BHARTIARTL:** NSE Rights page lists the 2021 rights issue offer document dated 22-Sep-2021; MSEI's corporate securities page provides an independent exchange-side actions table with BHARTIARTL rights 19:67 ex-date 23-Apr-2019 and rights 1:14 ex-date 27-Sep-2021, plus dividends back to 2013. MSEI corroborates event dates but is not a substitute for the NSE raw-price archive.
+- **HDFCBANK:** NSE quote page lists a 1:1 bonus ex-date 26-Aug-2025 and dividend events; include the bonus in the price/adjustment event-window audit.
+- **ITC:** NSE quote page lists dividends and the historical ITC demerger ex-date 06-Jan-2025; the separate symbol-filtered action search previously showed 20 rows reaching 2015.
+- **ICICIBANK, LT, SUNPHARMA, TCS:** current NSE quote-page snapshots expose dividend actions (ICICIBANK back to 2024; LT to 2024; SUNPHARMA to 2025; TCS to 2025/2026). This is not enough to establish full history or absence of splits/bonuses/rights events.
+- **INFY:** no sufficiently detailed symbol-specific action result was captured in this pass. Mark its action history unverified rather than assuming none.
+
+### Filing timestamp quality
+NSE issuer pages show broadcast timestamps for corporate announcements, and the integrated-filing table includes original/revision type, broadcast date/time, revised date/time and revision remarks. This is materially better for point-in-time alignment than ex-date alone. A later revision must not be treated as known at the original publication time; preserve both original and revision events. Example: the BHARTIARTL integrated-filing page shows a FY26 Q4 filing marked Revision with a separate revised timestamp.
+
+### Research implication
+The adjusted-price audit must be event-driven, not just a generic missing-value check. For each confirmed action, inspect raw Close, Adj Close, split/dividend fields and the next-session target around (at minimum) ex-date -2 through +2 sessions. Rights issues and demergers need special handling; a vendor's adjustment factor may omit or simplify these. Do not manually alter labels until the source methodology and PRD target definition are reconciled.
+
+Sources:
+- NSE HINDUNILVR quote/corporate actions: https://www.nseindia.com/get-quote/equity/HINDUNILVR/Hindustan-Unilever-Limited
+- NSE HINDUNILVR annual reports with broadcast times: https://www.nseindia.com/companies-listing/corporate-filings-annual-reports?symbol=HINDUNILVR&tabIndex=equity
+- NSE RELIANCE quote/corporate actions: https://www.nseindia.com/get-quote/equity/RELIANCE/Reliance-Industries-Limited
+- NSE RELIANCE rights issues: https://www.nseindia.com/market-data/public-issues-rights-rits
+- NSE RELIANCE scheme documents: https://www.nseindia.com/companies-listing/corporate-filings-scheme-document?symbol=RELIANCE&tabIndex=equity
+- NSE BHARTIARTL rights issue documents: https://www.nseindia.com/companies-listing/corporate-filings-rights
+- MSEI BHARTIARTL corporate action table: https://www.msei.in/corporates/corporate-securities-information/corporate-update/default?symbol=BHARTIARTL&type=4&vmode=vm
+- NSE HDFCBANK quote/corporate actions: https://www.nseindia.com/get-quote/equity/HDFCBANK/HDFC-Bank-Limited
+- NSE ITC quote/corporate actions: https://www.nseindia.com/get-quote/equity/ITC/Itc
+- NSE ICICIBANK quote/corporate actions: https://www.nseindia.com/get-quote/equity/ICICIBANK/ICICI-Bank-Limited
+- NSE LT quote/corporate actions: https://www.nseindia.com/get-quote/equity/LT/Larsen-%26-Toubro-Limited
+- NSE SUNPHARMA quote/corporate actions: https://www.nseindia.com/get-quote/equity/SUNPHARMA/Sun-Pharmaceutical-Industries-Limited
+- NSE TCS corporate actions: https://www.nseindia.com/companies-listing/corporate-filings-actions?symbol=TCS
+- NSE BHARTIARTL integrated filing timestamps/revisions: https://www.nseindia.com/companies-listing/corporate-integrated-filing?symbol=BHARTIARTL&tabIndex=equity
