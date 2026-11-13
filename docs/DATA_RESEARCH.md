@@ -876,3 +876,13 @@ The parser deliberately does not invent exact publication timestamps. These must
 Run from the repository root:
 python scripts/parse_mospi_cpi_annexures.py /path/to/Annexures*.xlsx --output data/raw/mospi_cpi_vintages.csv
 
+
+
+## Verified 2026-11-13 update
+
+- Inspected user-uploaded market panel: 29,484 rows, ten provisional Indian equities plus ^NSEI; fields include Date, ticker/name, adjusted close, close, dividends, OHLC, stock splits and volume. This is a user-provided yfinance panel, not official exchange archival data.
+- Inspected user-uploaded `cpi_33.xlsx`: 31,460 rows, 15 columns; base year 2024 Current series, with records from Jan 2025 through Oct 2026 in the inspected workbook. This is not a complete historical headline CPI series.
+- MoSPI e-Sankhyiki CPI API documentation supports base years 2010, 2012 and 2024, Current/Back series, and pagination. MoSPI's 2024 CPI FAQ describes the linked base-2024 All-India Rural/Urban/Combined back series for Jan 2013–Dec 2024, with annual inflation rates from Jan 2014–Dec 2024. Treat linked back-series data as distinct from contemporaneous 2012-base release vintages.
+- RBI's DBIE is the official long-series macro download portal; its 2026 handbook says extended historical time series are available there. Align macro data by release availability, not merely observation period.
+- GDELT raw archives provide historical news metadata from 2015, but the DOC API has a rolling search horizon and GDELT is not a complete financial article archive. The Zenodo IN-FINews corpus (3,348 India-focused articles, Feb–Aug 2025) is only a small supplemental corpus.
+- See `docs/DATASET_INVENTORY.md` for the source-by-source inventory and current gaps.
