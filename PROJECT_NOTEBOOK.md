@@ -188,3 +188,10 @@ Official NSE/MSEI pages confirm representative event dates across the provisiona
 NSE integrated filings include Original/Revision labels and separate broadcast/revised timestamps. For point-in-time features, preserve each revision as a new event with its own timestamp. Do not backdate corrected information.
 
 Before training, run an event-window audit around every rights, bonus and demerger: compare raw Close, Adj Close, dividend/split metadata and the forward adjusted-close label for at least two sessions before and after the ex-date. Do not assume vendor adjustment logic correctly represents rights/de-merger economics. No action CSVs or filing attachments were acquired in this pass, and no labels were modified.
+
+
+## 2026-11-14 — Corporate-action adjustment semantics
+
+A key data-quality caveat is now explicit: Yahoo Finance's published `Adj Close` description specifies split and cash-dividend multipliers. It does not prove complete handling of rights issues, demergers, mergers or other non-cash events. NSE/NSE Clearing corporate-action guidance lists these event types, but the cited adjustment methodology is for derivatives positions and contract specifications, not a guarantee about third-party cash-market adjusted-close histories. NSE's adjusted 52-week high/low note covers bonus, consolidation, splits and rights, while Bhavcopy prices are actual unadjusted prices; this summary field cannot stand in for a complete adjusted daily series.
+
+Research safeguard: keep raw and adjusted fields side by side, maintain an event ledger with primary-source terms and timestamps, and inspect event windows before trusting next-session price/return labels. Rights issues and demergers remain high-priority unresolved cases. Do not patch factors or change the target definition without evidence and an explicit decision. The current session did not have `market_panel.csv` attached, so no event-window inspection or data modification occurred.
