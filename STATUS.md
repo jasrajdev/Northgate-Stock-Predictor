@@ -325,3 +325,11 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Added an upcoming PLFS comparability issue: PIB's 23 October 2026 notice proposes January 2027 sampling/schedule changes, new digital-platform-worker stratum and refreshed Panel 6 frame. The first three months are planned to combine Panel 5 and Panel 6 samples, with pooled monthly estimates and no RSE. Verify final implementation documentation and flag the transition before comparing across it.
 - NSE Corporate Filings Summary Documents provides date/company/subject filters, CSV export and a broadcast/dissemination timestamp display. A shown example has broadcast 19-Sep-2026 14:47:29 and dissemination 14:47:34. This strengthens it as a timestamped regulatory event candidate, subject to archive-depth, category, CSV schema, attachment and timezone validation.
 - No raw PLFS, RBI, VIX or filings observations have been downloaded. Source metadata and UI evidence only; no merge or model feature update.
+
+
+## 2026-11-13 — CPI API contract recovered from user terminal output
+
+- User successfully fetched MoSPI swagger_user_cpi.yaml (HTTP 200, application/octet-stream). This is CPI, not PLFS.
+- Endpoint GET /api/cpi/getCPIData on https://api.mospi.gov.in/; guest access (token optional), per-IP rate limits; base years 2010/2012/2024; base-year-specific filters; filter-code endpoint; page 1-based, limit 10–100; viz_req=true returns all filtered rows.
+- The OpenAPI 2024 example reports 1,445,316 records and 144,532 pages. Do not run unfiltered or unbounded requests; first fetch code metadata and pilot a tightly scoped query.
+- No API data pages have been retrieved/merged. The spec does not establish vintage/as-of support. Keep API current snapshots separate from the existing Excel-annexure point-in-time CPI vintage archive. Existing market merge remains based on the release-event table and has stale coverage beyond Dec 2025, as documented in reports/data_quality/cpi_market_panel_merge_2026-11-13.md.
