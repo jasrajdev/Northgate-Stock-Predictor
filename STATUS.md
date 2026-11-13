@@ -418,3 +418,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - PLFS MCP query rules reconfirmed, including monthly/quarterly coverage and single-indicator restriction. No PLFS API rows acquired.
 - BigQuery's first 1 TB/month public-dataset query allowance makes a strictly bounded GDELT pilot plausible, subject to verifying the exact table and schema.
 - No raw files downloaded or merged. Existing market panel and chronological split remain unchanged.
+
+
+## Official-source route update — 2026-11-14
+- NSE All Reports now confirmed as listing CM-UDiFF final bhavcopy ZIP/CSV and Full Bhavcopy + Security Deliverable CSV; older CM CSV formats were discontinued 08-Jul-2024. Historical Reports directory lists VIX, index, TRI and valuation archives. No historical file downloaded; pre/post-format transition and rights remain open.
+- NSE VIX page exposes custom date range and CSV download; an unfiltered “No Records” view does not establish missing coverage. The previous indexed sample anomaly remains unresolved; test a bounded manual export.
+- MoSPI's latest 2026-27 release calendar schedules October 2026 monthly PLFS bulletin for 15-Nov-2026, tomorrow relative to this update. This is a scheduled date only; verify actual release. Keep monthly bulletin, quarterly bulletin and API rows separate.
+- No new raw observations downloaded, validated or merged; market panel and chronological partitions remain unchanged.
