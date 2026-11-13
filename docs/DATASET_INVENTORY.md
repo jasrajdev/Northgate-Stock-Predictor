@@ -463,3 +463,11 @@ BHARTIARTL 2019 rights and RELIANCE 2020 rights still need exact primary-source 
 - NSE also confirms rights entitlements have a separate ISIN and their own trading/base-price convention. This supports treating rights entitlements as distinct instruments in the event ledger.
 - For BHARTIARTL 2019 (19:67 at ₹220) and RELIANCE 2020 (1:15 at ₹1,257), the actual cum-date close is still needed before any illustrative factor can be computed. Reliance's partly-paid rights shares additionally require accounting for the later ₹942.75 call obligation.
 - Source URLs and limitations are documented in docs/DATA_RESEARCH.md. No factor was computed, no price series was altered and no model labels were changed.
+
+
+## 2026-11-14 — Historical price source/basis status
+
+- Yahoo historical rows for RELIANCE show 12-May-2020 Close ₹676.26 / Adj Close ₹658.70; 13-May ₹690.61 / ₹672.68; 14-May ₹662.69 / ₹645.48. These are provider values, not NSE raw Bhavcopy prices.
+- RELIANCE had a later 1:1 bonus effective 28-Oct-2024. Doubling the Yahoo Close values gives an inferred pre-bonus-equivalent scale (₹1,352.52, ₹1,381.22, ₹1,325.38), not a verified raw-price record. Do not treat this inference as exchange data.
+- Yahoo defines Adj Close as split- and dividend-adjusted. NSE's official Historical Reports page lists security-wise price-volume archives and daily/monthly reports; its All Reports page documents the 08-Jul-2024 legacy Bhavcopy cutover and says actual unadjusted prices should be taken from Bhavcopy.
+- Exact NSE raw rows for BHARTIARTL 22/23-Apr-2019 and RELIANCE 12/13-May-2020 remain uncollected. No price or label changes have been made. Source URLs and limits are in docs/DATA_RESEARCH.md.
