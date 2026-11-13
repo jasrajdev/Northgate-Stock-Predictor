@@ -353,4 +353,7 @@ No new raw data file has been acquired from these sources in this research pass.
 | MoSPI PLFS MCP | Annual=1, quarterly=2, monthly=3; monthly Apr-2025–Sep-2026 All India indicators 1–3; single indicator_code only; four-step metadata workflow | Exact query rules recorded; no data rows retrieved. |
 | Google BigQuery public datasets | First 1 TB processed/month free; beyond that chargeable | Possible bounded GDELT GKG pilot with bytes-scanned limits; not a full archive download. |
 
+| NSE official CM-UDiFF bhavcopy / historical reports | Current All Reports page lists final CM-UDiFF Common Bhavcopy ZIP/CSV and Full Bhavcopy + Security Deliverable CSV; legacy CM CSV formats discontinued 2024-07-08. Historical reports directory lists VIX, index, TRI and valuation archives | Highest-priority official market-source route to test. Need schema/readme, pre/post-2024 transition stitching, bounded historical export and rights review; no files acquired. |
+| MoSPI PLFS release calendar (updated Oct 2026) | Monthly October 2026 bulletin scheduled 2026-11-15; July-Sep 2026 quarterly bulletin separately scheduled 2026-11-10 | Schedule only; verify actual publication before adding the Oct monthly release. Keep monthly/quarterly/API products separate. |
+
 No raw observations were downloaded or reconciled in this research pass.
