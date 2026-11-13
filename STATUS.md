@@ -526,3 +526,8 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Yahoo RELIANCE historical rows around the 2020 rights ex-date are provider-adjusted values, not verified NSE raw closes. The later 1:1 bonus (28-Oct-2024) means Yahoo's 2020 displayed Close is on a post-bonus share basis; doubling produces only an inferred pre-bonus-equivalent value, not an official raw price.
 - Yahoo defines Adj Close as adjusted for splits and dividend distributions. NSE's official historical reports page lists security-wise archives; NSE All Reports documents the 08-Jul-2024 Bhavcopy format cutover and directs users to Bhavcopy for actual unadjusted prices.
 - Next validation step: obtain official NSE Bhavcopy rows for BHARTIARTL 22/23-Apr-2019 and RELIANCE 12/13-May-2020, then compare against the panel and Yahoo values. No local panel rows or labels were changed in this pass.
+
+
+### 2026-11-14 — NSE archive retrieval remains blocked
+- Confirmed official NSE report families and historical-format cutover; identified candidate historical archive URLs for the five required sessions. Direct retrieval failed in this environment (web access error; container DNS resolution failure).
+- No Bhavcopy files or raw price rows were acquired. Treat the URL patterns as candidates pending successful download, not verified file availability. See `docs/DATA_RESEARCH.md` for URLs, source distinctions and next action.
