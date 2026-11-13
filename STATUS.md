@@ -425,3 +425,9 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - NSE VIX page exposes custom date range and CSV download; an unfiltered “No Records” view does not establish missing coverage. The previous indexed sample anomaly remains unresolved; test a bounded manual export.
 - MoSPI's latest 2026-27 release calendar schedules October 2026 monthly PLFS bulletin for 15-Nov-2026, tomorrow relative to this update. This is a scheduled date only; verify actual release. Keep monthly bulletin, quarterly bulletin and API rows separate.
 - No new raw observations downloaded, validated or merged; market panel and chronological partitions remain unchanged.
+
+
+## TejHQ dataset revision and licence discrepancy — 2026-11-14
+- New HF page review shows a 7.36M-row NSE price subset and a 2026-11-09 price commit; the current card claims seven Parquet trees including raw prices, corporate actions, adjusted prices, symbol history, derived metrics, PIT liquidity universe and delivery data.
+- The HF viewer/card snapshots conflict: MIT badge vs provider's specific terms; 8.33M corporate-action preview vs 7.36M NSE price subset; old card says no corporate actions/adjusted prices yet, while newer card describes them. Coverage/layout claims also differ. Treat as revision/viewer drift; pin a commit and inspect manifests/files before any sample QA.
+- Dedicated TejHQ terms (2026-11-08) state MIT covers code only, no exchange licence/clarification exists, private personal research/backtesting/model training/local retention is permitted by TejHQ, raw redistribution is prohibited, and exchange terms independently apply. No raw Parquet downloaded or validated.
