@@ -6,6 +6,7 @@ Target: next-session adjusted close. Features are numeric values known at t.
 from __future__ import annotations
 
 import json
+import os
 import time
 from pathlib import Path
 
@@ -30,7 +31,7 @@ NON_FEATURES = {
 }
 
 
-def make_models():
+def make_models(xgb_device="cuda"):
     models = {
         "Ridge": Pipeline([
             ("imputer", SimpleImputer(strategy="median")),
@@ -58,6 +59,7 @@ def make_models():
                 n_estimators=250, max_depth=4, learning_rate=0.04,
                 subsample=0.85, colsample_bytree=0.85,
                 objective="reg:squarederror", n_jobs=-1,
+                tree_method="hist", device=xgb_device,
                 random_state=42,
             )),
         ])
@@ -111,6 +113,8 @@ def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     rows = []
     skipped = []
+    xgb_device = os.getenv("NORTHGATE_XGB_DEVICE", "cuda").lower()
+    print(f"XGBoost requested device: {xgb_device}")
     start = time.time()
 
     for ticker in sorted(set(train["Ticker"]) & set(valid["Ticker"])):
@@ -137,7 +141,7 @@ def main():
             **baseline,
         })
 
-        for model_name, model in make_models().items():
+        for model_name, model in make_models(xgb_device).items():
             if model is None:
                 skipped.append({"ticker": ticker, "model": model_name,
                                 "reason": "xgboost is not installed"})
@@ -151,8 +155,32 @@ def main():
                     **metrics(y_val, pred, current),
                 })
             except Exception as exc:
-                skipped.append({"ticker": ticker, "model": model_name,
-                                "reason": f"{type(exc).__name__}: {exc}"})
+                # If CUDA is unavailable/unsupported, retry XGBoost on CPU once.
+                if model_name == "XGBoost" and xgb_device == "cuda" and any(
+                    token in str(exc).lower() for token in ("cuda", "gpu", "device")
+                ):
+                    try:
+                        from xgboost import XGBRegressor
+                        fallback = Pipeline([
+                            ("imputer", SimpleImputer(strategy="median")),
+                            ("model", XGBRegressor(
+                                n_estimators=250, max_depth=4, learning_rate=0.04,
+                                subsample=0.85, colsample_bytree=0.85,
+                                objective="reg:squarederror", n_jobs=-1,
+                                tree_method="hist", device="cpu", random_state=42,
+                            )),
+                        ])
+                        fallback.fit(X_train, y_train)
+                        pred = fallback.predict(X_val)
+                        rows.append({"ticker": ticker, "model": "XGBoost_CPU_Fallback",
+                                     "train_rows": len(tr), "validation_rows": len(va),
+                                     **metrics(y_val, pred, current)})
+                    except Exception as fallback_exc:
+                        skipped.append({"ticker": ticker, "model": model_name,
+                                         "reason": f"CUDA failed: {exc}; CPU fallback failed: {fallback_exc}"})
+                else:
+                    skipped.append({"ticker": ticker, "model": model_name,
+                                    "reason": f"{type(exc).__name__}: {exc}"})
 
     result = pd.DataFrame(rows)
     if result.empty:
@@ -173,6 +201,7 @@ def main():
         "validation_rows": int(len(valid)),
         "test_partition_loaded": False,
         "selection_rule": "Use validation only; final test remains untouched.",
+        "xgboost_requested_device": xgb_device,
         "elapsed_seconds": round(time.time() - start, 2),
         "skipped": skipped,
         "summary": summary.to_dict(orient="records"),
