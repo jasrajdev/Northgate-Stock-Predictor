@@ -256,3 +256,23 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - **India VIX:** Official NSE historical page provides date-range controls and CSV download. Unfiltered “No Records” is an empty-query state, not evidence of absent historical data. CSV not yet retrieved.
 - **NSE announcements:** Official Corporate Filings Summary Documents page exposes date/company/subject filters and CSV export; broadcast and exchange-dissemination timestamps are visible in the indexed example. This is a regulatory event stream, not comprehensive editorial news. No announcement corpus retrieved.
 - **Acquisition state:** These are source/release checks, not dataset downloads. No PLFS, RBI, VIX or announcement rows have been merged into market features.
+
+## 2026-11-14 — NSE source route review and acquisition status
+
+### Official market-data routes now identified
+- NSE All Reports provides date-range queries for historical India VIX and historical indices. The rendered VIX schema is Date/OHLC/Previous Close/Change/% Change. NSE's historical reports directory also lists index archives, VIX, valuation ratios and total-return index values.
+- NSE Indices' official historical-data page offers selectable broad-market and sectoral indices, date-range queries and CSV outputs for price-index OHLC, TRI and P/E/P/B/dividend yield. Candidate sector series include NIFTY AUTO, BANK, FMCG, IT, PHARMA, METAL and others. No CSVs retrieved yet.
+- NSE daily equity reports identify **CM-UDiFF Common Bhavcopy Final (zip)** as the current format. The old CM Bhavcopy CSV and Common Bhavcopy CSV were discontinued effective 8-Jul-2024. Daily volatility and security-wise delivery-position reports are also listed. These files can provide official spot checks against the existing Yahoo panel; they are not yet acquired or parsed.
+- India VIX represents option-implied expected NIFTY volatility over the next 30 calendar days, annualised. Keep it conceptually distinct from realised historical volatility.
+
+### NSE filings: official UI vs undocumented route
+- Official Corporate Filings Summary Documents UI exposes company/symbol, subject and date filters, CSV export, and broadcast timestamp fields. The sample page shows broadcast and exchange-dissemination times at second precision.
+- A 10-Nov-2026 third-party investigation documents an undocumented public JSON route for NSE corporate announcements and the NSE RSS announcements feed. The article's sample counts and response schema are not independently verified here. Treat the JSON route as a fragile website endpoint, not a supported official developer API. Validate sample records, timestamp semantics, historical coverage, rate behavior and website terms before adopting. RSS appears current-day oriented in the reported sample and is insufficient by itself for historical training.
+- No announcement records have been downloaded. Keep editorial news and regulatory disclosures as separate source families.
+
+### RBI / PLFS state
+- RBI DBIE Key Rates table: 271 effective-date records reported through 7-Oct-2026; CSV/JSON export is visible but still not downloaded. Treat as effective-date events, then forward-fill after effective date only.
+- PLFS October 2026 monthly bulletin is scheduled for 15-Nov-2026; as of 14-Nov it is not yet due. September 2026 remains the latest confirmed monthly bulletin; July–September 2026 quarterly bulletin was published 10-Nov. Monthly API and monthly/quarterly bulletin products must remain separate.
+
+### Retrieval status
+No new rows or files were downloaded in this pass. Official NSE pages and their rendered schemas were reviewed; the JSON announcement route is third-party-documented and remains unverified. Next acquisition work requires actually exporting RBI/VIX/index/bhavcopy files or executing bounded API calls and recording raw responses.
