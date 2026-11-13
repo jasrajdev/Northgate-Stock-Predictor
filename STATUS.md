@@ -584,3 +584,16 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Identified a documented historical full-bhavcopy CSV URL pattern in the open-source `jugaad-data` NSE archive implementation: `sec_bhavdata_full_{DD}{MM}{YYYY}.csv` under `nsearchives.nseindia.com/products/content/`. This provides a candidate way to obtain historical dates after the UDiFF transition.
 - Direct web retrieval of the six archive files was inaccessible in this session. No files were downloaded or verified and no Yahoo-vs-NSE comparisons were made.
 - Next: use the historical full-bhavcopy URL pattern locally for RELIANCE 25/28/29 Oct 2024 and HDFCBANK 25/26/28 Aug 2025; validate and hash each CSV before extracting EQ rows.
+
+
+### 2026-11-14 — Six historical NSE Full Bhavcopy files downloaded (user-reported)
+- User ran the historical `sec_bhavdata_full_{DD}{MM}{YYYY}.csv` retrieval for RELIANCE 2024-10-25/28/29 and HDFCBANK 2025-08-25/26/28. All six requests completed without `raise_for_status()` errors and six files were saved under `data/raw/nse_bhavcopy/bonus_audit/`.
+- User-reported SHA-256 values:
+  - 2024-10-25: `e889503392d34424785be117156656b0fc6b554d26d6d195ae06f92ce0279904`
+  - 2024-10-28: `2ea975e4b0568e33de01c8f55ae96aa0cc8a35a11aab35074e6143aba051d1ef`
+  - 2024-10-29: `871dd93f5925c6f8a4656523d48f70f8199ec0872c761a2dc290fbdd082dacf1`
+  - 2025-08-25: `7ad26f0874f9c67199da34e1f0f000b9827f26947202fbf1dce763d6ceabe46f`
+  - 2025-08-26: `996347736726a5abc34d0d9a3629c76c8880c3bca3bbff7589dff32c9aed8675`
+  - 2025-08-28: `4af5d67891bc90b3e4213367bd2f2566cc2f45fbcf55ac11ae9e78715d259c8f`
+- Important: files have not yet been independently inspected for CSV schema, expected columns, date, or the single matching EQ row. These are user-reported download outputs and hashes, not yet validated Bhavcopy observations.
+- Next: validate file signatures/headers, extract exactly one `SERIES=EQ` row per target security/date, recalculate hashes, and compare official NSE OHLC with original Yahoo CSV values. No prices or labels have been changed.
