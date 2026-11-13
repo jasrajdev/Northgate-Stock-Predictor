@@ -115,3 +115,10 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - The NSE Historical Reports directory lists historical India VIX, index, TRI and valuation archives. The dedicated VIX page has date-range controls and CSV export; an unfiltered “No Records” view is inconclusive. No raw file acquired.
 - MoSPI's October-2026-updated release calendar schedules the October monthly PLFS bulletin for 15-Nov-2026. This is a future scheduled date as of 14-Nov, not a verified publication. Keep it separate from the July-Sep quarterly bulletin and MCP API series.
 - No raw observations downloaded, validated or merged. No change to market panel, splits or model status.
+
+
+## Research continuation — 2026-11-14 (TejHQ revision/terms audit)
+- Hugging Face search now shows a 7.36M-row NSE price subset and a commit dated 2026-11-09 that updates NSE/BSE 2026 price Parquet files. The current card describes seven data trees including raw/adjusted prices, corporate actions, symbol history, derived metrics, liquidity universe and delivery data.
+- The opened viewer and card contain conflicting snapshots: MIT badge vs specific TejHQ terms, 8.33M corporate-action rows vs 7.36M NSE price rows, and older card language that says corporate actions/adjusted close are not yet available. Coverage and layout also differ across snapshots. Do not merge those statements into one stable manifest.
+- TejHQ's specific 2026-11-08 terms say MIT covers code only, no exchange licence/clarification exists, personal private research/model training/local storage is allowed by TejHQ, raw data redistribution is prohibited, and exchange terms still apply. This supersedes the generic HF licence badge for practical handling.
+- No Parquet file downloaded or validated. Next: pin the 2026-11-09 revision, inspect file tree and schema, then test one bounded yearly or daily partition against independently sourced NSE bhavcopy.
