@@ -321,3 +321,7 @@ Neither candidate replaces the current Northgate 29,473-row labelled dataset. A 
 - RBI DBIE daily interbank USD/INR table: 6,319 daily observations, 08-Aug-2000 to 30-Jun-2026, OHLC plus RBI Reference Rate; CSV/JSON export available. No export acquired.
 - RBI Reference Rate Archive offers date-range Excel download. RBI says FBIL took over computation/publication of major-currency reference rates from 10-Jul-2018. Preserve provider/source transition and fixing-time availability.
 - CC0 Zenodo mirror covers RBI/FBIL reference rates 1998-08-25 to 2026-09-30, but remains a secondary convenience mirror; validate against RBI/FBIL official series. No download.
+
+### RBI short-term rates and government yield
+- RBI Handbook Table 27 and current-statistics Table 225 document daily weighted-average call/notice money rates with borrowing/lending ranges and turnover. This is a daily India short-term liquidity feature candidate. The monthly DBIE weighted-average call money table is a separate monthly aggregate (Mar-1991 to Mar-2026). No daily export acquired.
+- A suitable official free daily 10Y generic G-Sec yield download was not confirmed. Third-party aswinv90 claims daily India 10Y yields from 2000 but provenance remains unverified. Keep monthly OECD/FRED India 10Y separate and do not interpolate to daily.
