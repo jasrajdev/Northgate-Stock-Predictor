@@ -388,3 +388,17 @@ No raw observations were downloaded or reconciled in this research pass.
 | Basket 2 restricted | PAN/KYC/client-identifiable trades, order/trade logs and client positions. | Not required; do not request. |
 
 The older NSE Data Sharing & Usage Policy definition mentions students/researchers among non-commercial users, but the current Data for Research disclaimer explicitly applies institutional affiliation restrictions. Do not assume a student qualifies independently; obtain written confirmation. No application, permission, data delivery or dataset validation has occurred.
+
+
+## Official public historical-data UI candidates — reviewed 2026-11-14
+
+| Dataset | Official UI fields / export | What it can do for Northgate | Still unverified |
+|---|---|---|---|
+| NSE security-wise archives | Symbol/series/date selectors; CSV; OHLC, VWAP, quantity, turnover, trades, deliverable quantity and delivery %. Presets through 5Y plus Custom. | Potential raw-price validation and delivery/volume features for all ten equities. | Exact date coverage per symbol, maximum custom range, actual CSV schema/file and permitted bulk/automated access. |
+| NSE corporate actions | Company/symbol, purpose, meeting/date filters; CSV; purpose, face value, ex-date, record date, book closure. | Event-date audit and corporate-action validation. | Full target-symbol history, historical completeness, and timestamp of original announcement (ex-date alone is insufficient). |
+| NIFTY Indices history | Index selector/date range; CSV; separate TRI and Net TRI values. | Candidate official NIFTY 50 TRI benchmark instead of price-only ^NSEI. | Daily coverage, earliest date, CSV acquisition and terms. |
+| India VIX history | Preset ranges through 1Y plus Custom; CSV. | India-specific volatility context. | Historical depth and actual data/schema. |
+| NSE FII/FPI and DII | Separate CSV controls for NSE-only and combined NSE+BSE+MSEI capital-market flows. | Aggregate daily market-flow context only; not stock-specific flow. | Historical depth, provisional/revision status, publication timestamp and schema. |
+| NSE daily/monthly report archive | Date-filtered legacy CM reports and current CM-UDiFF ZIP; security-wise delivery and full Bhavcopy reports listed. | Potential official raw daily exchange archive. | Exact old/new field mapping, full historical archive range and access terms. |
+
+No files were downloaded from these pages. Treat all as source-access candidates, not acquired/validated datasets. Do not automate retrieval until NSE terms and permissions are clear.
