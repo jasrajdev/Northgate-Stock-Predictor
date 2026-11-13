@@ -183,3 +183,14 @@ Implement and test a reproducible parser for the uploaded CPI workbooks. Normali
 ## Next action
 Add tests and cross-check the cumulative series endpoint against each workbook's Annex-I current provisional and previous final Combined General Index. Then build a verified release timestamp map and align each vintage to the first eligible NSE session.
 
+## Training-first acceleration — 2026-11-13
+
+- Priority reset: begin the first price/volume-only model benchmark immediately; CPI, macro and news/sentiment are not prerequisites for baseline training. They remain later incremental-feature experiments required by the PRD.
+- Added scripts/train_baseline_models.py. It trains separate per-equity models using the existing train and validation CSV splits, excludes the ^NSEI index from stock-model fitting, uses only numeric time-t features, and evaluates next-session adjusted-close forecasts against the naive last-adjusted-close baseline.
+- Models configured: Ridge, Random Forest, SVR (RBF), and XGBoost. The script reports validation MAE, RMSE and directional accuracy. It deliberately does not load the final test partition.
+- Added scikit-learn and XGBoost to requirements.txt.
+- **Not yet run:** the training script has been committed and read-back verified, but no model has been fitted and no metrics exist yet. Local split CSVs remain on the user's Mac; GitHub currently stores the scripts, not those local data outputs.
+
+## Immediate next action
+Pull main on the Mac, install requirements in the project environment, and run scripts/train_baseline_models.py. Inspect the validation summary and errors before deciding whether to tune or add deep-learning models. Do not evaluate the final test until model selection is frozen.
+
