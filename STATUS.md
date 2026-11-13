@@ -410,3 +410,11 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Sharpened candidate terms: TejHQ permits private personal research/model training under provider terms but has no exchange licence and raw redistribution is prohibited; NSEDATA4ME code is GPL but its NSE-derived data remains subject to NSE terms; historical index membership reconstruction is not yet licence/accuracy verified.
 - No raw market/macro/news data was downloaded, validated or merged during this source-research pass. Existing panel and model split remain unchanged.
 - Institutional sponsorship is not a dependency for the ongoing public-source research plan.
+
+## Additional source review — 2026-11-14
+- TejHQ landing page now provides a detailed raw-price schema, corporate-action adjustment description, ISIN symbol history and claimed point-in-time top-500 liquidity universe. Its own Yahoo comparison is only 89% within ±1%; independent sample QA is essential.
+- TejHQ landing page's MIT/open-data marketing conflicts with its dedicated data terms: MIT covers code only, personal research/model training is allowed, raw redistribution is prohibited, and exchange terms still apply. No data rights or accuracy are assumed.
+- NSE All Reports indexed preview shows historical VIX fields but has a date-range mismatch/duplicate-row anomaly; no CSV acquired. India VIX is 30-day implied volatility, not realised volatility.
+- PLFS MCP query rules reconfirmed, including monthly/quarterly coverage and single-indicator restriction. No PLFS API rows acquired.
+- BigQuery's first 1 TB/month public-dataset query allowance makes a strictly bounded GDELT pilot plausible, subject to verifying the exact table and schema.
+- No raw files downloaded or merged. Existing market panel and chronological split remain unchanged.
