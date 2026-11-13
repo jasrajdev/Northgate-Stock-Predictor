@@ -1000,3 +1000,11 @@ No RBI export, India VIX CSV, sector-index CSV, official NSE bhavcopy archive, P
 - Economic Times RSS terms: https://economictimes.indiatimes.com/rss.cms
 
 No additional article corpus, exchange data file or third-party Parquet was downloaded in this review. Usage rights and actual record-level quality remain open.
+
+### SEBI research-data circular — eligibility nuance (full PDF reviewed 14-Nov-2026)
+SEBI Circular SEBI/HO/DEPA-II/DEPA-II_SRG/P/CIR/2024/178 (20-Dec-2024) is more specific than a general “free research data” rule:
+- The circular's voluminous-data free request mechanism (reasonable amount up to 2 GB per researcher per year, no extra computation) is for **research/research publications undertaken by accredited academic institutions**.
+- The circular divides MII data into a public first basket (aggregate/analysed data plus regulator-mandated disclosures and data already public) and a non-public second basket (identifiable or sensitive/confidential information).
+- Its illustrative first-basket examples include publicly available bhavcopy, index snapshots, trading statistics, category-wise turnover/open interest, historical trading statistics, historical daily OHLC/volume/turnover/open interest, and historical spot/futures prices beyond 30 days. It directs MIIs to publish a data-seeking request form explaining the research hypothesis.
+- This creates a legitimate route worth investigating if Northgate can be submitted through an accredited academic institution. It does **not** itself prove that any specific raw dataset is available to this user, waive exchange-specific conditions, or override NSE website terms. We need the exchange's published data-basket list and request form, and confirmation of eligibility/conditions.
+- Source: https://www.bseindia.com/downloads1/SEBI_circular_Policy_Sharing_Data.pdf (paras 3–8 and Annexure I, pp. 1–4).
