@@ -308,3 +308,12 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Updated `scripts/train_baseline_models.py` to report the PRD's full regression metrics: MAE, RMSE, MAPE, R² and directional accuracy, including the naive baseline. This is a code change only; it has not yet been executed or tested on the Victus.
 - No model has been trained and no performance result is claimed. The final six-month test partition remains unopened by both training scripts.
 - User's next machine-side step is to follow the GPU setup guide, run the data rebuild and share the data-quality report before beginning model training.
+
+
+## 2026-11-13 — Dataset research continuation: release calendar and export workflow
+
+- Corrected PLFS publication chronology using MoSPI's official 2026–27 Advance Release Calendar: monthly September 2026 bulletin was released 15 October (PIB PRID 2323828); quarterly July–September 2026 bulletin is dated 10 November; monthly October 2026 bulletin is scheduled 15 November. Monthly API data, monthly bulletin PDFs and quarterly bulletin tables are separate products. The earlier status that implied September's PLFS publication was only a quarterly bulletin was incomplete.
+- Reconfirmed NSE official India VIX historical page has date-range controls and CSV download. An unfiltered page showing No Records must not be interpreted as an empty archive. No VIX CSV retrieved.
+- Reconfirmed RBI DBIE Key Rates table financial_sector.r531_key_rates displays CSV/JSON export and 271 effective-date rows through 7 October 2026. This is an identified manual export path; no CSV/JSON retrieved. Effective-date semantics remain essential.
+- Identified NSE corporate filings as a candidate regulatory-disclosure stream, distinct from editorial news. Public third-party scraper descriptions mention filing and dissemination timestamps, but no official free bulk API contract was verified. No filings/news retrieved.
+- No new PLFS/RBI/VIX/news observations downloaded or merged in this pass. Continue with official exports and preserve actual publication/effective timestamps.
