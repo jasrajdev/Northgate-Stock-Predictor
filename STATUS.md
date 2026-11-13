@@ -577,3 +577,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Rights and demerger entitlements are not validated by the absence of dividend/split entries. No adjustment factors or new labels are inferred.
 - No source data, features, labels or code changed. Model training remains paused.
 - Next: compare Yahoo Close with official NSE EQ Bhavcopy across pre/post bonus dates and gather event-window Bhavcopy for the remaining actions.
+
+
+### 2026-11-14 — NSE historical Bhavcopy retrieval path identified
+- NSE All Reports confirms the legacy CM Bhavcopy CSV was discontinued from 2024-07-08 and points to CM-UDiFF Common Bhavcopy Final; it also distinguishes actual Bhavcopy prices from adjusted 52-week summary values.
+- Identified a documented historical full-bhavcopy CSV URL pattern in the open-source `jugaad-data` NSE archive implementation: `sec_bhavdata_full_{DD}{MM}{YYYY}.csv` under `nsearchives.nseindia.com/products/content/`. This provides a candidate way to obtain historical dates after the UDiFF transition.
+- Direct web retrieval of the six archive files was inaccessible in this session. No files were downloaded or verified and no Yahoo-vs-NSE comparisons were made.
+- Next: use the historical full-bhavcopy URL pattern locally for RELIANCE 25/28/29 Oct 2024 and HDFCBANK 25/26/28 Aug 2025; validate and hash each CSV before extracting EQ rows.
