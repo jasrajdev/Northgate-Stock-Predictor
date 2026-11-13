@@ -12,6 +12,9 @@ India-focused research project testing whether machine-learning forecasts and ca
 - `docs/IMPLEMENTATION_PLAN.md` — staged project plan
 - `docs/DATA_RESEARCH.md` — data-source and dataset research
 - `docs/RESEARCH_ROADMAP.md` — research questions, source-only prompts, Phase 1 source pack, and research log
+- `docs/PRD_REQUIREMENTS.md` — traceable requirements reference from the supplied PRD v1.0
+- `docs/DATASET_INVENTORY.md` — verified data inventory, source coverage and gaps
+- `docs/GPU_LAPTOP_SETUP.md` — GPU laptop setup and training handoff
 - `docs/CONTINUITY_PROTOCOL.md` — instructions for future project sessions
 
 ## Start every session
