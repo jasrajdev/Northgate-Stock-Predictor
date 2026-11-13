@@ -1057,3 +1057,39 @@ A second broad public dataset was discovered and its GitHub repository metadata,
 5. Do not use back-adjusted prices containing future corporate-action factors as historical point-in-time inputs without explicitly checking the effect on features/labels. For return targets, use a consistent corporate-action-adjusted target definition and avoid leakage from adjustments not known at prediction time.
 
 No candidate Parquet data was downloaded, and no independent quality score is claimed.
+
+## 2026-11-14 — PLFS quarterly bulletin values extracted from official PDF
+
+The official MoSPI PLFS Quarterly Bulletin QB-31 (July–September 2026), dated 10-Nov-2026, was opened and its all-India tables were inspected. This is actual published data, not merely API metadata.
+
+### Headline CWS values (age 15 years and above)
+| Indicator | Rural | Urban | Rural + urban |
+|---|---:|---:|---:|
+| LFPR | 58.1% | 50.4% | 55.5% |
+| WPR | 55.6% | 46.9% | 52.7% |
+| Unemployment rate | 4.3% | 6.8% | 5.1% |
+
+The bulletin also reports all-India UR for age 15–29 at 15.3%. These values are CWS and should not be confused with the annual Usual Status (ps+ss) estimates.
+
+### Historical quarterly context in the same bulletin
+For persons age 15+, all-India rural+urban UR by quarter:
+- Jul–Sep 2025: 5.2%
+- Oct–Dec 2025: 4.8%
+- Jan–Mar 2026: 5.0%
+- Apr–Jun 2026: 5.4%
+- Jul–Sep 2026: 5.1%
+
+For the same quarters, all-India LFPR was 55.1%, 55.8%, 55.5%, 54.6%, 55.5%; WPR was 52.2%, 53.1%, 52.8%, 51.7%, 52.7%.
+
+### Statistical reliability / methodology
+- The July–September 2026 bulletin's sample-size table reports 11,229 FSUs, 1,33,570 households and 5,55,593 persons for rural+urban estimates. RSE of all-India UR (15+) is 1.72%; corresponding LFPR and WPR RSEs are 0.27% and 0.29%.
+- The revamped design from Jan 2025 supports monthly all-India rural/urban CWS indicators and quarterly rural+urban coverage. Pre-Jan-2025 quarterly bulletins covered urban areas only; do not splice the pre-2025 urban-only quarterly series with the post-2025 national rural+urban series without explicit geography flags.
+- Monthly September 2026 catalogue records are released 15-Oct-2026, separately for LFPR/WPR/UR. Quarterly July–September bulletin publication date is 10-Nov-2026. Preserve these distinct publication products.
+- October 2026 monthly bulletin is scheduled for 15-Nov-2026 in the latest 2026–27 advance release calendar. It is not yet available in this 14-Nov review; verify actual publication rather than assuming the schedule guarantees release.
+
+Sources:
+- Official MoSPI PLFS QB-31 PDF: https://www.mospi.gov.in/uploads/publications_reports/publications_reports1794297172776_05eae330-7f2d-45ec-84c5-07031201ecf1_PLFS_QB_July-Sept_2026_m.pdf
+- Official e-Sankhyiki PLFS catalogue: https://esankhyiki.mospi.gov.in/catalogue-main/catalogue?page=1&product=PLFS
+- Official 2026–27 advance release calendar updated through October: https://www.mospi.gov.in/uploads/documents/releaseCalender/1793948871564-ARC%202026-27%20updated%20till%20October%202026.pdf
+
+This is a manual extraction of a published bulletin. No raw MCP API response has yet been acquired; the quarterly values must not be described as monthly observations.
