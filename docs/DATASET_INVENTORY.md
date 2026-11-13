@@ -471,3 +471,10 @@ BHARTIARTL 2019 rights and RELIANCE 2020 rights still need exact primary-source 
 - RELIANCE had a later 1:1 bonus effective 28-Oct-2024. Doubling the Yahoo Close values gives an inferred pre-bonus-equivalent scale (₹1,352.52, ₹1,381.22, ₹1,325.38), not a verified raw-price record. Do not treat this inference as exchange data.
 - Yahoo defines Adj Close as split- and dividend-adjusted. NSE's official Historical Reports page lists security-wise price-volume archives and daily/monthly reports; its All Reports page documents the 08-Jul-2024 legacy Bhavcopy cutover and says actual unadjusted prices should be taken from Bhavcopy.
 - Exact NSE raw rows for BHARTIARTL 22/23-Apr-2019 and RELIANCE 12/13-May-2020 remain uncollected. No price or label changes have been made. Source URLs and limits are in docs/DATA_RESEARCH.md.
+
+
+### 2026-11-14 — Official Bhavcopy access attempt
+- NSE official pages confirm the historical report families and 08-Jul-2024 legacy-format cutover to CM-UDiFF. The official report page directs users to Bhavcopy for actual unadjusted prices.
+- Candidate old-format archive paths identified for 22/23-Apr-2019 and 12/13/14-May-2020; candidate full security-bhavdata CSV route also identified. Exact expected filenames and URLs are recorded in `docs/DATA_RESEARCH.md`.
+- Downloads could not be completed in the research environment: NSE archive host was inaccessible to the web retrieval layer and DNS resolution failed in the container. No raw rows, schemas, checksums or file availability are claimed.
+- Next: retrieve those five dates from the user's Mac/browser or via NSE's official Data for Research route; then inspect target tickers and series. No prices or labels changed.
