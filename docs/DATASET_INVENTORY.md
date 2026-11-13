@@ -412,3 +412,12 @@ No files were downloaded from these pages. Treat all as source-access candidates
 - **FII/FPI/DII:** NSE explicitly labels FII/FPI activity provisional and revisable; data is aggregate market flow, not stock-specific. Preserve publication/vintage status if used; final FPI data is directed to NSDL/CDSL.
 - **CM UDiFF:** Current ZIP format is the successor to legacy CM Bhavcopy CSV formats discontinued 08-Jul-2024. The format transition needs schema mapping; full archive coverage and delivery-file alignment remain open.
 - **No files downloaded or ingested.** These are official-source coverage clues, not acquired data.
+
+
+## Target-stock corporate-action spot-check — 2026-11-14
+
+- Confirmed public NSE/MSEI page examples: HINDUNILVR demerger ex-date 05-Dec-2025; ITC demerger ex-date 06-Jan-2025; HDFCBANK 1:1 bonus ex-date 26-Aug-2025; RELIANCE 1:1 bonus ex-date 28-Oct-2024 and rights issue documentation in May 2020; BHARTIARTL rights issues 19:67 (23-Apr-2019) and 1:14 (27-Sep-2021), independently visible in MSEI action history; recent dividend events for ICICIBANK, LT, SUNPHARMA and TCS.
+- This is a spot-check only. INFY's symbol-specific action history was not verified in this pass; no ticker's complete action history has been exhaustively downloaded. Do not infer absence of actions from a short quote-page display.
+- NSE integrated filings expose original/revision type, broadcast timestamp, revised timestamp and remarks. Retain revisions as separate point-in-time events; do not backdate revised information to the original filing.
+- Next data-quality test: inspect raw Close, Adj Close, dividend/split fields and forward target for at least two sessions before and after every confirmed rights/bonus/demerger event. Rights and demergers need explicit review; do not blindly trust vendor adjustment factors.
+- No action CSV or filing attachment was downloaded in this research pass.
