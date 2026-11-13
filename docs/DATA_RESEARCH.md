@@ -1156,3 +1156,31 @@ Links:
 - Reuters Corpus: https://www.library.hbs.edu/databases-cases-and-more/datasets/reuters-corpus
 
 No news corpus or GDELT query output has been downloaded or benchmarked in this pass.
+
+## 2026-11-14 — Corporate actions, trading calendar and point-in-time index membership
+
+### NSE Corporate Actions page
+- NSE's official Corporate Actions page exposes company/symbol, purpose keyword, meeting type, date-range presets (1D/1W/1M/3M/6M/1Y/custom) and CSV download. Rendered columns include SYMBOL, COMPANY NAME, SERIES, PURPOSE, FACE VALUE, EX-DATE, RECORD DATE, BOOK CLOSURE START DATE and BOOK CLOSURE END DATE. This is a direct structured source for corporate-action terms and dates.
+- A separate NSE investor-relations Corporate Actions archive lists historical company-level action announcements with Announcement Date, Record Date and attachment links, with visible examples back to 2012. It is potentially useful for action terms and event-date research, but its archive coverage/CSV export and announcement-time precision still need validation.
+- Important distinction: ex-date/record-date data is not the same as the timestamp at which an investor first knew about the action. For point-in-time features, retain the original announcement/broadcast timestamp from the filing; use ex-date for price adjustment and corporate-action accounting, never as a substitute for announcement availability.
+- Sources: https://www.nseindia.com/companies-listing/corporate-filings-actions ; https://www.nseindia.com/static/investor-relations/corporate-actions
+
+### NSE trading calendar and special sessions
+- NSE's official Market Timings & Holidays page exposes year/product selectors and the current 2026 equity holiday table. The 2026 schedule includes 16 regular listed holidays and separately notes Muhurat Trading on Sunday 08-Nov-2026. This confirms that a simple weekday calendar is insufficient.
+- Build the trading-session calendar from actual observed index/equity trading dates, then reconcile it against official holiday notices and special-session circulars. Keep regular sessions, Muhurat/special sessions, partial sessions, and unscheduled closures separately flagged. Do not infer that all weekends/holidays are no-session days or treat a Muhurat Sunday as a normal full session.
+- Source: https://www.nseindia.com/resources/exchange-communication-holidays
+
+### Point-in-time index membership: two independent community reconstructions
+- **BKKB20/nse-index-history** claims 28 NSE index constituent histories from 2004–2026 reconstructed from about 100 NSE reconstitution circulars (PDF/HTM). Its README discloses 3 unprocessed scanned 2018–2019 circulars and weaker pre-2010 ticker mapping. GitHub repository metadata shows no declared licence; do not assume reuse permission. This is a candidate to inspect/reconcile, not a trusted source of record.
+- **aditya-jha/nse-historical-membership** claims PIT membership for NIFTY 50, NIFTY Next 50, NIFTY 100, NIFTY 500, Midcap 150 and Smallcap 250 reliably from Apr-2018 onward, with best-effort earlier coverage and explicit warnings for Microcap 250 pre-2021-10. It is reconstructed by walking backward through NSE replacement press releases. Validate index cardinality, constituent change dates and ticker aliases against original NSE circulars; no declared licence has been established in this review.
+- This matters even if the model only forecasts 8–15 current large caps: benchmark/sector breadth, universe selection and portfolio backtests can otherwise inherit survivorship bias. Keep point-in-time index membership separate from the chosen current prediction universe.
+- Sources: https://github.com/BKKB20/nse-index-history ; https://github.com/aditya-jha/nse-historical-membership
+
+### NSEDATA4ME — another independent survivorship-aware EOD candidate
+- Public repository `ancap97/NSEDATA4ME` claims NSE daily EOD history from 03-Jan-2005, 4,583 securities including 1,037 delisted/inactive, 232 NSE indices from Feb-2012, and 5,407 days of market breadth. It says the first local snapshot is about 430 MB, with raw NSE reports, corporate actions, symbol/ISIN history, adjustment factors and delivery data.
+- Its README documents a coherent raw-to-derived pipeline: legacy bhavcopy through 05-Jul-2024, UDiFF from 08-Jul-2024, MTO/full bhavcopy delivery reports, index reports and corporate-action PR zip files. It uses ISIN-aware symbol history and includes delisted securities, which is valuable for backtesting.
+- GitHub lists the code repository under GPL-3.0, but this does not itself license NSE-origin data or grant exchange redistribution/automated-collection rights. The pipeline is described as downloading NSE reports with retries and rate delays; do not assume this makes the method permitted under NSE terms. No dataset snapshot downloaded or executed.
+- This may be the strongest open pipeline candidate for independently rebuilding/spot-checking Northgate's price panel and market breadth, but must be treated as a research candidate until source permissions, adjustment logic and data QA are checked.
+- Links: https://github.com/ancap97/NSEDATA4ME ; https://github.com/ancap97/NSEDATA4ME/blob/main/README.md
+
+No calendar, corporate-action CSV, historical membership file or EOD database was downloaded in this review.
