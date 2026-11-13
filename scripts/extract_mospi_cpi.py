@@ -36,7 +36,7 @@ def extract_base2012(input_dir: Path) -> tuple[list[dict], list[str]]:
     rows: list[dict] = []
     files = sorted(input_dir.glob("Annexures for Press Release in Excel *.xlsx"))
     for path in files:
-        match = re.search(r"Excel ([A-Za-z]+) (\\d{4})\\.xlsx$", path.name)
+        match = re.search(r"Excel ([A-Za-z]+) (\d{4})\.xlsx$", path.name)
         if not match:
             continue
         release_month_num = list(calendar.month_name).index(match.group(1))
