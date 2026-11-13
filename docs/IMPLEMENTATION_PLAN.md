@@ -96,3 +96,18 @@ For the existing one-session-ahead target, the working split is:
 - Final six calendar months of labelled data reserved as the untouched test window.
 
 The cutoff is computed from the latest `target_date_t1` in the dataset. Rows are assigned by target date, because that is when the forecast outcome becomes known. The script `scripts/create_chronological_splits.py` writes the three partitions and a quality report. Do not fit scalers, imputers, or feature selectors on validation/test data; do not use any `target_*` column as an input. The current script handles the one-session target only. Multi-session horizons require an explicit decision and review of overlapping-label purge/embargo requirements.
+
+## Training-first acceleration (2026-11-13)
+
+The first baseline model experiment starts on the existing price/volume-only next-session dataset. Macro/CPI and news/sentiment collection are deferred until after a baseline result; they are incremental features, not gates to first training. This is sequencing, not removal from the PRD scope.
+
+Added scripts/train_baseline_models.py:
+- Fits separate per-equity models to avoid mixing raw price scales across different stocks.
+- Uses the existing chronological train and validation partitions; excludes the NIFTY 50 index row from equity model fitting.
+- Models: Ridge, Random Forest, RBF-SVR and XGBoost.
+- Compares validation MAE, RMSE and directional accuracy with a naive last-adjusted-close forecast.
+- Does not load or evaluate the final test partition.
+- Learned preprocessing is contained inside each sklearn Pipeline and is fitted on that ticker's training rows only.
+
+The script is committed but has not yet been executed. No performance result is claimed. Next: run it locally, inspect per-ticker results and failures, then select/tune using validation only. Add macro/news features after this first baseline has established a comparison point.
+
