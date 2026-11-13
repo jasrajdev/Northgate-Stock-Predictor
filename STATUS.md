@@ -242,3 +242,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Added `scripts/extract_mospi_cpi.py` for reproducible extraction from local workbook files. The script source was committed and read-back checked; local execution of the committed script has not yet been verified.
 - Generated local outputs: `india_cpi_base2012_release_vintages.csv`, `india_cpi_base2012_latest_available.csv`, `india_cpi_base2024_current_headline.csv`, and `india_cpi_dataset_qa.json`.
 - Next data task: recover exact MoSPI release timestamps and obtain the official base-2024 linked back series (January 2013–December 2024) as a separate dataset; then continue RBI yields/rates and India VIX.
+
+
+## 2026-11-13 — Full historical CPI time series recovered
+- Found that the supplied December 2025 MoSPI workbook contains Annex-VI (monthly All-India Combined General CPI index) and Annex-VII (year-on-year inflation) time-series sheets, which were not included in the first extraction pass.
+- Extracted 156 monthly CPI index observations from January 2013 through December 2025. December 2025 is marked provisional in the source. Fourteen YoY inflation cells are blank and retained as missing.
+- The historical snapshot was released on 2026-01-12; this is the snapshot availability date, not the original availability date of each past monthly CPI observation. Point-in-time merging still requires the monthly release calendar/archived release dates.
+- Updated `scripts/extract_mospi_cpi.py` to extract Annex-VI and Annex-VII in addition to Annex-I and the separate base-2024 current series. Script source was read-back verified; execution of the committed script remains untested.
