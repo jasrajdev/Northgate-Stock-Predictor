@@ -8,7 +8,7 @@
 - NVIDIA driver: 592.82.
 - Driver-reported CUDA compatibility: 13.1.
 
-The driver is new enough for a CUDA 12.8 PyTorch wheel. CUDA 13.1 shown by `nvidia-smi` is the driver's maximum supported CUDA level; it does not mean PyTorch must be installed with CUDA 13.1. The instructions below use the official PyTorch CUDA 12.8 wheel index.
+The current official PyTorch release (2.14.1) provides CUDA 12.6, 13.0 and 13.2 Windows wheels. The laptop reports driver CUDA 13.1, so use the CUDA 12.6 wheel: it is supported by this newer driver and avoids requiring CUDA 13.2 driver support. The GPU is Ampere (RTX 3050), supported by CUDA 12.6.
 
 ## What is ready
 
@@ -62,7 +62,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ```powershell
 python -m pip install -r requirements.txt
-python -m pip install torch --index-url https://download.pytorch.org/whl/cu128
+python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cu126
 ```
 
 Verify CUDA before downloading data:
