@@ -826,3 +826,36 @@ This correction supersedes any earlier statement in this document that implies f
 - The annexure numbers changed after the 2024 redesign: November 2024 uses Annex V for index and Annex VI for inflation; later releases such as October 2025 use Annex VI for index and Annex VII for inflation. Extraction must identify table titles/content, never hard-code annexure numbers.
 - Combined with inspected Jan 2016 and Jan 2017 releases (only Annex I–IV, no cumulative series), and uploaded July–October 2024 workbooks (only Annex I–IV), the best-supported boundary is: cumulative CPI index/inflation annexures first appear in the November 2024 reference-month release (released 12 Dec 2024). The preceding October 2024 release should still be treated as pre-cumulative unless a contrary primary source is found.
 - This means cumulative historical vintage snapshots are available for the release sequence Nov 2024–Dec 2025 in the current dataset. For earlier releases, collect monthly headline provisional/final records from original releases; do not claim full monthly historical snapshots.
+
+### Uploaded MoSPI Excel annexure audit — 2026-11-13
+
+I inspected the 18 uploaded official monthly annexure workbooks directly with the Python openpyxl library in read-only/data-only mode. This is a local source-file audit; the source files themselves have not been committed to the repository.
+
+**Coverage and table availability**
+
+| Release month | Cumulative General CPI index | Cumulative YoY inflation |
+|---|---|---|
+| Jul–Oct 2024 (4 workbooks) | Absent | Absent |
+| Nov–Dec 2024 (2 workbooks) | Present | Present |
+| Jan–Dec 2025 (12 workbooks) | Present | Present |
+
+The cumulative index table is titled as the All India General CPI (2012=100) since January 2013; the companion table is All India year-on-year inflation based on General CPI (2012=100) since January 2014. Annexure numbering changes between releases (e.g. Annex V/VI in late 2024 and Annex VI/VII in later 2025 files), so extraction must identify tables by title, not fixed sheet/annexure number.
+
+**Extraction smoke test**
+
+- The November 2024 workbook's cumulative index sheet has a year-by-month layout (2013 onward); the inflation sheet begins in 2014.
+- The current-month headline table in Annex-I separately identifies the previous month as Final and the current month as Provisional. Example: the November 2024 workbook labels October 2024 Final and November 2024 Provisional, with the Combined General Index values in the “General Index (All Groups)” row.
+- Across overlapping CPI index and YoY observations in the uploaded cumulative sheets, 281 distinct month/series keys were present. Comparing every repeated key across workbook vintages found no differing values at the precision stored in the spreadsheets.
+- This is only an extraction/consistency smoke test. It does not prove there were no revisions in unprovided releases, does not validate the original source's calculation, and does not establish a full 2016–2025 vintage history.
+
+**Source-set limitations**
+
+- Uploaded releases cover July 2024 through December 2025, but only 18 monthly workbooks; no 2016–June 2024 workbook set is present.
+- July–October 2024 workbooks contain only Annex-I to Annex-IV. November 2024 is the first cumulative historical snapshot in the uploaded set.
+- The current local source set does not include every month before July 2024, so monthly provisional/final headline history for 2016–June 2024 still needs separate official releases/workbooks.
+- The workbook audit did not yet export a normalized CPI CSV or vintage panel. No model-ready macro dataset has been created.
+
+**Next extraction step**
+
+Build a reproducible parser that detects the CPI index and YoY sheets by their titles, converts the year/month matrices into tidy records, and attaches each workbook's release reference month, actual publication timestamp, source filename, base year, series type, and vintage. Add tests for month coverage, duplicate keys, expected start months, latest published month, and agreement between the Annex-I provisional/final General Index row and the corresponding cumulative series endpoint. Keep release vintage separate from observation month; do not treat the latest snapshot as the value available historically.
+
