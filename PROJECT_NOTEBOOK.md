@@ -130,3 +130,11 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - TejHQ's public pipeline README appears stale against the live dataset tree (five trees/2024 start vs seven trees/2010+ adjusted partitions). The README's corporate-action back-adjustment process is retrospective; historical backtests must not assume today's adjusted prices were available at the time.
 - NSE All Reports confirms CM-UDiFF final ZIP and separate new-format readme workbook; legacy CM CSV discontinued 2024-07-08. UDiFF guidance establishes general CSV/ISO date/ASCII/compression rules, not the exact CM field mapping.
 - No raw data downloaded, compared, validated or merged. No model trained. Next: pin full HF revision and inspect a small raw partition; separately inspect official NSE readme/sample.
+
+
+## Research log — 2026-11-14 (TejHQ parser and adjustment review)
+- Confirmed current public dataset card and README agree on NSE 2010-01-04 onward, BSE 2024-07-08 onward, seven trees and annual raw NSE Parquet layout.
+- Inspected public parser, instrument-chain and adjustment code. Legacy NSE schema is handled separately; pre-2012 ISIN/trades nulls are intentional. ISIN continuity uses a same-symbol <=30-day heuristic. Adjustment factors cover splits, bonuses and dividends; demerger/merger/rights/buyback/other remain unadjusted (factor 1.0), and missing dividend inputs also fall back to 1.0.
+- Back-adjusted history is revised when later corporate actions are added. Preserve PRD target but explicitly test whether an absolute adjusted-close target creates scale/revision issues; return-ratio representation may be an experimental comparator only.
+- Provider's Yahoo adjusted-close reconciliation (96.88%, 25,329 comparisons, 48/50 symbols, 2024-01-01 to 2026-05-06) is not independent exchange-source validation and has convention exceptions (TRENT, ITC).
+- No data download, raw NSE comparison, test execution, panel update or model training. Full HF revision SHA not yet pinned.
