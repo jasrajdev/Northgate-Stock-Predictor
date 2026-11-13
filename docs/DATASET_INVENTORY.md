@@ -447,3 +447,11 @@ Confirmed terms for audit queue (these confirm event details, **not** vendor pri
 - BHARTIARTL 2021 rights: 1:14, issue price ₹535, ex-date 27-Sep-2021, record date 28-Sep-2021.
 
 BHARTIARTL 2019 rights and RELIANCE 2020 rights still need exact primary-source terms/ex-dates before an adjustment can be calculated. Event details and derivative contract adjustments must not be mistaken for cash-market adjusted-close factors. No panel rows have been inspected in this session.
+
+
+## 2026-11-14 — Rights issue terms completed for two open events
+
+- **BHARTIARTL 2019:** 19:67 entitlement; record date 24-Apr-2019; ex-rights date 23-Apr-2019; ₹220 issue price (₹5 face + ₹215 premium), fully payable; issue 03–17 May 2019; 1,133,591,075 shares allotted 24-May-2019. Issuer Letter of Offer and annual reports verified; MSEI confirms ex-date.
+- **RELIANCE 2020:** 1:15 entitlement; record date 14-May-2020; ex-rights date 13-May-2020; ₹1,257 issue price; ₹314.25 application payment plus ₹942.75 subsequent call(s); issue 20-May–03-Jun-2020; allotment 11-Jun-2020; listing scheduled 12-Jun-2020. Issuer Letter of Offer, issue advertisement and allotment disclosure verified; ex-date cross-checked against NSE derivatives notice bulletin.
+- These records close the event-terms research gap, not the price-adjustment audit. Rights entitlements, especially RIL's partly-paid instrument, require event-specific economic reconciliation; do not apply a generic split factor.
+- Primary document URLs and provenance are recorded in `docs/DATA_RESEARCH.md`. No raw panel was available, so no event-window data inspection or label changes were made.
