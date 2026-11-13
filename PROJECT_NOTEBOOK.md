@@ -138,3 +138,6 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - Back-adjusted history is revised when later corporate actions are added. Preserve PRD target but explicitly test whether an absolute adjusted-close target creates scale/revision issues; return-ratio representation may be an experimental comparator only.
 - Provider's Yahoo adjusted-close reconciliation (96.88%, 25,329 comparisons, 48/50 symbols, 2024-01-01 to 2026-05-06) is not independent exchange-source validation and has convention exceptions (TRENT, ITC).
 - No data download, raw NSE comparison, test execution, panel update or model training. Full HF revision SHA not yet pinned.
+
+
+- Freshness correction: subsequent live-tree check shows TejHQ's newest observed publication is 2026-11-12 (raw NSE tree short hash `d6f1912`; adjusted NSE 2024 file short hash `8b77c06`). The prior 2026-11-11 note is superseded. Full commit SHA still unavailable, so revision pin remains incomplete.
