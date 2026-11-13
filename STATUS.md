@@ -111,3 +111,11 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 - A single oversized combined CSV was removed because the repository connector could not read back its full content. The two smaller split CSV files have been created and their headers fetched back; full row-level GitHub verification remains incomplete.
 - No daily CPI/market feature table has been built. The actual 29,484-row market panel is not in the current Project file list or GitHub repository, so the next join must wait for that exact trading-date panel rather than inventing sessions. No CPI model has been trained or backtested.
 - Current reproducible CPI feature source: `data/external/cpi_mospi_2012base_release_events_2024-07_to_2025-12.csv`; merge by backward as-of on `next_nse_session <= market date`, never by reference month.
+
+
+### 2026-11-13 — CPI market-panel join prepared
+- Added `scripts/merge_cpi_release_events.py`: backward as-of join from actual market date to latest CPI event available from its first eligible NSE session. Preserves input row order; leaves pre-first-event dates unmatched; checks duplicate availability sessions, base-year consistency and future-dated joins.
+- Added `tests/test_cpi_asof.py` covering release-date exclusion/next-session inclusion, row-order preservation and duplicate-event rejection. Test file is committed; it has not yet been run with the repository's pytest environment.
+- Executed a synthetic boundary check for 15/16 April and 13/14 May 2025. The old CPI event remains in force on the release date and the new one becomes available on the next eligible session; check passed.
+- Added usage instructions to `data/external/README_CPI.md`; updated `docs/DATA_RESEARCH.md`.
+- Remaining blocker for actual daily integration: `data/processed/market_panel.csv` (29,484 rows, per prior user-reported local output) is not present in GitHub or the current Project file list. Do not invent or approximate its trading dates. Once available, run the committed merge script and inspect nulls, row count, ticker coverage and chronological availability.
