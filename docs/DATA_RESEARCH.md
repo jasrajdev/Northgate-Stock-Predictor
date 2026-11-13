@@ -1677,3 +1677,20 @@ References checked 2026-11-14:
 - NSE Historical Reports: https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives
 - NSE All Reports / Bhavcopy cutover and unadjusted-price note: https://www.nseindia.com/all-reports
 - Yahoo RELIANCE historical rows: https://finance.yahoo.com/quote/RELIANCE.NS/history/?filter=history&frequency=1d&includeAdjustedClose=true&interval=1d&period1=1420070400&period2=1672444800
+
+
+## 2026-11-14 — NSE historical Bhavcopy retrieval attempt and endpoint status
+
+The official NSE Historical Reports page lists both Security-wise Price Volume Archives (Equities) and Archives of Daily/Monthly Reports (EQ). NSE All Reports lists the legacy `CM - Bhavcopy(csv)` and `CM - Bhavcopy (PR.zip)` report families and marks the legacy CSV reports discontinued from 08-Jul-2024 in favour of CM-UDiFF. NSE's own disclaimer says actual unadjusted 52-week prices should be taken from Bhavcopy.
+
+A candidate legacy archive path was identified from public technical references to NSE archives: `https://nsearchives.nseindia.com/content/historical/EQUITIES/{YYYY}/{MON}/cm{DDMMMYYYY}bhav.csv.zip` (uppercase month). The expected filenames for this audit are `cm22APR2019bhav.csv.zip`, `cm23APR2019bhav.csv.zip`, `cm12MAY2020bhav.csv.zip`, `cm13MAY2020bhav.csv.zip` and `cm14MAY2020bhav.csv.zip`. A second candidate is NSE's full security bhavdata CSV pattern `https://nsearchives.nseindia.com/products/content/sec_bhavdata_full_{DDMMYYYY}.csv`.
+
+Retrieval was not completed in this environment: direct web opening of the archive host returned inaccessible/internal-error responses, and the container had no DNS resolution for `nsearchives.nseindia.com`. Thus there are no downloaded files, checksums, schemas inspected from actual files, or verified raw close rows. The filename patterns are candidate routes, not confirmation that each historical file is currently served. Community-maintained downloader documentation is only a technical lead; NSE's own report pages remain the authority for report families and format cutover.
+
+Next: run a download test from the user's Mac/browser or obtain the files through NSE's official Data for Research process if public archive access fails. Parse the exact `BHARTIARTL` and `RELIANCE` equity-series rows; preserve raw file and retrieval metadata. Do not infer raw exchange closes by doubling Yahoo values or use Yahoo values as a substitute.
+
+Official references:
+- NSE Historical Reports: https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives
+- NSE All Reports: https://www.nseindia.com/all-reports
+- NSE archive naming/route technical lead (non-official): https://github.com/jugaad-py/jugaad-data/blob/master/jugaad_data/nse/archives.py
+- Alternative full-bhavdata route technical lead (non-official): https://github.com/aditya-jha/nse-historical-membership/blob/main/nse_eod/code/fetch_bhavcopy.py
