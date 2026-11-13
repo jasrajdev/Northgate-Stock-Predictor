@@ -1344,3 +1344,37 @@ A further live-tree check found a newer 2026-11-12 dataset publication than the 
 - Fetcher uses browser-like headers, retries and direct NSE archive URLs. This describes the provider's implementation, not a recommendation for Northgate to automate NSE collection; Northgate must still respect exchange terms and prefer official permitted downloads or licensed access.
 - Source blobs reviewed: fetch.py `40b7daf0c2c52ff94a079efa13e0b766fcd751ec`; parse.py `643310359347d22f83298a0dc480e9ac4bbd43a8`; transform.py `495be2ddaab322550f43a0f57c68d19d7dd51109`; tests/test_parse.py `56cc6d24d11ff993be3e92a7024e15d63af8655c`; tests/test_transform.py `d60e345eb8a1dca91f8abccbb64f34ea640c5433`.
 - No Northgate execution, raw data download, validation or model training occurred.
+
+## TejHQ target-universe coverage and rights/format cross-check — 2026-11-14
+
+### Provider-published per-symbol coverage
+Individual TejHQ stock pages report the following first NSE observations for Northgate's ten provisional equities:
+
+| Symbol | Provider-reported first date | Page's latest date observed in this research |
+|---|---:|---:|
+| BHARTIARTL | 2010-01-04 | 2026-11-11 |
+| HDFCBANK | 2010-01-04 | 2026-11-12 |
+| HINDUNILVR | 2010-01-04 | 2026-11-11 |
+| ICICIBANK | 2010-01-04 | 2026-11-12 |
+| INFY | 2011-06-29 | 2026-11-12 |
+| ITC | 2010-01-04 | 2026-11-12 |
+| LT | 2010-01-04 | 2026-11-11 |
+| RELIANCE | 2010-01-04 | 2026-11-12 |
+| SUNPHARMA | 2010-01-04 | 2026-11-12 |
+| TCS | 2010-01-04 | 2026-11-12 |
+
+All ten provider-reported histories begin before Northgate's 2016 start date. These pages are provider-generated summaries and are not a row-level completeness or correctness audit. The three pages showing 2026-11-11 rather than 2026-11-12 are not assumed missing the 12th; they may reflect page refresh/cache lag. Verify from raw/API data.
+
+### API acquisition path and terms
+- TejHQ documents keyless raw OHLCV via GET /v1/ohlcv/nse/{symbol}; its free API key is needed for adjusted prices and delivery, not raw OHLCV. The provider terms permit personal research, backtesting, paper trading, local storage and private dashboards; keyless limits are 120 requests/minute. Use only documented OpenAPI endpoints. No API request or dataset download was completed in this review.
+- Provider terms explicitly say TejHQ holds no NSE/BSE/NSE Indices licence or written clarification; MIT covers pipeline/SDK code only, not market data; exchange terms apply independently; raw-data publication/redistribution is prohibited. This supersedes any casual interpretation of the HF metadata badge. The current indexed HF search result shows exchange-public-data, while a cached rendered HF page still shows mit; treat the mismatch as metadata/cache drift and follow the specific data terms, not the badge.
+
+### Official NSE UDiFF references
+- NSE Forms & Formats page currently lists UDiFF Catalogue versions 1.0–4.0, a CM Bhavcopy File Format document, and a sample test file. The page was updated 30-Jun-2026. NSE All Reports lists the daily CM-UDiFF Common Bhavcopy Final ZIP and a separate “New Bhavcopy Format readme.xlsx”; legacy CM Bhavcopy CSV is discontinued effective 08-Jul-2024.
+- NSE Circular NSE/MSD/62424 dated 12-Jun-2024 states legacy and UDiFF bhavcopy formats would be available in parallel through 05-Jul-2024 and old bhavcopy formats discontinued from 08-Jul-2024. This supports the pipeline's cutover date. The actual XLSX/ZIP binary sample could not be retrieved/inspected in this research session, so exact CM field mapping still needs inspection.
+- Current public HF search metadata lists a custom exchange-public-data label; cached rendered page still displays MIT and stale older content. Current GitHub README + TejHQ terms are more internally consistent: pipeline code MIT, data not MIT, no exchange licence, personal/research use allowed by TejHQ terms subject to exchange terms.
+
+### Current disposition
+TejHQ has sufficient claimed symbol coverage to justify a bounded raw-data pilot for 2016–2026. It is not approved as Northgate's source yet. Next validation: obtain a single-year raw Parquet file (prefer 2025) or small API range for two or three symbols, inspect dtypes/series/date gaps/duplicates/zero-volume rows, and compare one or more exact dates to a permitted official NSE UDiFF export. Keep raw data private. No file, API response or exchange sample has been acquired in this review.
+
+Sources: https://tejhq.dev/stocks/bhartiartl ; https://tejhq.dev/stocks/hdfcbank ; https://tejhq.dev/stocks/hindunilvr ; https://tejhq.dev/stocks/icicibank ; https://tejhq.dev/stocks/infy ; https://tejhq.dev/stocks/itc ; https://tejhq.dev/stocks/lt ; https://tejhq.dev/stocks/reliance ; https://tejhq.dev/stocks/sunpharma ; https://tejhq.dev/stocks/tcs ; https://tejhq.dev/data-terms ; https://tejhq.dev/keys ; https://www.nseindia.com/static/resources/forms-formats-members ; https://www.nseindia.com/all-reports ; https://avantiscdnprodstorage.blob.core.windows.net/legalupdatedocs/32584/NSE_issued_a_circular_regarding_the_Standardization_of_Exchange_to_Member_Interface_files_in_Unified_Distilled_File_Formats_UDiFF_June122024.pdf .
