@@ -70,6 +70,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--availability-map", type=Path, default=None, help="CSV with release_workbook_month, actual_release_date, embargo_time_ist, next_nse_session")
     args = parser.parse_args()
     files = sorted(args.input_dir.glob("Annexures for Press Release in Excel *.xlsx"))
     if not files:
@@ -90,6 +91,18 @@ def main():
         raise SystemExit(f"Duplicate vintage keys found: {duplicates}")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     out = out.sort_values(key).reset_index(drop=True)
+    if args.availability_map:
+        availability = pd.read_csv(args.availability_map)
+        required = {"release_workbook_month", "actual_release_date", "embargo_time_ist", "next_nse_session"}
+        missing = required - set(availability.columns)
+        if missing:
+            raise SystemExit(f"Availability map missing columns: {sorted(missing)}")
+        out = out.merge(availability[list(required)], on="release_workbook_month", how="left", validate="many_to_one")
+        if out["actual_release_date"].isna().any():
+            missing_releases = sorted(out.loc[out["actual_release_date"].isna(), "release_workbook_month"].unique())
+            raise SystemExit(f"Missing verified release dates for snapshots: {missing_releases}")
+        out["available_at_ist"] = pd.to_datetime(out["actual_release_date"] + " " + out["embargo_time_ist"]).astype(str)
+        out["available_from_session"] = out["next_nse_session"]
     target = args.output_dir / "cpi_2012base_point_in_time_vintages.csv"
     out.to_csv(target, index=False)
     print(f"Workbooks: {len(files)}")
@@ -99,6 +112,7 @@ def main():
     print(f"Provisional-marked values: {int(out.provisional_marker.sum())}")
     print(f"Duplicate keys: {duplicates}")
     print(f"Saved: {target}")
+    print("Point-in-time timestamps attached: " + str(args.availability_map is not None))
 
 
 if __name__ == "__main__":
