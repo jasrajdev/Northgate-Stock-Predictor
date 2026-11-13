@@ -215,3 +215,14 @@ Pull main on the Mac, install requirements in the project environment, and run s
 
 ## Next action
 User should use the HP Victus (not the Mac) to clone main, run the reproducible price/volume data rebuild, and send the exact GPU/OS details before installing the CUDA-specific PyTorch build. Then run classical and deep validation experiments. Keep the final test untouched.
+
+
+## 2026-11-13 — Victus hardware confirmed and deep-training blocker fixed
+
+- User-provided `nvidia-smi` screenshot confirms Windows PowerShell, NVIDIA GeForce RTX 3050 Laptop GPU, 4,094 MiB VRAM, driver 592.82 and driver CUDA compatibility 13.1. This supersedes the earlier unverified 6 GB assumption.
+- Audited `scripts/train_deep_models.py`: the committed file contained literal escaped newline sequences in Python statements and was syntactically invalid. Replaced it with a clean implementation and verified the saved GitHub content. This was a hard blocker to deep training.
+- Deep-training defaults are now conservative for 4 GB VRAM: batch 16, hidden size 32, sequence length 30, one recurrent/Transformer layer, 30 epochs, early stopping and CUDA mixed precision. Environment variables permit reducing batch/hidden size if required.
+- Updated `docs/GPU_LAPTOP_SETUP.md` with exact Windows PowerShell commands, CUDA 12.8 PyTorch installation (compatible with the reported newer driver), CUDA verification, rebuild, baseline and deep-training order, and expected outputs.
+- Important distinction: the reported CUDA 13.1 is the NVIDIA driver's compatibility level; PyTorch should be installed using the supported CUDA wheel, not by trying to install a CUDA 13.1 wheel.
+- **Not yet verified:** no Python syntax/runtime test or GPU training has been executed on the Victus. CUDA must be verified on that machine before proceeding.
+- **Next user action:** pull latest `main` on the Victus, create/activate the Python 3.11 environment, install requirements and the CUDA 12.8 PyTorch wheel, then run the one-line CUDA verification command in `docs/GPU_LAPTOP_SETUP.md`. Stop and send its output if CUDA is unavailable.
