@@ -466,3 +466,8 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Keyless raw OHLCV endpoint is documented; adjusted prices and delivery need a free API key. Provider terms allow personal research/backtesting/local storage/private dashboards, but TejHQ holds no exchange licence, MIT covers code only, raw-data redistribution is prohibited, and exchange terms apply independently. HF search metadata says exchange-public-data while a cached rendered page says mit; rely on dedicated terms and treat badge conflict as unresolved metadata drift.
 - NSE official Forms & Formats page lists UDiFF catalogue v1–v4, CM Bhavcopy File Format and sample test file. Circular NSE/MSD/62424 confirms parallel formats through 2024-07-05 and old-format discontinuation from 2024-07-08. Actual CM workbook/ZIP binary could not be retrieved in this session; exact mapping not yet inspected.
 - TejHQ now qualifies for a bounded private data pilot, not full adoption. No API response, Parquet, or official sample acquired; no comparison, tests, panel update or model training.
+
+### 2026-11-14 — Target-specific corporate-action gap
+- Confirmed target-universe examples of unadjusted action types: ITC demerger 2025-01-06; HINDUNILVR demerger 2025-12-05; RELIANCE demerger 2023-07-20 and rights 2020-05-13; BHARTIARTL rights 2019-04-23 and 2021-09-27.
+- TejHQ's inspected factor code returns 1.0 for rights and demergers. These are actual target-universe events, so adjusted-close labels may contain artificial discontinuities at these event dates if our modelling target expects economically comparable prices.
+- Next validation must compare raw/adjusted close and target labels in event windows. Do not change the PRD target without approval.
