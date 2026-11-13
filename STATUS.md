@@ -543,3 +543,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - User ran `ls -lh data/processed` from their `~/Desktop/Northgate-Stock-Predictor` working copy and showed `market_panel.csv` (3.6 MB), `feature_panel.csv` (17 MB), and `modeling_dataset_next_day.csv` (18 MB), plus `splits/`.
 - This resolves the earlier uncertainty about whether the market panel exists locally. It has not yet been opened or inspected in this turn; the next event-window audit can run against this exact local file once the NSE archive downloads are completed.
 - The user's five-date NSE download script did not execute: zsh returned `parse error near ','` after the pasted script was visibly mangled (escaped Python attribute dots/underscores and truncated/secondary-prompt input). No archive downloads or price extraction are claimed from that attempt.
+
+
+### 2026-11-14 — Five NSE Bhavcopy rows verified from user's terminal
+- User's local script downloaded all five requested dates; HTTP 200, valid ZIP signature, ZIP integrity passed, CSV schema parsed, and matching EQ rows returned. Exact closes: BHARTIARTL ₹349.40 (22-Apr-2019), ₹316.50 (23-Apr-2019); RELIANCE ₹1,479.25 (12-May-2020), ₹1,496.45 (13-May-2020), ₹1,435.95 (14-May-2020). Full rows and archive SHA-256 hashes recorded in `docs/DATA_RESEARCH.md`.
+- Observed close changes are not corporate-action-adjusted returns. F&O rights formula reference calculations are recorded separately and explicitly not applied to cash prices.
+- Corrected earlier provisional Yahoo interpretation: doubling Yahoo's 2020 RELIANCE Close is not a valid raw-price reconstruction because multiple corporate actions, including the 2023 Jio Financial demerger, may affect historical vendor series.
+- Next: inspect local market-panel rows and forward labels around these dates. No prices or labels modified; no model training.
