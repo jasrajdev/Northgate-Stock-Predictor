@@ -859,3 +859,20 @@ The cumulative index table is titled as the All India General CPI (2012=100) sin
 
 Build a reproducible parser that detects the CPI index and YoY sheets by their titles, converts the year/month matrices into tidy records, and attaches each workbook's release reference month, actual publication timestamp, source filename, base year, series type, and vintage. Add tests for month coverage, duplicate keys, expected start months, latest published month, and agreement between the Annex-I provisional/final General Index row and the corresponding cumulative series endpoint. Keep release vintage separate from observation month; do not treat the latest snapshot as the value available historically.
 
+### CPI parser pilot — 2026-11-13
+
+A first reusable parser is now in the repository at scripts/parse_mospi_cpi_annexures.py, with openpyxl declared in requirements.txt. It identifies tables by their titles (not annexure numbers), parses the year/month matrix, preserves the workbook release reference month separately from the observation month, and retains source filename/sheet and an explicitly blank release_timestamp field. It excludes observations later than the workbook's release reference month and rejects duplicate vintage/observation/series keys.
+
+**Local pilot result on the 18 uploaded workbooks**
+- 3,948 tidy records across 14 cumulative-table vintages (the four Jul–Oct 2024 files correctly contribute no cumulative series).
+- General CPI index: 2,078 records; observations span Jan 2013–Nov 2025.
+- General CPI YoY inflation: 1,870 records; observations span Jan 2014–Nov 2025.
+- 3,948 unique vintage/observation/series keys; no duplicates.
+- Every observation month is on or before its release reference month.
+- The generated pilot CSV was written to /tmp/mospi_cpi_vintages.csv for testing only; it has not been committed and is not yet part of the Northgate modelling dataset.
+
+The parser deliberately does not invent exact publication timestamps. These must be populated from verified official release metadata before historical availability can be aligned to NSE sessions. The current parser is a first extraction utility, not yet a complete production-quality data pipeline: headline Annex-I provisional/final cross-checks, automated tests, source checksums, and a verified release-time lookup remain to be implemented.
+
+Run from the repository root:
+python scripts/parse_mospi_cpi_annexures.py /path/to/Annexures*.xlsx --output data/raw/mospi_cpi_vintages.csv
+
