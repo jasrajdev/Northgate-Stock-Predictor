@@ -363,3 +363,9 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - TejHQ's 2010+ NSE EOD dataset is a potential free personal-research cross-check, but the provider has no exchange licence and explicitly leaves exchange terms applicable. No data downloaded or compared.
 - **No raw PLFS, RBI, VIX, NSE filing or news observations were downloaded in this pass.** Research established source routes and an important data-rights constraint, not dataset completion.
 - Next action: determine whether an accredited academic institution can sponsor a SEBI/MII research-data request, or whether Northgate must use a licensed/independently permitted data provider. In parallel, actual bounded raw exports/API responses are still needed for PLFS and RBI; no automated NSE collection should be implemented pending rights clarification.
+
+### NSE academic data request route identified — 2026-11-14
+- Found NSE's official Data for Research page, the linked 28-Jul-2025 data-basket PDF, and the official Data Seeking Request Form. NSE says approved academic/policy research can apply through its EPR team; use is limited to academic and non-commercial purposes. Requests go to nseri@nse.co.in.
+- The published data list includes first-basket daily EOD OHLC/turnover, bhavcopy/reports, historical indices, FII/FPI/DII activity, company financial results, shareholding, corporate announcements and corporate actions. A separate >2 GB voluminous basket may be chargeable; confirm exact eligibility and costs with NSE.
+- The request form requires institution, project title/objective, market relevance, data type, justification and date range. No form has been submitted and no access granted.
+- This provides a compliant route worth pursuing instead of scraping. Remaining user-side dependency: institution name and an academic supervisor/department contact who can support the request. See DATA_RESEARCH.md and QUESTIONS.md.
