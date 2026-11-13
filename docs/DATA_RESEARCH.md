@@ -803,3 +803,19 @@ The cumulative tables in each release are a major acquisition route: each monthl
 
 ### Immediate implementation pilot
 Use a small set of official PDFs already confirmed by search indexing (e.g. January 2025, May 2025, October 2025, December 2025) to verify the table structure and extraction reliability. Then scale across monthly PDFs from Jan 2016 to Dec 2025. Where a release PDF omits a cumulative annexure or has a layout change, preserve a gap and use the corresponding official Excel annexure or warehouse download as a separately labelled source. The live CPI warehouse page timed out in the current research environment, so no warehouse Excel download has yet been obtained.
+
+### Important correction: cumulative annexures are NOT present in early CPI press releases (2026-11-13)
+A direct inspection of official early-release PDFs narrows the cumulative-vintage strategy substantially:
+- The January 2016 CPI release (dated 12 Feb 2016, embargo 17:30) has only Annexures I–IV. Its headline tables report January 2016 provisional and December 2015 final figures; `find` confirms no Annexure VI. Source: https://mospi.gov.in/sites/default/files/press_release/cpi_pr_12feb16f.pdf
+- The January 2017 CPI release (dated 13 Feb 2017, embargo 17:30) likewise has Annexures I–IV only; it reports January 2017 provisional and December 2016 final figures and has no Annexure VI. Source: https://mospi.gov.in/sites/default/files/press_release/CPI_PR_13feb17m.pdf
+- By the October 2025 release (dated 12 Nov 2025, embargo 16:00), Annexures VI and VII explicitly provide cumulative 2012-base combined General index (since Jan 2013) and YoY inflation (since Jan 2014). Source: https://new.mospi.gov.in/uploads/latestReleases/latest_release_1762943528848_3d8d7b84-4ce5-4995-8ccc-3e51617d8356_Press_Release_CPI_Oct_2025.pdf
+- The 2016/2017 PDFs therefore disprove the earlier broad wording that monthly press releases across 2016–2025 all contain cumulative time-series annexures. The cumulative annexure route is verified for late 2024/2025 only based on currently inspected source workbooks/PDFs; exact first introduction date needs further verification.
+
+### Revised historical reconstruction design
+1. For releases before cumulative annexures were introduced, extract the headline combined General CPI index and YoY inflation for the current provisional reference month and preceding final reference month from each monthly press release. Preserve each row's publication date/time, status, source URL and first eligible NSE session.
+2. Treat the provisional-to-final transition as a two-vintage sequence (initial provisional, next month's final) only where the next release confirms the final value. Do not invent older monthly revisions that the release record does not show.
+3. For each release from the first confirmed cumulative-annexure month onward, preserve the full historical index and inflation snapshots as separate vintages. Compare snapshots month-over-month to measure later revisions.
+4. Use the official CPI warehouse/current time series as a cross-check, not as a replacement for historical release snapshots. Clearly label current-vintage values separately.
+5. Establish the exact first release month containing Annexures VI/VII by inspecting the November 2024 workbook/PDF and preceding October 2024 release; the uploaded July–October 2024 workbooks contain only Annexures I–IV, while November 2024 onward workbooks in the current local source set include historical snapshots.
+
+This correction supersedes any earlier statement in this document that implies full cumulative release snapshots are available in every monthly press release from 2016 onward.
