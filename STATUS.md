@@ -263,3 +263,11 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Confirmed 156 monthly Combined index values from January 2013–December 2025. Fourteen YoY inflation cells are missing (2013 Jan–Dec and 2020 Apr–May) and remain missing.
 - The generated downloadable bundle contains the full base-2012 Combined time series, recent release vintages, base-2024 current headline series and QA report.
 - Added the same cross-validation and missingness checks to the committed CPI extractor; source read-back verified, but the committed script has not yet been run end-to-end locally.
+
+
+## 2026-11-13 — Macro source coverage and downloader
+- Added `scripts/download_macro_context.py` for seven FRED CSV series: PRD reference US DGS3MO, DGS10, CPIAUCSL, UNRATE plus India OECD/FRED INDIRLTLT01STM (10-year yield), INDIR3TIB01STM (3-month interbank) and IRSTCB01INM156N (central bank rate).
+- FRED metadata confirms the India 10-year and 3-month series are monthly and have recent observations through September 2026; these are not daily yields. The central-bank-rate series metadata is historical only through December 2023.
+- The script writes a separate observation-date panel and QA report, and explicitly warns that FRED graph CSV is not a point-in-time vintage archive. It must not merge macro series into daily stock rows by observation date alone.
+- Confirmed NSE's official historical India VIX download page and its definition (NIFTY-options-implied expected volatility over the next 30 calendar days). Yahoo market-context downloader remains a fallback pending validation.
+- India PLFS monthly data and RBI DBIE effective-date policy-rate event data remain pending actual extraction. No macro data has been merged into the stock modelling dataset.
