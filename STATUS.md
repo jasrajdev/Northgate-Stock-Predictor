@@ -142,3 +142,9 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 - Current CPI API page documents v2.0.0 `/api/cpi/getCPIData`; the public MoSPI MCP repository's older Swagger v1.0.11 instead documents `/api/cpi/getCPIIndex`. Treat the MCP Swagger as an older API contract, not current API documentation.
 - Catalogue currently lists 495 CPI datasets with release dates and table numbers. Findings and source URLs are documented in docs/DATA_RESEARCH.md and verified by GitHub read-back.
 - Next: retrieve and inspect the official catalogue-hosted November 2025 Annex-VII workbook; compare it against the user's November 2025 workbook; then test whether similarly named files exist for 2016–2023. No new point-in-time CPI panel generated yet.
+
+### 2026-11-13 — CPI cumulative vintage snapshots confirmed
+- Current MoSPI metadata explicitly confirms the 2012-base CPI series runs through Dec 2025 and is available in the CPI warehouse, while the 2024-base series begins Jan 2025 and the 2010-base series covers Jan 2011–Dec 2014. Keep these series separate.
+- Official MoSPI press releases contain cumulative Annexure time series for All India General CPI index since Jan 2013 and YoY inflation since Jan 2014. Confirmed in Jan 2025, May 2025, Oct 2025 and Dec 2025 release PDFs. These monthly release snapshots can support a genuine release-by-release vintage panel and revision analysis.
+- Source details, direct official URLs and implementation implications are recorded in docs/DATA_RESEARCH.md and verified by GitHub read-back.
+- Warehouse webpage itself timed out from the research environment; no warehouse Excel file downloaded. Next: obtain a small sample of official PDFs and test table extraction for index and inflation, then scale to monthly releases 2016–2025. Preserve each release snapshot and actual embargo time; do not substitute a single latest-vintage history.
