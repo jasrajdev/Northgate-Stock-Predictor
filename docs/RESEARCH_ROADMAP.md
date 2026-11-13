@@ -164,3 +164,21 @@ Defer Chen–Pelger–Zhu until the deep-learning/model-comparison phase unless 
 ## Decisions
 
 No dataset size, universe, target, horizon, feature set, model architecture, training window, preprocessing method or recommendation rule is approved by this synthesis. Keep these as open research choices until discussed and explicitly confirmed.
+
+
+## Official PLFS release and MCP coverage update (reviewed 2026-11-13)
+
+### Source evidence
+- The official NSO India [e-Sankhyiki MCP repository](https://github.com/nso-india/esankhyiki-mcp) documents the ordered tool workflow `list_datasets → get_indicators → get_metadata → get_data` and the hosted endpoint `https://mcp.mospi.gov.in/`. Its current PLFS tool documentation states that monthly frequency (code 3) covers April 2025–September 2026 for All India and indicators 1–3; quarterly frequency (code 2) covers calendar years 2018–2026 for indicators 1–4, with uneven quarter availability. These are API metadata claims; no observations were fetched in this review.
+- The official [MoSPI July–September 2026 PLFS Quarterly Bulletin](https://www.mospi.gov.in/uploads/publications_reports/publications_reports1794297172776_05eae330-7f2d-45ec-84c5-07031201ecf1_PLFS_QB_July-Sept_2026_m.pdf) is dated 10 November 2026. It reports LFPR, WPR, UR and worker distributions in Current Weekly Status (CWS), separately for rural, urban and combined India.
+- The bulletin states that the April–June 2025 quarterly bulletin was the first to extend quarterly estimates to rural and urban India; earlier quarterly bulletins through December 2024 were urban-only. This creates a comparability break in geography/coverage for the quarterly series, separate from any change in survey methodology.
+
+### Interpretation and Northgate handling
+- Do not call the September 2026 release a “monthly bulletin”. It is the latest quarterly bulletin; September 2026 is also the endpoint stated for the monthly API series. Keep monthly API records and quarterly bulletin records in separate tables.
+- Do not infer the monthly indicator's CWS definition from the quarterly bulletin or from an annual-only weekly-status filter. Retain the exact indicator definition returned by MCP metadata.
+- For quarterly CWS data, preserve the 2025 Q1 rural-coverage expansion as a coverage-break flag. For the monthly data, preserve the post-April-2025 series start and its own official metadata.
+- Publication date is distinct from reference month. The latest quarterly PDF is dated 10 November 2026; use the actual release date for availability, not quarter-end.
+- This evidence supports source feasibility and data-contract design only. No PLFS values have been downloaded, checked, or merged, and no macro feature is yet validated point-in-time.
+
+### Next research/implementation action
+Execute the official MCP sequence against the hosted service, capture raw responses and metadata, then build separate monthly and quarterly PLFS raw tables with explicit reference period, frequency, indicator definition, geography, status concept, publication date, source URL and retrieval timestamp. Test completeness and duplicate keys before creating any market-session-aligned feature.
