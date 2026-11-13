@@ -222,7 +222,7 @@ The first expanding-window walk-forward experiment was executed in Kaggle on a T
 | XGBoost | 20.2513 | 49.689% |
 | SVR_RBF | 26.7689 | 49.502% |
 
-The naive and always-up baselines share the same price forecast (zero predicted return, hence last adjusted close); their directional scores differ because their direction rules differ. No trained model beat the naive baseline on pooled price MAE. The best overall directional score was Ridge at about 50.33%, which is too close to chance to establish a reliable signal without uncertainty analysis. Deep models were also around 50%.
+The naive and always-up baselines share the same price forecast (zero predicted return, hence last adjusted close); their directional scores differ because their direction rules differ. In particular, the naive baseline's 0.495% directional score is a metric-convention artefact: a zero forecast is classified as non-positive/down by the binary direction rule, so this number mostly reflects the frequency of down days rather than a meaningful learned direction signal. Use the always-up baseline (49.392%) as the interpretable simple directional comparator. No trained model beat the naive baseline on pooled price MAE. The best overall directional score was Ridge at about 50.33%, which is too close to chance to establish a reliable signal without uncertainty analysis. Deep models were also around 50%.
 
 Fold-level results do not show a stable winner. GRU had a small advantage over the baseline in 2025-H2; BiLSTM showed the strongest directional result in 2026-YTD (about 53.29%) but did not beat the baseline on MAE there. Other periods were mixed. These isolated fold results should be treated as exploratory, not evidence of durable predictive edge.
 
