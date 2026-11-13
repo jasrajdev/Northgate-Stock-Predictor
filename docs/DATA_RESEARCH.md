@@ -1817,3 +1817,19 @@ Target dates for the bonus audit:
 - HDFCBANK: 2025-08-25, 2025-08-26, 2025-08-28 (27 Aug is omitted from the requested set; the 28 Aug date is the first post-event session in the proposed comparison).
 
 The web retrieval attempt could not fetch the archive binary directly. No NSE archive files were downloaded in this step, and no Yahoo values were compared against NSE for these six dates. Next local step: request the six `sec_bhavdata_full` CSVs from the documented archive pattern, validate HTTP status and CSV schema, retain original files and hashes, then extract the exact `SYMBOL`/`SERIES=EQ` rows for RELIANCE and HDFCBANK. Do not use F&O bhavcopy or NSE adjusted 52-week summary values as substitutes.
+
+
+## 2026-11-14 — Six NSE historical Full Bhavcopy downloads reported
+
+The user ran the documented historical full-bhavcopy URL pattern for six dates: RELIANCE 2024-10-25, 2024-10-28, 2024-10-29; HDFCBANK 2025-08-25, 2025-08-26, 2025-08-28. The terminal output reports that all six files were saved under `data/raw/nse_bhavcopy/bonus_audit/` and prints the following SHA-256 values:
+
+| Date | File suffix | User-reported SHA-256 |
+|---|---|---|
+| 2024-10-25 | 25102024 | `e889503392d34424785be117156656b0fc6b554d26d6d195ae06f92ce0279904` |
+| 2024-10-28 | 28102024 | `2ea975e4b0568e33de01c8f55ae96aa0cc8a35a11aab35074e6143aba051d1ef` |
+| 2024-10-29 | 29102024 | `871dd93f5925c6f8a4656523d48f70f8199ec0872c761a2dc290fbdd082dacf1` |
+| 2025-08-25 | 25082025 | `7ad26f0874f9c67199da34e1f0f000b9827f26947202fbf1dce763d6ceabe46f` |
+| 2025-08-26 | 26082025 | `996347736726a5abc34d0d9a3629c76c8880c3bca3bbff7589dff32c9aed8675` |
+| 2025-08-28 | 28082025 | `4af5d67891bc90b3e4213367bd2f2566cc2f45fbcf55ac11ae9e78715d259c8f` |
+
+These results are user-reported. HTTP requests completed without raising status errors, but file contents have not yet been validated for CSV structure, expected date, expected security and a unique EQ row. Do not cite these as confirmed official closing prices until the next validation step passes. Next step: recalculate hashes locally, inspect CSV headers, extract unique `SERIES=EQ` rows, then compare NSE OHLC with the original Yahoo CSVs. No prices, labels or code have been modified.
