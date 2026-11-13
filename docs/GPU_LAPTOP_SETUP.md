@@ -7,7 +7,8 @@ The first reproducible experiment uses ten provisional Indian equities plus NIFT
 The repository includes:
 - `config/northgate_universe.json`: the exact provisional universe and date/split settings.
 - `scripts/prepare_gpu_training_data.py`: downloads and rebuilds raw/processed price data, features, labels, and chronological splits.
-- `scripts/train_baseline_models.py`: fits per-equity Ridge, Random Forest, SVR and XGBoost; compares against last adjusted close; uses validation only and does not load the final test set.
+- `scripts/train_baseline_models.py`: fits per-equity Ridge, Random Forest, SVR and XGBoost; XGBoost requests CUDA and falls back to CPU if needed; compares against last adjusted close; uses validation only.
+- `scripts/train_deep_models.py`: fits LSTM, GRU, BiLSTM and Transformer with PyTorch, early stopping and CUDA detection; saves best validation checkpoints and never loads the final test set.
 
 ## Important: what is NOT in the GitHub repository
 
@@ -49,11 +50,16 @@ Raw Yahoo Finance downloads are not committed because redistribution terms/right
    ```bash
    python scripts/train_baseline_models.py
    ```
-8. Send the contents of `reports/data_quality/gpu_data_build_report.json`, `reports/validation/model_summary_validation.csv`, and the `nvidia-smi` output back for review.
+8. Install the CUDA-enabled PyTorch build selected for the exact GPU laptop OS/driver using https://pytorch.org/get-started/locally/ . Then run:
+   ```bash
+   pip install -r requirements-dl.txt
+   python scripts/train_deep_models.py
+   ```
+9. Send the contents of `reports/data_quality/gpu_data_build_report.json`, `reports/validation/model_summary_validation.csv`, `reports/validation/deep_model_comparison_validation.csv`, and the `nvidia-smi` output back for review.
 
 ## GPU expectations
 
-The current Ridge, Random Forest and SVR implementations use scikit-learn and run on CPU. XGBoost can use CUDA only when the installed XGBoost build and NVIDIA driver support it; verify the actual GPU before assuming acceleration. The first script is a baseline comparison, not yet the PRD's four deep-learning architectures. Do not install TensorFlow/PyTorch CUDA packages blindly before identifying the GPU and OS.
+The current Ridge, Random Forest and SVR implementations use scikit-learn and run on CPU. XGBoost can use CUDA only when the installed XGBoost build and NVIDIA driver support it; verify the actual GPU before assuming acceleration. The deep-learning script uses PyTorch and automatically selects CUDA when available. The exact NVIDIA GPU and OS are still required to choose the correct PyTorch build. The scikit-learn models remain CPU-based; XGBoost attempts CUDA and falls back to CPU.
 
 ## Data limitations still open
 
