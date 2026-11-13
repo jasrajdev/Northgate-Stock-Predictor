@@ -325,3 +325,17 @@ Neither candidate replaces the current Northgate 29,473-row labelled dataset. A 
 ### RBI short-term rates and government yield
 - RBI Handbook Table 27 and current-statistics Table 225 document daily weighted-average call/notice money rates with borrowing/lending ranges and turnover. This is a daily India short-term liquidity feature candidate. The monthly DBIE weighted-average call money table is a separate monthly aggregate (Mar-1991 to Mar-2026). No daily export acquired.
 - A suitable official free daily 10Y generic G-Sec yield download was not confirmed. Third-party aswinv90 claims daily India 10Y yields from 2000 but provenance remains unverified. Keep monthly OECD/FRED India 10Y separate and do not interpolate to daily.
+
+## Additional source-route verification — 2026-11-14
+
+| Data family | Source / route | Verified coverage or schema | Current status / caveat |
+|---|---|---|---|
+| Indian sovereign yield curve | RBI DBIE report 1368 / Handbook Table 217 (secondary downloadable reproduction) | Month-end residual maturities 1–30 years plus 10Y–1Y spread; Apr-1996–Aug-2026; monthly | Monthly feature candidate only. Do not interpolate to daily. Official annual government-security aggregates are separate and not a daily 10Y yield. |
+| Daily call/notice money | RBI daily releases / current-statistics Table 225 / Handbook Table 27 | Daily borrowing/lending ranges, weighted averages and turnover documented | Daily series exists in official statistics, but a long-history machine-readable export was not retrieved. Lag to next eligible session until publication timing is established. |
+| PLFS monthly | MoSPI e-Sankhyiki MCP → PLFS → metadata → get_data | API route /api/plfs/getData; monthly frequency code 3; Apr-2025–Sep-2026; All India; indicators 1–3 | Schema/workflow verified from official server source; no API rows acquired. Keep monthly separate from quarterly bulletin values. |
+| India VIX | NSE historical India VIX page | Custom date range and CSV control; Date/OHLC/Prev Close/Change/% Change | Official route/schema confirmed; indexed page returned no rows. No export acquired; do not scrape undocumented endpoints. |
+| NSE EOD cross-check | TejHQ indian-markets Parquet | 1.25 GB listing; NSE/BSE prices, adjusted prices, actions, delivery, symbol history, universe | Candidate only. Provider permits private personal research/model training but has no exchange licence; exchange terms still apply; raw redistribution prohibited. |
+| Survivorship-aware NSE EOD | NSEDATA4ME | Publisher claims 2005+, delisted names, ISIN history, corporate actions, indices, breadth; ~430 MB starting snapshot | Candidate only. GPL covers code, not NSE data; NSE terms apply. No snapshot verified. |
+| Historical index membership | BKKB20/nse-index-history | Publisher claims 28 indices, 2004–2026; circular-based reconstruction | Audit lead only: 3 scanned circulars unprocessed, pre-2010 mappings weaker, no licence identified in reviewed page. No data verified. |
+
+No new raw data file has been acquired from these sources in this research pass.
