@@ -1558,3 +1558,35 @@ Primary references checked 2026-11-14:
 - NSE Corporate Actions archive: https://www.nseindia.com/companies-listing/corporate-filings-actions
 
 Interpretation guardrail: exchange derivatives adjustment rules and adjusted 52-week summary fields must not be presented as proof that a third-party adjusted-close series is correct for all cash-equity corporate actions.
+
+
+## 2026-11-14 — Primary-source event terms verified for selected high-risk windows
+
+A further primary-source check strengthened the event ledger. The following are **confirmed event terms/dates**, not price-adjustment validation:
+
+| Instrument | Event | Exchange/issuer evidence | Confirmed detail | Price-series implication |
+|---|---|---|---|---|
+| ITC | Hotels business demerger | NSE circular NSE/FAOP/65846 dated 27-Dec-2024 | Ex-date and record date 06-Jan-2025; one ITC Hotels share for every 10 ITC shares | Large non-cash restructuring; compare raw ITC close and adjusted series, and account for separate ITC Hotels entitlement before interpreting return |
+| HINDUNILVR | Ice-cream business demerger | HUL scheme document and NSE filings | Effective date 01-Dec-2025; record date 05-Dec-2025; one Kwality Wall's (India) share for each HUL share | One-for-one distribution; do not assume vendor Adj Close has handled the distribution correctly |
+| RELIANCE | Bonus | NSE circular NSE/FAOP/64621 dated 18-Oct-2024 | 1:1 bonus; ex/effective date 28-Oct-2024; derivatives adjustment factor 2 | Price-per-share scale changes mechanically; compare raw/adjusted series and share-count treatment |
+| HDFCBANK | Bonus | HDFC Bank allotment disclosure dated 28-Aug-2025 and NSE quote corporate-action panel | 1:1 bonus; record date 27-Aug-2025; NSE quote panel lists ex-date 26-Aug-2025 | Price-per-share scale changes; note ex-date precedes record date by one day |
+| RELIANCE | Jio Financial demerger | NSE Clearing circular NCL/CMPT/57559 dated 13-Jul-2023; NSE index communication | Record date 20-Jul-2023; one Reliance Strategic Investments share for each Reliance share; NSE special pre-open session on 20-Jul-2023 | Price discovery and index treatment are special; this is not an ordinary overnight price adjustment |
+| BHARTIARTL | Rights | NSE circular NSE/FAOP/49720 dated 24-Sep-2021 | 1 rights share for 14 held; issue price ₹535; ex-date 27-Sep-2021; record date 28-Sep-2021 | Rights value and subscription terms must be treated explicitly; derivatives adjustment factor is not automatically the vendor's cash-market adjustment factor |
+
+Important boundary: the NSE circulars above generally describe derivatives-contract adjustments, expiry handling, or index operations. They establish event terms and operational dates, not the correctness of Yahoo/yfinance adjusted historical cash prices. HUL's 1:1 allotment terms and ITC's 1:10 terms are also not themselves a historical-price adjustment factor.
+
+Still unresolved / not promoted to confirmed ledger terms:
+- BHARTIARTL 2019 rights: NSE rights archive shows the issue record, but the exact ex-date/ratio still needs a primary NSE circular or issuer document before an expected adjustment can be calculated.
+- RELIANCE 2020 rights: retain as a known candidate event from prior research, but fetch and verify the official terms and ex-date before using it in an audit.
+- The actual market-panel rows remain unavailable in this session; no price adjustment or label comparison has been run.
+
+Primary sources:
+- NSE ITC circular: https://nsearchives.nseindia.com/content/circulars/FAOP65846.pdf
+- ITC FY25 results note on scheme effective date and allotment: https://nsearchives.nseindia.com/corporate/ITC_22052025172924_SE_Media_.pdf
+- HUL NCLT sanction intimation (30-Oct-2025): https://nsearchives.nseindia.com/corporate/HINDUNILVR_30102025210005_SEIntimationFinalOrdersigned.pdf
+- HUL scheme information memorandum: https://nsearchives.nseindia.com/corporates/offerdocument/scheme/IM_KWIL.pdf
+- NSE RELIANCE bonus circular: https://nsearchives.nseindia.com/content/circulars/FAOP64621.pdf
+- HDFC Bank bonus allotment disclosure: https://nsearchives.nseindia.com/corporate/HDFCBANK_28082025112521_SE_Disclosure_-_Allotment-_Aug_28_2025.pdf
+- NSE BHARTIARTL 2021 rights circular: https://archives.nseindia.com/content/circulars/FAOP49720.pdf
+- NSE RELIANCE demerger circular: https://archives.nseindia.com/content/circulars/CMPT57559.pdf
+- NSE special pre-open session rules: https://www.nseindia.com/static/products-services/equity-market-special-pre-open-session
