@@ -513,3 +513,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Decision unchanged: do not alter the PRD target or existing labels based on assumptions. Preserve raw Close and vendor Adj Close and reconcile known rights/demerger event windows against official event terms before training.
 - Blocker: `market_panel.csv` was not present in the currently attached Project files during this session. No event-window price inspection, adjustment, model training, or backtest was performed.
 - Next action: obtain the existing panel in the working environment and run a reproducible event-window diagnostic for ITC (2025-01-06 demerger), HINDUNILVR (2025-12-05 demerger), RELIANCE (2023-07-20 demerger; 2020-05-13 rights; 2024-10-28 bonus), BHARTIARTL (2019-04-23 and 2021-09-27 rights), and HDFCBANK (2025-08-26 bonus). Verify dates/terms from primary exchange/issuer documents before computing any expected factor.
+
+
+### 2026-11-14 — Rights-issue event research completed
+- Resolved two previously open event-term records: BHARTIARTL 2019 rights (19:67, ₹220, ex-date 23-Apr-2019, record date 24-Apr-2019) and RELIANCE 2020 rights (1:15, ₹1,257, ex-date 13-May-2020, record date 14-May-2020; partly-paid structure with ₹314.25 application and ₹942.75 later call payment).
+- Issuer offer documents/annual reports and issuer allotment disclosures establish terms and issue lifecycle; MSEI/NSE-related references cross-check ex-dates. Exact URLs and source limitations are in `docs/DATA_RESEARCH.md`.
+- This completes research on the two previously open event terms. It does not validate vendor adjusted prices. Rights entitlements and partly-paid shares need event-specific treatment.
+- No market-panel rows were inspected; no labels, prices, models or backtests were changed.
