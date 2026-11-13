@@ -1590,3 +1590,31 @@ Primary sources:
 - NSE BHARTIARTL 2021 rights circular: https://archives.nseindia.com/content/circulars/FAOP49720.pdf
 - NSE RELIANCE demerger circular: https://archives.nseindia.com/content/circulars/CMPT57559.pdf
 - NSE special pre-open session rules: https://www.nseindia.com/static/products-services/equity-market-special-pre-open-session
+
+
+## 2026-11-14 — Rights-issue terms verified: BHARTIARTL 2019 and RELIANCE 2020
+
+The two previously open rights-event records have now been resolved from issuer offer documents and exchange/issuer disclosures. These facts establish the event terms and calendar; they do **not** establish the correct historical cash-price adjustment factor in Yahoo/yfinance.
+
+### BHARTIARTL — 2019 rights issue
+- Rights entitlement: 19 new equity shares for every 67 existing shares held.
+- Record date: 24-Apr-2019.
+- Ex-rights date: 23-Apr-2019 (corroborated by MSEI corporate-action history; the issuer offer document establishes the record date and terms).
+- Issue price: ₹220 per share (₹5 face value + ₹215 premium), fully payable on application.
+- Issue opened 03-May-2019 and closed 17-May-2019; issuer annual report states 1,133,591,075 shares were allotted on 24-May-2019.
+- Primary references: Airtel Letter of Offer dated 19-Apr-2019: https://assets.airtel.in/teams/simplycms/web/docs/Letter_of_Offer_dated_April_19_2019.pdf ; Airtel FY2018-19 annual report: https://www.airtel.in/airtel-annual-report-2018-19/pdf/airtel-2019.pdf ; Airtel FY2019-20 board report: https://www.airtel.in/airtel-annual-report-2019-20/img/pdf/boards-report.pdf . Exchange date cross-check: https://www.msei.in/corporates/corporate-securities-information/corporate-update/default?symbol=BHARTIARTL&type=4&vmode=vm . SEBI filing index: https://www.sebi.gov.in/filings/rights-issues/apr-2019/bharti-airtel-limited_42840.html .
+
+### RELIANCE — 2020 rights issue
+- Rights entitlement: 1 partly-paid rights share for every 15 fully-paid shares held.
+- Record date: 14-May-2020.
+- Ex-rights date: 13-May-2020 (NSE derivatives adjustment notice as reported in the exchange circular bulletin; record date itself is issuer-confirmed).
+- Issue price: ₹1,257 per share (₹10 face value + ₹1,247 premium). ₹314.25 payable on application (25%); remaining ₹942.75 payable on one or more later calls.
+- Issue opened 20-May-2020 and closed 03-Jun-2020; issuer announced allotment on 11-Jun-2020 and the abridged offer timetable set listing/trading commencement for 12-Jun-2020.
+- Primary references: RIL Letter of Offer: https://kib-cms.uidirect.in/sites/default/files/offer-documets/reliance-industries-limited-letter-of-offer_20250524_045616.pdf ; RIL issue advertisement: https://www.ril.com/sites/default/files/2023-01/MH%20Times%2017052020.pdf ; RIL allotment disclosure dated 11-Jun-2020: https://www.ril.com/sites/default/files/2023-01/RightsIssue2020IntimationofAllotmentofShares.pdf ; abridged offer with payment schedule and timetable: https://indiaipo.jpmorgan.com/content/dam/jpm/india-private-limited/documents/Reliance-Industries-Limited-Rights-Issue-Abridged-Letter-of-Offer.pdf . Ex-date cross-check: https://zerodha.com/marketintel/bulletin/254966/adjustment-of-futures-and-options-contracts-of-reliance .
+
+### Interpretation for the price audit
+- Rights entitlements are economically valuable and can trade separately; a simple split-style factor is not automatically appropriate.
+- RIL's partly-paid rights share is not equivalent to an immediately fully-paid ordinary share: payment calls and the partly-paid trading instrument matter.
+- Record these as known high-risk event windows. Keep raw Close and vendor Adj Close unchanged until event-window rows, entitlement value and the vendor's treatment are independently reconciled.
+- BHARTIARTL's 2019 event was not in the latest short-list of the original event-window tests; it must now be included alongside the 2021 rights issue.
+- No market-panel rows were inspected and no model labels or data were modified in this research pass.
