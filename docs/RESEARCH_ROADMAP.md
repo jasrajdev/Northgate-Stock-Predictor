@@ -198,3 +198,14 @@ Official export paths were rechecked:
 - NSE filings are a candidate source of timestamped regulatory disclosures, but third-party descriptions of broadcast/dissemination timestamps are not an official API contract. Treat filings separately from editorial news and do not use paid scraping without approval.
 
 No observations were downloaded in this pass. Next practical retrieval sequence: export RBI DBIE CSV; export NSE VIX in manageable annual/custom date ranges; use the official MoSPI MCP workflow (list_datasets → get_indicators → get_metadata → get_data) to retrieve monthly PLFS indicator metadata and observations; then investigate NSE/BSE filing access/terms for a timestamped event dataset.
+
+
+## 2026-11-13 — PLFS metadata and NSE timestamp discovery update
+
+The official e-Sankhyiki catalogue explicitly defines the monthly PLFS LFPR, WPR and UR records as **Current Weekly Status (CWS)**. September 2026 catalogue entries have reference month Sep 2026, release date 15 October 2026 and table IDs PLFSFY26001SEP, PLFSFY26002SEP and PLFSFY26003SEP. This corrects the earlier caution in the project notes: the annual-only `weekly_status_code` API filter must not be confused with the published monthly product's CWS definition. For MCP retrieval, request metadata for each indicator separately with `frequency_code=3`, then use returned filter values for `get_data`; do not pass annual-only filters into monthly calls.
+
+A new structural break is approaching. PIB's 23 October 2026 notice describes PLFS sampling and schedule changes proposed from January 2027, including a digital-platform-worker stratum, refreshed Panel 6 sample frame, and a three-month transition combining Panel 5 and Panel 6 FSUs. Monthly estimates for those three months are planned to be pooled, with no RSE estimates. Since the note invited comments on proposed changes, check final implementation documentation when released. Flag January 2027 onward and avoid unqualified splicing.
+
+NSE Corporate Filings Summary Documents exposes company/subject/date filters, CSV download and `BROADCAST DATE/TIME`. A displayed example records broadcast at 19-Sep-2026 14:47:29 and exchange dissemination at 14:47:34 (five seconds later). This is promising direct evidence for timestamped regulatory events. Validate the main announcements archive's historical depth, categories, CSV schema and attachment access before adopting it. It is not a replacement for editorial news.
+
+No raw PLFS, VIX, RBI or NSE filing data have been downloaded. This is source metadata and timestamp-contract research only. Sources: official e-Sankhyiki catalogue; NSO MCP implementation; PIB 23-Oct-2026 PLFS change notice; NSE Corporate Filings Summary Documents page.
