@@ -394,3 +394,7 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - NSE historical archives list Advances/Declines; a community breadth dataset exists since Oct-2015 under CC BY 4.0, but price inputs remain exchange-origin. Preferred method is to calculate breadth from a point-in-time survivorship-aware universe.
 - GDELT GKG 2.1 offers long-history document metadata (publication/processing timestamps, organizations, themes and tone) but 2015 GKG alone is >2.5 TB. Use bounded query/filtering rather than a full local mirror. Indian labelled sentiment corpora are small or lack full timestamped historical coverage.
 - No GDELT data, FRED vintages or breadth series downloaded.
+
+### Official RBI daily FX source — 2026-11-14
+- RBI DBIE daily interbank USD/INR table covers 08-Aug-2000 to 30-Jun-2026 (6,319 rows), with OHLC and RBI Reference Rate; CSV/JSON export visible. No export acquired.
+- RBI Reference Rate Archive supports date-range Excel download; FBIL took over major-currency reference rates from 10-Jul-2018. CC0 Zenodo mirror is a convenience candidate, not source of record. Preserve provider transition and release availability.
