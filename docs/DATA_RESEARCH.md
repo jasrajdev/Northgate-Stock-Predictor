@@ -1757,3 +1757,32 @@ The comparison is based on the five official NSE Bhavcopy rows and hashes record
 Do not use the current Yahoo OHLC fields as if they were official unadjusted NSE prices. Do not infer a universal adjustment multiplier, reverse-engineer raw prices by doubling, or overwrite existing prices/labels using NSE F&O contract factors. Keep the original Yahoo downloads and NSE Bhavcopy archives immutable. Before model training, define and document the price basis for features and labels, then test it across the full event ledger. Any reconstructed series must be separately named and reproducible.
 
 No data, target labels, or code were changed in this audit. Model training remains paused pending the price-basis decision.
+
+
+## 2026-11-14 — Point-in-time price-series design implications
+
+Yahoo's published adjusted-close explanation says its historical adjusted prices apply split and cash-dividend multipliers. This is not evidence that Yahoo's series fully represents rights entitlements, partly-paid rights securities, demerger distributions, or all other shareholder wealth effects. NSE's corporate-action materials describe a wider event set; its F&O adjustment rules concern derivative contract positions, not a general cash-equity total-return reconstruction. NSE's All Reports page also distinguishes adjusted 52-week summary values from actual unadjusted Bhavcopy prices. Sources: Yahoo Help (https://in.help.yahoo.com/kb/adjusted-close-sln28256.html), NSE All Reports (https://www.nseindia.com/all-reports), NSE corporate-action adjustments (https://www.nseindia.com/static/products-services/equity-derivatives-corporate-actions-adjustments), NSE Nifty 50 methodology (https://nsearchives.nseindia.com/content/indices/Method_Nifty_50.pdf).
+
+### Point-in-time risk to test
+A vendor can retrospectively restate historical price levels after later corporate actions. If a feature at historical date t uses a series downloaded years later, its absolute price level may reflect actions that were not known at t. Ratios and returns can be invariant to a common multiplicative factor applied to every observation in a lookback window, but this must not be assumed across an ex-date, a window spanning multiple adjustment events, or non-proportional distributions. Therefore the mere use of a retrospectively adjusted series is not automatically proof that every return feature leaks; inspect the exact feature and adjustment window. Absolute price levels and any cross-security comparisons are especially sensitive to changing share units.
+
+### Candidate data architecture — proposal, not a confirmed decision
+1. Preserve immutable source layers: original Yahoo downloads and official NSE Bhavcopy files, with retrieval time, hashes and schema.
+2. Maintain a corporate-action event ledger: issuer/security identifiers, action type, announcement/record/ex/issue/effective dates, ratio, cash consideration, payment calls, distributed-security terms, primary evidence, and evidence confidence.
+3. Keep distinct price/return concepts rather than one overloaded Adj Close:
+   - exchange-observed raw OHLCV (from official Bhavcopy where available);
+   - point-in-time split/bonus-normalised price series for comparable per-share features, using only actions effective by the simulated date;
+   - cash-dividend-aware return series;
+   - event-aware shareholder-wealth return series for rights and demergers where entitlement value, payment obligations and distributed securities can be evidenced.
+4. Retain the PRD-aligned next-session adjusted-close forecast as the primary target until the user approves a change. As a separate research label, consider next-session shareholder-wealth return; do not silently substitute one for the other.
+5. For demergers, shareholder wealth may include parent shares plus distributed subsidiary shares. For rights, it may include the entitlement/security and any later subscription cash obligation; a partly-paid instrument cannot be treated as a fully-paid share without accounting for unpaid calls.
+6. Validate event windows against official exchange observations and primary issuer/exchange terms. If required terms or valuations are unavailable, mark the event window as unresolved or exclude it from a specifically defined sensitivity experiment rather than inventing an adjustment.
+7. Fit feature transforms only on training data; assign information according to when it was available; preserve chronological splits and keep the final test set untouched.
+
+### Open design choices
+- Whether price-level features should use raw exchange prices, a point-in-time split/bonus-normalised series, or scale-invariant features only.
+- How to define the PRD's adjusted-close target across complex rights/demerger events, and whether to report a separate shareholder-wealth return target.
+- Whether to obtain full official Bhavcopy coverage for all model dates or use a documented hybrid with a vendor series and official event-window checks.
+- How to treat unresolved corporate actions: exclude, sensitivity-test, or retain with a flagged limitation.
+
+No new price series, features, labels, or code were created in this research step. These are methodology proposals and open questions, not approved project decisions.
