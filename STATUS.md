@@ -136,3 +136,9 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 - Parsed an official October 2016 CPI release: published 15 November 2016 at 17:30; provisional combined General index 131.4 and YoY inflation 4.20%; preceding September final combined index 130.9 and YoY inflation 4.39%. This demonstrates the historical PDF can support release-event extraction with provisional/final status.
 - Official sample source URLs and API/catalogue findings are recorded in docs/DATA_RESEARCH.md and fetched back from GitHub after commit.
 - No historical release ledger has yet been generated. Current-vintage API observations must not be substituted for original release vintages. Next: establish stable official catalogue/table download URLs and automate a three-month pilot, reconciling all extracted values and publication times to official PDFs.
+
+### 2026-11-13 — eSankhyiki catalogue download route identified
+- New discovery: official eSankhyiki FAQ distinguishes Data Catalogue Excel downloads of released statements from Macro Indicators CSV downloads of filtered datasets. A search-indexed official catalogue URL exposes a November 2025 press-release annexure workbook (Annex-VII), hosted under `/datacatalogue/CPI/2026/`; directory year is not necessarily the release year.
+- Current CPI API page documents v2.0.0 `/api/cpi/getCPIData`; the public MoSPI MCP repository's older Swagger v1.0.11 instead documents `/api/cpi/getCPIIndex`. Treat the MCP Swagger as an older API contract, not current API documentation.
+- Catalogue currently lists 495 CPI datasets with release dates and table numbers. Findings and source URLs are documented in docs/DATA_RESEARCH.md and verified by GitHub read-back.
+- Next: retrieve and inspect the official catalogue-hosted November 2025 Annex-VII workbook; compare it against the user's November 2025 workbook; then test whether similarly named files exist for 2016–2023. No new point-in-time CPI panel generated yet.
