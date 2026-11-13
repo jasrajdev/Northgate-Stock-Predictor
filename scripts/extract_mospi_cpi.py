@@ -202,11 +202,33 @@ def main() -> None:
             "missing_index_values": sum(row.get("cpi_index") in (None, "") for row in rows),
         }
 
+    latest_combined = {
+        (row["reference_month"], row["sector"]): row
+        for row in latest
+        if row["sector"] == "Combined"
+    }
+    full_combined = {
+        (row["reference_month"], row["sector"]): row
+        for row in base12_full
+        if row["sector"] == "Combined"
+    }
+    overlap_keys = sorted(set(latest_combined) & set(full_combined))
+    differences = [
+        abs(float(latest_combined[key]["cpi_index"]) - float(full_combined[key]["cpi_index"]))
+        for key in overlap_keys
+    ]
     qa = {
         "source_files_base2012": files,
         "base2012_release_vintages": coverage(base12),
         "base2012_combined_full_snapshot": coverage(base12_full),
+        "base2012_combined_missing_yoy_values": sum(row.get("inflation_yoy_pct") in (None, "") for row in base12_full),
         "base2024_current_headline": coverage(base24),
+        "base2024_current_missing_yoy_values": sum(row.get("inflation_yoy_pct") in (None, "") for row in base24),
+        "cross_validation_annex_i_vs_annex_vi": {
+            "overlapping_months_compared": len(overlap_keys),
+            "mismatches": sum(value > 1e-9 for value in differences),
+            "maximum_absolute_difference": max(differences) if differences else None,
+        },
         "exact_publication_timestamps_available": False,
         "base2012_full_snapshot_release": "2026-01-12 16:00 IST (from the December 2025 MoSPI CPI press release)",
         "controls": [
