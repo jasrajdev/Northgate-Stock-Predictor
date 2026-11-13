@@ -537,3 +537,9 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - User-tested candidate official NSE archive for 22-Apr-2019 returned HTTP 200, 68,955 bytes and ZIP signature `PK` from Python requests.
 - This confirms a successful ZIP response for one date only. The archive has not yet been extracted or inspected; no raw stock close is verified. Availability of the other four dates remains untested.
 - Next: download/validate all five required date archives, inspect CSV schema and extract BHARTIARTL/RELIANCE EQ-series rows. Raw archives remain local pending licensing review. No prices, labels or models changed.
+
+
+### 2026-11-14 — Local market panel presence reconfirmed by user
+- User ran `ls -lh data/processed` from their `~/Desktop/Northgate-Stock-Predictor` working copy and showed `market_panel.csv` (3.6 MB), `feature_panel.csv` (17 MB), and `modeling_dataset_next_day.csv` (18 MB), plus `splits/`.
+- This resolves the earlier uncertainty about whether the market panel exists locally. It has not yet been opened or inspected in this turn; the next event-window audit can run against this exact local file once the NSE archive downloads are completed.
+- The user's five-date NSE download script did not execute: zsh returned `parse error near ','` after the pasted script was visibly mangled (escaped Python attribute dots/underscores and truncated/secondary-prompt input). No archive downloads or price extraction are claimed from that attempt.
