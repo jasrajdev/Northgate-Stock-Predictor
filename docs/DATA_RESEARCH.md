@@ -1643,3 +1643,37 @@ Application to our two verified historical events:
 - RELIANCE 2020: A=1, B=15, S=₹1,257; P must be the actual 12-May-2020 cum-rights close. Because the rights shares were partly paid, do not assume the simple F&O factor alone fully represents cash-equity total-return economics; the ₹942.75 subsequent call obligation and separate partly-paid security need explicit treatment.
 
 No numerical factor has been calculated because the corresponding raw close values and the applicable historical circular details have not been joined to the local panel. Do not use the formula to silently rewrite vendor prices. First compare official event terms, actual cum/ex closes, separately traded rights-entitlement prices (where available), and the vendor series. Keep raw and vendor data immutable; store any research-adjusted series as a separately named derived dataset with documented methodology.
+
+
+## 2026-11-14 — Historical price basis and official Bhavcopy route clarified
+
+### Yahoo Finance field semantics
+Yahoo's own help defines `Adj Close` as a close adjusted for applicable splits and dividend distributions. Its split example applies the split multiplier to pre-split history. Therefore `Adj Close` is not an exchange-traded price. For historical comparisons, distinguish the provider's displayed `Close` from `Adj Close`; do not assume either is the literal unadjusted exchange close without validating the provider's current field convention.
+
+### Reliance 2020 rights window — observed Yahoo rows
+The Yahoo historical result surfaced the following rows (₹):
+
+| Date | Yahoo Close | Yahoo Adj Close |
+|---|---:|---:|
+| 12-May-2020 | 676.26 | 658.70 |
+| 13-May-2020 | 690.61 | 672.68 |
+| 14-May-2020 | 662.69 | 645.48 |
+
+Reliance later had a 1:1 bonus effective/ex-date 28-Oct-2024. The Yahoo `Close` values are approximately half the pre-bonus share-price scale. Multiplying by 2 gives an **inferred pre-bonus-equivalent scale** of ₹1,352.52, ₹1,381.22 and ₹1,325.38 respectively. These are not verified raw exchange closes and must not be substituted for NSE Bhavcopy observations. The adjusted-close column is lower again because it incorporates dividend adjustments under Yahoo's method.
+
+### Official exchange route
+- NSE's official Historical Reports page lists Security-wise Price Volume Archives (Equities) and Archives of Daily/Monthly Reports (EQ): https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives
+- NSE All Reports identifies the legacy `CM - Bhavcopy(csv)` and current CM-UDiFF reports, states the legacy CSV report was discontinued effective 08-Jul-2024, and explicitly says actual unadjusted 52-week high/low values should be taken from Bhavcopy: https://www.nseindia.com/all-reports
+- The old and new Bhavcopy layouts differ; any parser must branch on the 08-Jul-2024 cutover. The official page establishes the report family and cutover, but this research pass did not download either 2019/2020 archive.
+
+### Audit implication / unresolved
+- Do not compute a rights adjustment factor from Yahoo's split-adjusted historical `Close` until it has been mapped back to the actual pre-bonus share basis and checked against raw Bhavcopy.
+- For BHARTIARTL 2019, the exact cum-date and ex-date raw close rows are still unverified.
+- For RELIANCE 2020, the Yahoo observations are secondary-provider values and their share basis is inferred from the later bonus; the raw NSE rows for 12-May-2020 and 13-May-2020 remain to be retrieved.
+- No market-panel rows were inspected; no raw prices, vendor series, or model labels were changed.
+
+References checked 2026-11-14:
+- Yahoo Help, adjusted close definition and split/dividend multipliers: https://in.help.yahoo.com/kb/adjusted-close-sln28256.html
+- NSE Historical Reports: https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives
+- NSE All Reports / Bhavcopy cutover and unadjusted-price note: https://www.nseindia.com/all-reports
+- Yahoo RELIANCE historical rows: https://finance.yahoo.com/quote/RELIANCE.NS/history/?filter=history&frequency=1d&includeAdjustedClose=true&interval=1d&period1=1420070400&period2=1672444800
