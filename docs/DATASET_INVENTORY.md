@@ -82,3 +82,10 @@ These outputs were generated from the conversation's supplied workbooks and are 
 - The snapshot was released with the December 2025 CPI press release on 12 January 2026. This timestamp applies to the downloaded historical snapshot, not to the original release date of each historical monthly observation. Do not back-assign the snapshot's availability to earlier dates.
 - The full historical file is Combined only. The Annex-I vintages retain Rural, Urban and Combined for the more recent supplied release period.
 - This closes the raw historical-coverage gap for base-2012 Combined CPI, but point-in-time feature construction still needs the actual monthly publication dates (official schedule: 12th of the following month, shifted to next working day when needed) or archived press-release dates.
+
+
+## Daily market-context acquisition scaffold (2026-11-13)
+- Added `scripts/download_market_context.py` to download India VIX and NIFTY sector-index proxies (Bank, IT, Pharma, Auto, FMCG, Metal, Realty, Energy and PSU Bank) from Yahoo Finance into a separate daily panel, with per-series coverage and missing-close QA.
+- This is an acquisition scaffold only; it has not yet been executed in this session. Yahoo Finance is secondary-vendor data. NSE provides official historical India VIX downloads and describes India VIX as the options-implied expected volatility over the next 30 calendar days. Prefer validating the downloaded series against NSE before model use.
+- RBI DBIE's Key Rates table provides historical policy-rate event data (repo, reverse repo, SDF, MSF, bank rate and CRR, among others) with downloadable CSV/JSON; it is the preferred source for Indian policy rates. The RBI policy-rate history is irregular/event-based, so it must be converted to a daily effective-rate panel using forward-fill only after each effective date.
+- No macro/context data has been merged into the stock modelling dataset yet.
