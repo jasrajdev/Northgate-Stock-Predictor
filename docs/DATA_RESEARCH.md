@@ -1245,3 +1245,6 @@ No RBI forex CSV/JSON export was downloaded in this pass.
 
 #### Rights/access correction
 - No institutional sponsor, academic contact or user-side access request is required for the public-source research sequence. The previously identified academic research-data route is optional background only and is not a Northgate blocker. Continue with public API/exports and provider terms; do not make the user obtain institutional access.
+
+- **TejHQ listing snapshot discrepancy (important):** the Hugging Face search-index result showed a 1.25 GB dataset with a 2026-11-11 update, while opening the dataset tree in this pass displayed 222 MB, 27 commits and a latest visible data commit dated 2026-08-06. The listing is mutable and the indexed result/page snapshot disagree. Do not quote a fixed dataset size or latest coverage until the exact repository revision/file manifest is pinned and inspected. This reinforces treating it as a candidate, not a verified complete cross-check. Source: https://huggingface.co/datasets/tejhq/indian-markets.
+- Dataful's RBI-derived annual government-securities yield table is a separate annual aggregate: 90 rows, 5 columns, fiscal years 1980-81 to 2024-25 in the opened page. It is not the monthly maturity-specific curve and not daily 10Y data. Source: https://dataful.in/datasets/17685/.
