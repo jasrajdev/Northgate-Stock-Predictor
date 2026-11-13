@@ -122,3 +122,11 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - The opened viewer and card contain conflicting snapshots: MIT badge vs specific TejHQ terms, 8.33M corporate-action rows vs 7.36M NSE price rows, and older card language that says corporate actions/adjusted close are not yet available. Coverage and layout also differ across snapshots. Do not merge those statements into one stable manifest.
 - TejHQ's specific 2026-11-08 terms say MIT covers code only, no exchange licence/clarification exists, personal private research/model training/local storage is allowed by TejHQ, raw data redistribution is prohibited, and exchange terms still apply. This supersedes the generic HF licence badge for practical handling.
 - No Parquet file downloaded or validated. Next: pin the 2026-11-09 revision, inspect file tree and schema, then test one bounded yearly or daily partition against independently sourced NSE bhavcopy.
+
+
+## 2026-11-14 — Continued data-source audit
+
+- Live TejHQ Hugging Face tree now displays verified 2026-11-11 revision short hash `10bd698`, ~1.25 GB, with annual NSE adjusted Parquet files from 2010–2026. This supersedes the earlier 2026-11-09 candidate snapshot for further inspection, but the full revision hash and raw tree path must be resolved before acquisition.
+- TejHQ's public pipeline README appears stale against the live dataset tree (five trees/2024 start vs seven trees/2010+ adjusted partitions). The README's corporate-action back-adjustment process is retrospective; historical backtests must not assume today's adjusted prices were available at the time.
+- NSE All Reports confirms CM-UDiFF final ZIP and separate new-format readme workbook; legacy CM CSV discontinued 2024-07-08. UDiFF guidance establishes general CSV/ISO date/ASCII/compression rules, not the exact CM field mapping.
+- No raw data downloaded, compared, validated or merged. No model trained. Next: pin full HF revision and inspect a small raw partition; separately inspect official NSE readme/sample.
