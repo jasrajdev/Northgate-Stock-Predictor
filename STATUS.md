@@ -453,3 +453,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 
 ### Freshness correction — 2026-11-14
 - Further live-tree checks show TejHQ published again on 2026-11-12: raw NSE tree short commit `d6f1912`, adjusted NSE 2024 file short commit `8b77c06`. This supersedes the 2026-11-11 freshness note above. Full immutable commit SHA remains unpinned.
+
+
+### 2026-11-14 — Ingestion and transform code review
+- Inspected TejHQ fetcher, parser, transform and their test source. It selects legacy NSE archive before 2024-07-08 and modern CMTS after; parser has synthetic 2010 and 2025 fixtures/tests.
+- Transform defaults to NSE EQ/BE/BZ, drops zero-volume rows, and deduplicates by (date,symbol), keeping first. It does not explicitly enforce low>0 or non-negative turnover/trades and does not create a rejected-row audit table. Northgate must test these behaviours on our symbols before adoption.
+- Need explicit Northgate decision on EQ-only vs EQ/BE/BZ and zero-volume policy. Avoid hidden missing labels caused by row drops.
+- These were source-code inspections only. Northgate did not run provider tests or download/validate any data.
