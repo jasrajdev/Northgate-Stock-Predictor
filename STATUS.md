@@ -369,3 +369,6 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - The published data list includes first-basket daily EOD OHLC/turnover, bhavcopy/reports, historical indices, FII/FPI/DII activity, company financial results, shareholding, corporate announcements and corporate actions. A separate >2 GB voluminous basket may be chargeable; confirm exact eligibility and costs with NSE.
 - The request form requires institution, project title/objective, market relevance, data type, justification and date range. No form has been submitted and no access granted.
 - This provides a compliant route worth pursuing instead of scraping. Remaining user-side dependency: institution name and an academic supervisor/department contact who can support the request. See DATA_RESEARCH.md and QUESTIONS.md.
+
+### Daily institutional-flow candidate — 2026-11-14
+- NSE FII/FPI & DII page exposes CSV tables for NSE-only and combined NSE+BSE+MSEI Capital Market activity, with buy/sell/net ₹ crore. FII/FPI values are provisional and subject to custodial confirmation; final values are directed to NSDL/CDSL. No rows downloaded. Treat as market-wide context and use next-session availability until dissemination timing is verified.
