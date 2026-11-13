@@ -439,3 +439,13 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Provider README says historical adjusted prices are recomputed from corporate actions, including dividends. These are retrospective and must not enter a PIT backtest as if future actions were known. Provider's 89% within ±1% Yahoo reconciliation is self-reported, not independent validation.
 - NSE confirms current CM-UDiFF ZIP and separate readme workbook; old CM CSV discontinued 2024-07-08. UDiFF guidance gives general encoding/date/compression conventions, but the CM readme and actual sample have not been inspected.
 - No files downloaded, no values compared, no dataset validation, no panel changes and no model training.
+
+
+## 2026-11-14 — Continued TejHQ code-level review
+- Updated finding: current HF card and current public README now agree on seven trees, NSE 2010-01-04 onward and BSE 2024-07-08 onward. Raw annual path is `nse/year=YYYY/nse_YYYY.parquet`; earlier five-tree/2024-only README snapshot is stale.
+- Read the public parser, instrument-chain and adjustment source files. Parser supports modern CMTS and legacy NSE schemas; pre-2012 ISIN/trade count remain null. Same-symbol ISIN transitions within 30 calendar days are linked as one chain.
+- Adjustment coverage is limited: split, bonus and dividend get factors; rights, buyback, demerger, merger, AGM and other currently get 1.0. Missing dividend inputs also fall back to 1.0. These cases require action-level QA before treating adjusted close as economically complete.
+- Historical adjustment is recomputed with all later actions. That revises absolute past adjusted price levels. Ratios across dates can cancel common future factors, but the PRD's absolute adjusted-close target needs an explicit leakage/scale review before training. Do not change the PRD target silently.
+- Provider's 96.88% Yahoo comparison is self-reported adjusted-close reconciliation, not independent raw NSE validation; 48 of 50 names matched and exceptions include TRENT bonus date and ITC demerger convention.
+- Legal note: pipeline README says data is not covered by MIT and provider holds no exchange licence; it describes free personal/research use subject to exchange terms. Follow dedicated TejHQ terms and do not redistribute raw data.
+- No raw parquet acquired, no independent NSE comparison, no Northgate tests, no panel change and no model training. Full HF commit SHA remains unpinned.
