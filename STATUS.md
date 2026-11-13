@@ -249,3 +249,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Extracted 156 monthly CPI index observations from January 2013 through December 2025. December 2025 is marked provisional in the source. Fourteen YoY inflation cells are blank and retained as missing.
 - The historical snapshot was released on 2026-01-12; this is the snapshot availability date, not the original availability date of each past monthly CPI observation. Point-in-time merging still requires the monthly release calendar/archived release dates.
 - Updated `scripts/extract_mospi_cpi.py` to extract Annex-VI and Annex-VII in addition to Annex-I and the separate base-2024 current series. Script source was read-back verified; execution of the committed script remains untested.
+
+
+## 2026-11-13 — Market-context acquisition scaffold
+- Added `scripts/download_market_context.py` for separate India VIX and NIFTY sector-index downloads, including coverage and missing-close QA. Source code saved and read-back check pending; data download not yet run.
+- Verified official NSE historical India VIX page and RBI DBIE Key Rates table as the primary source references. Yahoo Finance remains the downloader's initial secondary source and needs validation against NSE.
+- RBI Key Rates are effective-date events, not daily observations. A later merge must forward-fill only after the effective date and preserve the original event table.
+- No market-context or macro series has yet been merged into daily stock features.
