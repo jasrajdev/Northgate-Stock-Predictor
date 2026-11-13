@@ -1025,3 +1025,10 @@ Official links:
 - Contact specified by NSE: nseri@nse.co.in
 
 **Practical implication for Northgate:** a research request could potentially cover historical EOD price/volume, corporate disclosures and other official data, avoiding the need to automate NSE website collection. The user's institution/supervisor and the project hypothesis need to be confirmed before the form can be completed. Do not send the form or claim eligibility/approval without the user's review.
+
+### Additional official daily market-context candidate: FII/FPI and DII flows
+- NSE's FII/FPI & DII page exposes two CSV-download tables: NSE-only Capital Market segment and combined NSE+BSE+MSEI Capital Market segment. Fields are Category, Date, Buy Value, Sell Value and Net Value (₹ crore). The official page explicitly warns that FII/FPI values are provisional and can change after custodial confirmation/modifications; it directs users to NSDL/CDSL for final FPI data.
+- This could be a useful daily market-wide context feature, but is not a company-specific flow series. Preserve both the NSE-only and combined versions as distinct datasets; do not merge or overwrite one with the other.
+- Because the page describes activity for “today” but does not expose a reliable publication timestamp in the reviewed rendering, treat the observation as unavailable to the same-day close prediction until its actual dissemination time is measured. Safest baseline alignment is next eligible trading session; preserve retrieval timestamp and any provisional/final status.
+- The official NSE data-for-research list includes FII/FPI and DII trading activity, so include it in a research data request if useful.
+- Source: https://www.nseindia.com/reports/fii-dii
