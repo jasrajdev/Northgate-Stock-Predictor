@@ -449,3 +449,7 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Provider's 96.88% Yahoo comparison is self-reported adjusted-close reconciliation, not independent raw NSE validation; 48 of 50 names matched and exceptions include TRENT bonus date and ITC demerger convention.
 - Legal note: pipeline README says data is not covered by MIT and provider holds no exchange licence; it describes free personal/research use subject to exchange terms. Follow dedicated TejHQ terms and do not redistribute raw data.
 - No raw parquet acquired, no independent NSE comparison, no Northgate tests, no panel change and no model training. Full HF commit SHA remains unpinned.
+
+
+### Freshness correction — 2026-11-14
+- Further live-tree checks show TejHQ published again on 2026-11-12: raw NSE tree short commit `d6f1912`, adjusted NSE 2024 file short commit `8b77c06`. This supersedes the 2026-11-11 freshness note above. Full immutable commit SHA remains unpinned.
