@@ -179,3 +179,12 @@ These pages demonstrate that official UI routes exist, but not that every date/s
 - NSE labels FII/FPI flow as provisional and subject to custodial confirmation/modification. The report is aggregate category-level flow, not stock-level activity. Historical vintages should not be overwritten if the series becomes a feature.
 - NSE discontinued legacy CM Bhavcopy CSV formats effective 08-Jul-2024 and directs users to CM-UDiFF Common Bhavcopy Final ZIP. Any stitched history must document schema transition and validate comparable fields across the boundary.
 - No official files were downloaded; no additional data was ingested or validated. The model-training and backtesting state is unchanged.
+
+
+## Target-universe corporate-action spot-check (2026-11-14)
+
+Official NSE/MSEI pages confirm representative event dates across the provisional universe: HINDUNILVR demerger 05-Dec-2025; ITC demerger 06-Jan-2025; HDFCBANK 1:1 bonus 26-Aug-2025; RELIANCE 1:1 bonus 28-Oct-2024 and rights documentation in May 2020; BHARTIARTL rights 19:67 on 23-Apr-2019 and 1:14 on 27-Sep-2021 (MSEI action table). Current NSE pages also show dividend events for ICICIBANK, LT, SUNPHARMA and TCS. This is a spot-check, not a complete corporate-action history; INFY remains unverified in this pass.
+
+NSE integrated filings include Original/Revision labels and separate broadcast/revised timestamps. For point-in-time features, preserve each revision as a new event with its own timestamp. Do not backdate corrected information.
+
+Before training, run an event-window audit around every rights, bonus and demerger: compare raw Close, Adj Close, dividend/split metadata and the forward adjusted-close label for at least two sessions before and after the ex-date. Do not assume vendor adjustment logic correctly represents rights/de-merger economics. No action CSVs or filing attachments were acquired in this pass, and no labels were modified.
