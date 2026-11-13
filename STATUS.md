@@ -194,3 +194,24 @@ Add tests and cross-check the cumulative series endpoint against each workbook's
 ## Immediate next action
 Pull main on the Mac, install requirements in the project environment, and run scripts/train_baseline_models.py. Inspect the validation summary and errors before deciding whether to tune or add deep-learning models. Do not evaluate the final test until model selection is frozen.
 
+
+
+## Dataset and GPU handoff audit — 2026-11-13
+
+- The user-provided `market_panel.csv` was inspected from the conversation upload: 29,484 rows, 11 tickers (10 provisional Indian equities plus ^NSEI), 11 columns including adjusted close and OHLCV. The ten equities are BHARTIARTL.NS, HDFCBANK.NS, HINDUNILVR.NS, ICICIBANK.NS, INFY.NS, ITC.NS, LT.NS, RELIANCE.NS, SUNPHARMA.NS and TCS.NS.
+- The user's uploaded `cpi_33.xlsx` was inspected: 31,460 rows, 15 columns; base_year 2024 / Current series; January 2025–October 2026 in inspected records. It is granular state/sector/division data and is not by itself the complete monthly historical CPI series.
+- GitHub was checked: market_panel.csv, feature_panel.csv, modeling_dataset_next_day.csv and split CSVs are NOT present on main. The feature/model/split outputs previously reported by the user remain local to the Mac. Do not tell the user they can download those CSVs from GitHub.
+- Added `config/northgate_universe.json` and `scripts/prepare_gpu_training_data.py` so the GPU laptop can rebuild market panel, 24 backward-looking price/volume features, next-session labels and chronological splits from yfinance. Raw data are intentionally downloaded on the target machine rather than redistributed from this repository.
+- Added `scripts/train_baseline_models.py` with Ridge, Random Forest, SVR and XGBoost; XGBoost requests CUDA by default and falls back to CPU if CUDA is unavailable. It uses validation only and does not load test.csv.
+- Added `scripts/train_deep_models.py` for LSTM, GRU, BiLSTM and Transformer, with early stopping and GPU detection. It uses training-fitted preprocessing and validation only; the final test split is not loaded.
+- Added `requirements-dl.txt`, `docs/GPU_LAPTOP_SETUP.md`, `docs/DATASET_INVENTORY.md` and `docs/PRD_REQUIREMENTS.md`.
+- No new training has been run. No model artifact or metric result exists yet. The exact HP Victus GPU model and operating system remain unverified; 6 GB VRAM alone is not enough to choose the correct PyTorch/CUDA install command.
+
+## Current dataset completeness
+- **Baseline-trainable after rebuild on GPU laptop:** yes, price/volume-only experiment.
+- **Full PRD dataset:** no. Missing/incomplete items include macro series with release/vintage timing, timestamped historical news adequate for the study period, FinBERT/VADER sentiment features, point-in-time universe membership/survivorship correction, and official-source adjusted-price verification.
+- CPI source research: MoSPI e-Sankhyiki API supports base years 2010, 2012 and 2024 with Current/Back series. The base-2024 linked back series for All-India Rural/Urban/Combined covers Jan 2013–Dec 2024; preserve its linked-series status and do not silently concatenate it with contemporaneous base-2012 releases.
+- News source research: GDELT provides historical archives since 2015, but its article-search API is rolling and GDELT metadata is not a guaranteed complete financial-news text corpus. IN-FINews (Zenodo) has 3,348 India-focused articles from Feb–Aug 2025 only, useful as a small research corpus, not an 8–10-year source.
+
+## Next action
+User should use the HP Victus (not the Mac) to clone main, run the reproducible price/volume data rebuild, and send the exact GPU/OS details before installing the CUDA-specific PyTorch build. Then run classical and deep validation experiments. Keep the final test untouched.
