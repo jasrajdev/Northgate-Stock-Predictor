@@ -1,6 +1,6 @@
 # Dataset Inventory and Acquisition Plan
 
-Updated: 2026-11-13
+Updated: 2026-11-14
 
 ## Current verified price dataset
 
@@ -421,3 +421,16 @@ No files were downloaded from these pages. Treat all as source-access candidates
 - NSE integrated filings expose original/revision type, broadcast timestamp, revised timestamp and remarks. Retain revisions as separate point-in-time events; do not backdate revised information to the original filing.
 - Next data-quality test: inspect raw Close, Adj Close, dividend/split fields and forward target for at least two sessions before and after every confirmed rights/bonus/demerger event. Rights and demergers need explicit review; do not blindly trust vendor adjustment factors.
 - No action CSV or filing attachment was downloaded in this research pass.
+
+
+## 2026-11-14 — Adjusted-price field caveat (audit still pending)
+
+The existing Yahoo Finance/yfinance `Adj Close` field must not yet be treated as fully corporate-action-complete. Yahoo's published explanation describes split and cash-dividend adjustment multipliers; it does not establish coverage for rights issues or demergers. NSE guidance includes rights and demergers in its derivatives adjustment framework, but that is not proof of cash-market historical adjusted-close treatment. NSE's adjusted 52-week high/low fields are documented as covering bonus, consolidation, splits and rights, while actual Bhavcopy prices remain unadjusted.
+
+Required validation before using event-affected observations as model labels:
+- Preserve raw `Close`, vendor `Adj Close`, `Dividends`, and `Stock Splits`.
+- Join a dated, source-backed corporate-action ledger (including action type, ratio/terms, ex-date, record date, announcement/broadcast timestamp, and source URL/document).
+- Inspect at least two trading sessions before and after each known event; compare price discontinuities and implied adjustment with official raw Bhavcopy and the action terms.
+- Treat rights issues and demergers as unresolved until independently reconciled. Do not silently patch prices or labels.
+
+No `market_panel.csv` was available among the current Project attachments on 2026-11-14, so no event-window rows were inspected and no data was modified. See `docs/DATA_RESEARCH.md` for source references and interpretation limits.
