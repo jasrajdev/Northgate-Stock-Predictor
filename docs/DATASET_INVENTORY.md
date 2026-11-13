@@ -297,3 +297,9 @@ No new rows or files were downloaded in this pass. Official NSE pages and their 
 
 ### Source decision status
 Neither candidate replaces the current Northgate 29,473-row labelled dataset. A controlled, ticker-level sample comparison is required before any replacement or augmentation. No candidate data files have been acquired in this pass.
+
+### PLFS quarterly values now manually extracted (14-Nov-2026)
+- Official MoSPI QB-31, July–September 2026, publication date 10-Nov-2026: CWS age 15+ LFPR rural/urban/combined = 58.1/50.4/55.5%; WPR = 55.6/46.9/52.7%; UR = 4.3/6.8/5.1%.
+- Combined UR (15+) quarterly path in same bulletin: 5.2%, 4.8%, 5.0%, 5.4%, 5.1% from Jul-Sep 2025 through Jul-Sep 2026. Bulletin sample: 11,229 FSUs, 133,570 households, 555,593 persons; RSE for combined UR = 1.72%.
+- This is a five-quarter published CWS series, not a long monthly history. Monthly September 2026 catalogue records are a distinct product (released 15-Oct). October 2026 monthly bulletin is scheduled for 15-Nov and has not yet been confirmed.
+- No PLFS API rows downloaded; bulletin values are a manually extracted published source with release date recorded.
