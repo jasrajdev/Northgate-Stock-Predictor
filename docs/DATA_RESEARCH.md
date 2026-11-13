@@ -1008,3 +1008,20 @@ SEBI Circular SEBI/HO/DEPA-II/DEPA-II_SRG/P/CIR/2024/178 (20-Dec-2024) is more s
 - Its illustrative first-basket examples include publicly available bhavcopy, index snapshots, trading statistics, category-wise turnover/open interest, historical trading statistics, historical daily OHLC/volume/turnover/open interest, and historical spot/futures prices beyond 30 days. It directs MIIs to publish a data-seeking request form explaining the research hypothesis.
 - This creates a legitimate route worth investigating if Northgate can be submitted through an accredited academic institution. It does **not** itself prove that any specific raw dataset is available to this user, waive exchange-specific conditions, or override NSE website terms. We need the exchange's published data-basket list and request form, and confirmation of eligibility/conditions.
 - Source: https://www.bseindia.com/downloads1/SEBI_circular_Policy_Sharing_Data.pdf (paras 3–8 and Annexure I, pp. 1–4).
+
+### NSE's implemented research-data route found (official; material breakthrough)
+A current NSE “Data for Research” page and its linked 28-Jul-2025 dataset classification PDF were located:
+- NSE explicitly says its Economic Policy & Research team facilitates market-data access for **approved academic and policy research projects** and that data supplied under this route is strictly for academic and non-commercial use.
+- The page provides a Data Seeking Request Form and instructs applicants to send it to **nseri@nse.co.in**.
+- The official NSE dataset list identifies first-basket publicly available data including daily historical security OHLC/turnover, bhavcopy and daily/monthly reports, historical index data, FII/FPI and DII activity, and listed-company financial results, shareholding, corporate announcements and corporate actions.
+- The list separately identifies a **voluminous first-basket** (above 2 GB, chargeable) including historical end-of-day bhavcopy across CM/WDM/F&O, corporate data (fundamentals, announcements, shareholding, voting results, financial result calendar, governance, corporate actions), historical security/contract masters and historical instrument-wise turnover. Read together with SEBI's circular, the up-to-2-GB/researcher/year no-extra-computation route may be free; above that or value-added processing may be charged. Confirm the applicable quantity, time window, and price directly with NSE.
+- The NSE request form asks for name, institution, country, contact details, project title, objective and market relevance, data type, data justification, period, signature and date. The application requires a specific research hypothesis/justification, not a generic data request.
+- This route is materially better than scraping public pages: submit the request through an eligible institution and obtain the data/terms directly. It does not automatically approve the project or guarantee all requested fields/periods.
+
+Official links:
+- NSE Data for Research: https://www.nseindia.com/static/research/initiatives-data-for-research
+- NSE data list (28-Jul-2025): https://nsearchives.nseindia.com/web/sites/default/files/inline-files/Data%20list%20under%20NSE%20Data%20Sharing%20Policy%20for%20Research%20and%20Analysis_20250728.pdf
+- NSE Data Seeking Request Form: https://nsearchives.nseindia.com/web/sites/default/files/inline-files/Data%20Seeking%20Request%20Form-20250319.pdf
+- Contact specified by NSE: nseri@nse.co.in
+
+**Practical implication for Northgate:** a research request could potentially cover historical EOD price/volume, corporate disclosures and other official data, avoiding the need to automate NSE website collection. The user's institution/supervisor and the project hypothesis need to be confirmed before the form can be completed. Do not send the form or claim eligibility/approval without the user's review.
