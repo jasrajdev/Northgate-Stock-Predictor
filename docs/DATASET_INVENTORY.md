@@ -276,3 +276,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 
 ### Retrieval status
 No new rows or files were downloaded in this pass. Official NSE pages and their rendered schemas were reviewed; the JSON announcement route is third-party-documented and remains unverified. Next acquisition work requires actually exporting RBI/VIX/index/bhavcopy files or executing bounded API calls and recording raw responses.
+
+## 2026-11-14 — Institutional flows and official research-access path
+- NSE's official FII/FPI & DII page offers CSV tables for NSE-only and combined NSE+BSE+MSEI Capital Market activity, with buy/sell/net ₹ crore. FII/FPI values are explicitly provisional and subject to custodial confirmation; final data is directed to NSDL/CDSL. No files acquired. Treat as market-wide context and align no earlier than the next session until publication time is validated.
+- NSE's official Data for Research initiative provides a request form (nseri@nse.co.in) and a 28-Jul-2025 data-basket list. Eligible research datasets include EOD OHLC/turnover, bhavcopy reports, historical indices, FII/FPI/DII activity and listed-company disclosure datasets. Academic/non-commercial use only; approval and costs are not guaranteed.
+- NSE Terms of Use prohibit systematic/automated website data collection and include restrictions on virtual trading/simulation. Do not automate public website/API extraction pending written permission or applicable licence. See DATA_RESEARCH.md for exact terms, SEBI circular interpretation and sources.
+- News: GDELT long-history metadata/tone is a possible contextual signal, but DOC full-text search only covers a recent rolling window; IN-FINews (3,348 articles, Feb–Aug 2025) is a small supplemental corpus only. Publisher RSS storage/training rights vary and must be checked.
+- TejHQ/tej-bazaar offers a promising public EOD cross-check candidate (NSE from 2010; BSE from 2024-07-08), but the data is not MIT-licensed and TejHQ holds no exchange licence. No sample data has been downloaded or reconciled.
