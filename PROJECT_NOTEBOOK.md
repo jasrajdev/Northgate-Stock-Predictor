@@ -144,3 +144,7 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 
 
 - Additional pipeline QA notes: TejHQ transform includes NSE EQ/BE/BZ by default, drops zero-volume rows, and deduplicates on (date,symbol) keeping first; low>0 and non-negative turnover/trades are not explicit invariants, and no rejected-row audit output is described. Need a Northgate series/zero-volume policy and raw-vs-cleaned row audit before adoption.
+
+- Target universe coverage check: TejHQ pages report all ten Northgate equities beginning before 2016 (nine on 2010-01-04; INFY on 2011-06-29). Provider pages are not row-level validation. Latest displayed page dates differ between 2026-11-11 and 2026-11-12, requiring API/raw confirmation.
+- Rights/format check: TejHQ terms permit individual research/backtesting/local storage but say no exchange licence, MIT is code-only, raw redistribution is prohibited, and exchange terms apply. HF search metadata says exchange-public-data while cached page says mit; do not infer data rights from the badge. NSE UDiFF official page lists catalogue v1–v4 and CM sample files; Circular 62424 confirms 2024-07-08 cutover. Binary sample retrieval failed, so field-level reconciliation remains open.
+- No API data or Parquet downloaded, no official sample acquired, no data comparison run, no panel changed, no model trained.
