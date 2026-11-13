@@ -402,3 +402,11 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 ### RBI daily money-market rate — 2026-11-14
 - RBI Handbook Table 27 / current-statistics Table 225 documents daily weighted-average call/notice money rates, ranges and turnover. This is a strong India short-term liquidity feature candidate; monthly DBIE call money aggregates are a different frequency. No daily export retrieved.
 - Official daily 10Y generic G-Sec yield download not confirmed; the broad public dataset's daily 10Y series remains unverified. Continue using monthly OECD/FRED India 10Y as a separate low-frequency feature; do not interpolate.
+
+## Additional public-source research — 2026-11-14
+- Verified a monthly RBI-derived sovereign yield curve (1–30 year maturities) from April 1996 to August 2026; this is not a daily generic 10-year yield. Daily RBI call/notice money statistics are documented, but a long-history machine-readable export remains unverified.
+- Verified official MoSPI PLFS API route and monthly/quarterly frequency rules from the NSO India MCP source; no API rows acquired in this pass.
+- Verified NSE's official India VIX custom-date CSV interface and field schema; no export acquired.
+- Sharpened candidate terms: TejHQ permits private personal research/model training under provider terms but has no exchange licence and raw redistribution is prohibited; NSEDATA4ME code is GPL but its NSE-derived data remains subject to NSE terms; historical index membership reconstruction is not yet licence/accuracy verified.
+- No raw market/macro/news data was downloaded, validated or merged during this source-research pass. Existing panel and model split remain unchanged.
+- Institutional sponsorship is not a dependency for the ongoing public-source research plan.
