@@ -1,5 +1,7 @@
 # GPU Laptop Training Handoff
 
+For the experiment logic, dataset explanation, model order and output interpretation, read [MODEL_TRAINING_GUIDE.md](MODEL_TRAINING_GUIDE.md) first.
+
 ## Hardware confirmed from the user's 2026-11-13 PowerShell screenshot
 
 - Machine: HP Victus, Windows PowerShell.
