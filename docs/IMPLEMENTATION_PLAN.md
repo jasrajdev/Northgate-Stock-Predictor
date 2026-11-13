@@ -111,3 +111,14 @@ Added scripts/train_baseline_models.py:
 
 The script is committed but has not yet been executed. No performance result is claimed. Next: run it locally, inspect per-ticker results and failures, then select/tune using validation only. Add macro/news features after this first baseline has established a comparison point.
 
+
+
+## GPU laptop handoff (2026-11-13)
+
+Committed a reproducible rebuild and training path:
+1. `config/northgate_universe.json` records the ten provisional equities, NIFTY 50 benchmark and dates.
+2. `scripts/prepare_gpu_training_data.py` downloads and rebuilds the price/volume panel, 24 backward-looking features, next-session labels and target-date chronological splits on the GPU laptop.
+3. `scripts/train_baseline_models.py` runs per-equity Ridge, Random Forest, SVR and XGBoost (CUDA request with CPU fallback), compared with last adjusted close.
+4. `scripts/train_deep_models.py` runs LSTM, GRU, BiLSTM and Transformer using PyTorch, GPU when available, early stopping, and validation-only model selection.
+
+The Mac's local feature/model/split CSVs were not found in GitHub, so the GPU machine must rebuild them. The uploaded market_panel.csv was inspected but is not in the repository. Raw yfinance data are not redistributed in GitHub; the script downloads them on the target machine. This path is a price/volume-only baseline and does not complete the PRD's macro/news/sentiment requirements.
