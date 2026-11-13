@@ -1701,3 +1701,35 @@ Official references:
 The user ran a Python `requests` test against the candidate official NSE archive URL for 22-Apr-2019: `https://nsearchives.nseindia.com/content/historical/EQUITIES/2019/APR/cm22APR2019bhav.csv.zip`. Their terminal output reported HTTP 200, 68,955 response bytes and ZIP signature `PK`. This confirms successful retrieval of a ZIP-formatted response from the user's Mac for this one date. The archive has not yet been extracted or inspected; no CSV schema, ticker row, raw close or file checksum has been verified. It does not yet establish availability of the other four dates.
 
 Next: download and validate the five required dates (BHARTIARTL 22/23-Apr-2019; RELIANCE 12/13/14-May-2020), inspect ZIP integrity and CSV headers, then extract only the correct equity-series rows. Keep raw files local pending a review of exchange data licensing/redistribution terms. No prices, labels or models changed.
+
+
+## 2026-11-14 — Five official NSE Bhavcopy event-window rows retrieved
+
+The user ran `download_nse_bhavcopy.py` locally. All five candidate NSE historical archives returned HTTP 200, ZIP signatures were valid, `ZipFile.testzip()` passed, CSV headers were parsed, and exactly one matching ordinary equity (`SERIES=EQ`) row was printed for each target symbol/date. CSV schema: `SYMBOL, SERIES, OPEN, HIGH, LOW, CLOSE, LAST, PREVCLOSE, TOTTRDQTY, TOTTRDVAL, TIMESTAMP, TOTALTRADES, ISIN` (archive also contains a trailing empty header field).
+
+| Date | Symbol | Open | High | Low | Close | PrevClose | Volume | ISIN |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| 22-Apr-2019 | BHARTIARTL | 344.00 | 358.55 | 336.60 | 349.40 | 346.95 | 13,824,740 | INE397D01024 |
+| 23-Apr-2019 | BHARTIARTL | 325.00 | 325.40 | 314.20 | 316.50 | 349.40 | 11,412,878 | INE397D01024 |
+| 12-May-2020 | RELIANCE | 1,564.80 | 1,568.35 | 1,465.00 | 1,479.25 | 1,576.80 | 46,029,119 | INE002A01018 |
+| 13-May-2020 | RELIANCE | 1,527.00 | 1,527.00 | 1,454.00 | 1,496.45 | 1,479.25 | 30,658,051 | INE002A01018 |
+| 14-May-2020 | RELIANCE | 1,469.00 | 1,496.70 | 1,430.05 | 1,435.95 | 1,496.45 | 22,736,714 | INE002A01018 |
+
+User-reported SHA-256 hashes:
+- `cm22APR2019bhav.csv.zip`: `73747d17e27a6acf1fd5a976657110fa76b61611bff32a3e9a9ff38daaaff29d`
+- `cm23APR2019bhav.csv.zip`: `5783418c132bfa72661a7e34a76cecc88c1f5654d9321e5bec0f5a5355f84b7e`
+- `cm12MAY2020bhav.csv.zip`: `78c24010e0f6510a2426cfbbcc663bb868cc37003b128c3126f9c64fda9aae16`
+- `cm13MAY2020bhav.csv.zip`: `36589b0e763079ccb3599443b37c51ba361d6e97b0c59e6264f73444f4daae44`
+- `cm14MAY2020bhav.csv.zip`: `66cb0bdbee5a861287cbddbdd4ab2a58a2164cef088e4f563ef53a83d25d8654`
+
+Observed raw-close moves: BHARTIARTL 23-Apr vs 22-Apr = -9.416%; RELIANCE 13-May vs 12-May = +1.162%; RELIANCE 14-May vs 13-May = -4.043%. These are observed market-price changes, not corporate-action-adjusted returns.
+
+For formula research only, applying the NSE F&O rights formula previously documented to the raw cum-date closes gives:
+- BHARTIARTL 2019 (A=19, B=67, S=₹220, P=₹349.40): E=(P-S)×A/(A+B)=₹28.5686 per existing share; theoretical ex-price P−E=₹320.8314; derivative factor ≈0.91826. Actual ex-date close ₹316.50 is ~1.35% below that theoretical level.
+- RELIANCE 2020 (A=1, B=15, S=₹1,257, P=₹1,479.25): E=₹13.8906; theoretical ex-price ₹1,465.3594; derivative factor ≈0.99061. Actual ex-date close ₹1,496.45 is ~2.12% above that theoretical level.
+
+These calculations are only F&O-method reference points; they are not cash-market adjusted-close prescriptions. Reliance's rights were partly paid, so the call obligation and partly-paid instrument make a simple theoretical factor an incomplete representation of investor economics. Do not rewrite OHLC, Adj Close, or labels from these factors.
+
+Correction to an earlier provisional inference in this document: it is **not valid** to infer RELIANCE's May-2020 raw close merely by doubling Yahoo's displayed Close for the later 1:1 bonus. RELIANCE also underwent the Jio Financial demerger in July 2023, and Yahoo's history can reflect multiple corporate-action adjustments. The Yahoo value ×2 is not a reliable pre-bonus/raw price reconstruction. Retain official NSE values as the raw reference and compare vendor series directly from the local panel in the next step.
+
+The user reports that the ZIPs are saved under `data/raw/nse_bhavcopy/`; only the terminal output and SHA-256 values are available in this research record. The files have not been independently opened in this assistant environment. Next: inspect `market_panel.csv` rows around all five event dates, compare `Close`, `Adj Close` and target columns, and trace how the pipeline formed next-session labels. No prices or labels have been modified; no models trained.
