@@ -1,6 +1,6 @@
 # Current Status
 
-Updated: 2026-11-13
+Updated: 2026-11-14
 
 ## Project state
 - Repository: private GitHub repository; default branch `main`.
@@ -504,3 +504,12 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - This was a source-page spot-check, not a complete event ledger. INFY action history and complete historical action coverage for all tickers remain unverified.
 - NSE integrated filings expose original/revision labels and broadcast/revision timestamps. This supports point-in-time filing features if revisions are retained separately.
 - No action CSV/filing attachment was downloaded; no price adjustment audit or modelling run was performed.
+
+
+## 2026-11-14 — Corporate-action adjustment validation blocker
+
+- New source check: Yahoo Finance documents `Adj Close` as split- and cash-dividend-adjusted; this does not establish complete treatment of rights issues or demergers.
+- NSE's corporate-action adjustment guidance includes rights and demergers but concerns derivatives positions/contracts. NSE's adjusted 52-week high/low fields cover bonus, consolidation, splits and rights; they are not a substitute for a full adjusted daily history.
+- Decision unchanged: do not alter the PRD target or existing labels based on assumptions. Preserve raw Close and vendor Adj Close and reconcile known rights/demerger event windows against official event terms before training.
+- Blocker: `market_panel.csv` was not present in the currently attached Project files during this session. No event-window price inspection, adjustment, model training, or backtest was performed.
+- Next action: obtain the existing panel in the working environment and run a reproducible event-window diagnostic for ITC (2025-01-06 demerger), HINDUNILVR (2025-12-05 demerger), RELIANCE (2023-07-20 demerger; 2020-05-13 rights; 2024-10-28 bonus), BHARTIARTL (2019-04-23 and 2021-09-27 rights), and HDFCBANK (2025-08-26 bonus). Verify dates/terms from primary exchange/issuer documents before computing any expected factor.
