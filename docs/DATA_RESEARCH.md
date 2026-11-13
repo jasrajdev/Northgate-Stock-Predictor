@@ -1270,3 +1270,26 @@ No RBI forex CSV/JSON export was downloaded in this pass.
 
 ### BigQuery cost control for GDELT pilot
 - Google documents that BigQuery public datasets are hosted for users and the first 1 TB of query processing per month is free; usage beyond free allowance is chargeable and requires billing. A GDELT GKG pilot can therefore be run with a strict bytes-scanned cap and partition/date filters, but only after confirming the exact GDELT public table and schema. Do not scan the full archive or assume unlimited free usage. Source: https://docs.cloud.google.com/bigquery/public-data.
+
+
+## Official NSE bhavcopy format and MoSPI PLFS release-calendar check — 2026-11-14
+
+### NSE daily cash-market source
+- The official NSE All Reports page currently exposes the final CM-UDiFF Common Bhavcopy as a ZIP/CSV (example listed for 11-Nov-2026: `BhavCopy_NSE_CM_0_0_0_20261111_F_0000.csv.zip`). The page explicitly says the older CM Bhavcopy CSV and CM Common Bhavcopy CSV were discontinued from 08-Jul-2024 and directs users to the CM-UDiFF final format. It also lists a separate Full Bhavcopy and Security Deliverable data CSV.
+- The NSE historical reports page separately lists archives for daily/monthly equity reports, historical index data, India VIX, P/E/P/B/dividend yield, and Total Returns Index values. This is a stronger official-source map than relying on the stale indexed VIX preview alone.
+- Research implication: use CM-UDiFF as the post-08-Jul-2024 raw EOD source candidate and identify the matching pre-transition official archive/format before stitching. Parse the official readme/schema and compare overlapping dates around the transition if available. Do not silently mix the legacy and UDiFF schemas.
+- The page is an interactive download portal; the search result establishes that the download is listed, not that a complete historical archive has been acquired or that automated collection is permitted. Respect NSE terms and use the intended export route. No bhavcopy/VIX file was downloaded in this pass.
+- Sources: https://www.nseindia.com/all-reports ; https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives ; https://www.nseindia.com/reports-indices-historical-vix.
+
+### India VIX route qualification
+- NSE's official historical reports directory lists Historical Data - India VIX. The dedicated VIX page exposes 1D/1W/1M/3M/6M/1Y/custom ranges and CSV download. Its unfiltered indexed view returns “No Records”; that is not evidence that historical coverage is absent. The prior all-reports preview had a mismatched sample date and duplicated row, so no coverage or duplicate conclusion is drawn from that preview.
+- Next validation should be a small manually selected date-range export (e.g. one calendar month), followed by header, row-count, date continuity and spot-check validation against official index publications. Do not infer an API or automate undocumented endpoints.
+
+### PLFS release-calendar update
+- The official MoSPI 2026-27 advance release calendar updated through October 2026 schedules the Monthly Bulletin of PLFS for October 2026 on 15-Nov-2026. As of this 14-Nov research pass, this is a scheduled future release, not an observed publication. The July-Sep 2026 quarterly bulletin was separately scheduled for 10-Nov and must remain a distinct product/frequency.
+- Current PLFS MCP source code documents monthly frequency_code=3 coverage Apr-2025–Sep-2026 (All India; indicators 1–3) and quarterly frequency_code=2 coverage for calendar years 2018–2026 (indicators 1–4). The four-step metadata workflow remains mandatory; one indicator_code per request. Connector source code is MIT-licensed, but this does not license MoSPI data.
+- Keep monthly bulletin, quarterly bulletin and API extracts in separate source tables with their own reference period and actual publication/retrieval timestamps. Calendar dates are schedules, not proof of publication.
+- Sources: https://www.mospi.gov.in/uploads/documents/releaseCalender/1793948871564-ARC%202026-27%20updated%20till%20October%202026.pdf ; https://github.com/nso-india/esankhyiki-mcp/blob/main/mospi_server.py ; https://github.com/nso-india/esankhyiki-mcp/blob/main/README.md.
+
+### Acquisition status
+- No raw NSE, VIX or PLFS observations were downloaded, validated or merged in this pass. This update records source route and format findings only.
