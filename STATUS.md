@@ -497,3 +497,10 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - NSE explicitly marks FII/FPI flow data provisional and revisable; the figures are aggregate market flows, not company-level flows. Any use must retain source/vintage status.
 - NSE confirms legacy CM Bhavcopy CSV formats were discontinued 08-Jul-2024 in favour of CM-UDiFF ZIP. Schema mapping across the transition remains open.
 - No official CSV/ZIP was downloaded; no new data was ingested, validated, or used for modelling. No model/backtest status changed.
+
+
+### 2026-11-14 — Target-universe corporate-action spot-check
+- NSE/MSEI public pages corroborate several event dates in the provisional universe: HINDUNILVR demerger (05-Dec-2025), ITC demerger (06-Jan-2025), HDFCBANK 1:1 bonus (26-Aug-2025), RELIANCE bonus (28-Oct-2024) and 2020 rights issue, and BHARTIARTL rights issues (23-Apr-2019 and 27-Sep-2021). Recent dividends are also displayed for ICICIBANK, LT, SUNPHARMA and TCS.
+- This was a source-page spot-check, not a complete event ledger. INFY action history and complete historical action coverage for all tickers remain unverified.
+- NSE integrated filings expose original/revision labels and broadcast/revision timestamps. This supports point-in-time filing features if revisions are retained separately.
+- No action CSV/filing attachment was downloaded; no price adjustment audit or modelling run was performed.
