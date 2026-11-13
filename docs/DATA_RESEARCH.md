@@ -754,3 +754,28 @@ Pilot the eSankhyiki CPI catalogue/API to identify a stable all-India combined G
 
 ### Updated research conclusion
 The official catalogue is now the preferred discovery route for historical monthly release statements because it exposes release dates and table IDs; the official press-release PDF remains the strongest source for actual publication/embargo time. The current API can provide structured observations but is not yet proven to preserve historical vintages. Next pilot: identify the catalogue's stable query/filter or table-download URL pattern for 2016–2025, retrieve a small 3-month sample (including a normal 12th release and a delayed/holiday release), and reconcile headline combined General index/inflation values and status against the official PDFs. Only after that sample passes should the process be scaled to all months.
+
+### Official archive spot-check — 2016 release sample (2026-11-13)
+The official MoSPI press-release archive contains machine-readable/indexed historical PDFs with the publication date, embargo time, provisional CPI index and inflation values. A November 2016 spot-check was parsed directly from the official PDF:
+- October 2016 reference CPI was released on 15 November 2016 and embargoed until 17:30 IST.
+- Combined General CPI index: 131.4 provisional.
+- Combined General CPI year-over-year inflation: 4.20% provisional.
+- September 2016 final combined index: 130.9; final YoY inflation: 4.39%.
+- The PDF explicitly states that provisional October and final September figures are released together.
+Source: https://mospi.gov.in/sites/default/files/press_release/cpi_pr_15nov16t.pdf
+This confirms that a release-event ledger can preserve both the current provisional month and preceding-month final value, with the release date/time taken from the source document.
+
+Other official 2016 spot-checks surfaced:
+- January 2016 reference month release dated 12 February 2016, 17:30 embargo: https://www.mospi.gov.in/sites/default/files/press_release/cpi_pr_12feb16f.pdf
+- April 2016 reference month release dated 12 May 2016, 17:30 embargo: https://www.mospi.gov.in/sites/default/files/press_release/cpi_pr_12may16th.pdf
+- March 2016 reference month release dated 12 April 2016, 17:30 embargo: https://mospi.gov.in/uploads/documents/CPI/Press/PR%20March%202016.pdf
+- November 2016 reference month release dated 13 December 2016, 17:30 embargo: https://mospi.gov.in/sites/default/files/press_release/CPI_PR13dec16t_0.pdf
+
+### Revised source acquisition approach
+1. Use the official MoSPI press-release archive and catalogue to enumerate the release months and obtain the release-specific PDF/Excel files.
+2. Extract from each release the current provisional headline combined General CPI index and YoY inflation, plus the preceding month's final index/inflation where shown.
+3. Store the source PDF/workbook URL, file hash, reference month, actual publication date/time, base year, provisional/final status and first eligible NSE session.
+4. Independently reconcile a sample of API/catalogue observations against the official release PDFs before scaling extraction.
+5. Treat third-party month-by-month historical pages only as discovery/QA aids; official MoSPI release files remain the accepted evidence.
+
+Do not assume the CPI API's latest historical values are the same as the values published at each original release. The API's usefulness for structured current-vintage data is separate from its suitability for point-in-time vintage reconstruction.
