@@ -1200,3 +1200,18 @@ No calendar, corporate-action CSV, historical membership file or EOD database wa
   - MSEI reference rate archive: https://www.msei.in/markets/Currency/Historical-Data/RBIReferenceRateArchives
 
 No RBI forex CSV/JSON export was downloaded in this pass.
+
+## 2026-11-14 — RBI short-term money-market rate source and 10Y yield gap
+
+### Daily call/notice money rate
+- RBI's April 2026 Handbook of Statistics documents **Table 27: Daily Call Money Rates**: daily interbank overnight call and notice money transactions, with borrowing/lending range and weighted-average rates, sourced from RBI/FMOD and based on reported transactions. The weighted-average call rate is an observable short-term liquidity indicator, not a policy target.
+- RBI's current-statistics publication **Table 225: Daily Weighted Average Call/Notice Money Rates** provides date-level borrowing/lending range, weighted rates and turnover; a Jul-2026 publication displays daily rows for Feb–May 2026. RBI's data-release page classifies Money Market Operations and LAF results as daily releases.
+- DBIE exposes a separate monthly weighted-average call money table from Mar-1991 to Mar-2026 (1,275 records); that monthly aggregate is not the same thing as the daily table. Preserve frequency and aggregation level.
+- This is a better India-specific daily short-rate/liquidity candidate than a sparse policy repo event alone. Retrieve the full daily series from DBIE Monthly RBI Bulletin / Statistics → Financial Market → Money Market and capture publication lag. Until exact release timing is verified, lag to next eligible session.
+- Sources: https://www.rbi.org.in/SCRIPTs/PublicationsView.aspx?id=24094 (April 2026 Handbook, Table 27) ; https://www.rbi.org.in/scripts/PublicationsView.aspx?id=24050 (Table 225) ; https://www.rbi.org.in/scripts/Statistics.aspx ; https://dbie.rbihub.in/tables?table=financial_markets.war_call_money_rn
+
+### Daily Indian 10-year government yield remains unresolved
+- The RBI/FBIL sources located so far establish benchmark identification and monthly/annual yields, but no official free daily 10-year generic yield download endpoint was confirmed in this search. FIMMDA methodology documents how the 10-year benchmark security is selected; RBI publications show historical yield charts but not a convenient daily downloadable long panel.
+- The third-party aswinv90 dataset claims a daily India 10Y benchmark yield series from 2000 onward (6,901 rows), but source-level provenance and corporate licensing are not independently established. Keep it as an unverified candidate, not an authoritative source.
+- For the PRD-required US DGS10, continue using FRED but add ALFRED vintages if revised data are possible. For the India model, compare daily call money + RBI repo events against the monthly OECD/FRED India 10Y series until a suitable daily yield source is established.
+- Do not fill daily gaps by linear interpolation; only forward-fill known effective/available values where the economic definition supports it.
