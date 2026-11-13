@@ -531,3 +531,9 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 ### 2026-11-14 — NSE archive retrieval remains blocked
 - Confirmed official NSE report families and historical-format cutover; identified candidate historical archive URLs for the five required sessions. Direct retrieval failed in this environment (web access error; container DNS resolution failure).
 - No Bhavcopy files or raw price rows were acquired. Treat the URL patterns as candidates pending successful download, not verified file availability. See `docs/DATA_RESEARCH.md` for URLs, source distinctions and next action.
+
+
+### 2026-11-14 — NSE archive connectivity confirmed on user's Mac
+- User-tested candidate official NSE archive for 22-Apr-2019 returned HTTP 200, 68,955 bytes and ZIP signature `PK` from Python requests.
+- This confirms a successful ZIP response for one date only. The archive has not yet been extracted or inspected; no raw stock close is verified. Availability of the other four dates remains untested.
+- Next: download/validate all five required date archives, inspect CSV schema and extract BHARTIARTL/RELIANCE EQ-series rows. Raw archives remain local pending licensing review. No prices, labels or models changed.
