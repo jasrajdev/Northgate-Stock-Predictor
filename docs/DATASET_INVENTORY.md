@@ -96,3 +96,28 @@ These outputs were generated from the conversation's supplied workbooks and are 
 - Annex-VI/Annex-VII base-2012 Combined history contains 156 monthly index values from January 2013–December 2025. Fourteen YoY inflation values are missing: all 12 months of 2013 (no prior-year comparison in the sheet) and April–May 2020.
 - The base-2024 current workbook contains 66 headline rows from January 2025–October 2026; 36 YoY inflation values are missing in the supplied workbook rows.
 - The committed extractor now reports missingness and the Annex-I vs Annex-VI overlap check in its QA JSON.
+
+
+## Macro context source audit — FRED/OECD (2026-11-13)
+
+A reproducible downloader is now committed as `scripts/download_macro_context.py`. It requests seven series from FRED's public graph CSV endpoint and writes a separate observation-date panel plus QA report. It has not yet been executed locally; successful downloads and row counts are therefore not claimed.
+
+| Series ID | Indicator | Frequency | Role / limitation |
+|---|---|---|---|
+| DGS3MO | US 3-month Treasury constant-maturity rate | Daily | PRD-specified global short-rate reference |
+| DGS10 | US 10-year Treasury constant-maturity rate | Daily | PRD-specified global long-yield reference |
+| CPIAUCSL | US CPI, all urban consumers | Monthly | PRD-specified global inflation reference; US, not India |
+| UNRATE | US civilian unemployment rate | Monthly | PRD-specified global labour reference; US, not India |
+| INDIRLTLT01STM | India 10-year government bond yield | Monthly | OECD via FRED; monthly, not daily RBI benchmark yield |
+| INDIR3TIB01STM | India 3-month interbank rate | Monthly | OECD via FRED; not identical to RBI repo rate |
+| IRSTCB01INM156N | India central bank rate | Monthly | OECD via FRED; historical monthly series ends December 2023 in the currently indexed FRED metadata |
+
+FRED's currently indexed metadata reports India 10-year monthly yield through September 2026 and India 3-month interbank monthly rate through September 2026. The 10-year series is OECD-sourced and subject to citation/copyright requirements. Standard FRED graph CSV returns a current snapshot, not ALFRED vintage data; it must not be treated as point-in-time truth for historical backtests. Preserve observation dates and separately obtain release/vintage dates before joining to daily stock data.
+
+Official NSE exposes a historical India VIX download page and describes India VIX as NIFTY-options-implied expected volatility over the next 30 calendar days. The existing Yahoo Finance market-context script is only a secondary-vendor fallback; validate against NSE before treating it as an authoritative series.
+
+India PLFS is the preferred domestic unemployment source. Its monthly series under the revised survey framework begins in 2025; do not splice it seamlessly with older annual/quarterly PLFS estimates without a methodology-break flag. For now, unemployment remains pending until the monthly/annual source files and release dates are captured.
+
+RBI DBIE Key Rates is the preferred source for Indian policy-rate events (repo, SDF, MSF, bank rate and CRR). Preserve its event/effective-date structure; create daily features by forward-filling only after each effective date, never backward.
+
+No macro or market-context series has yet been downloaded by the committed scripts or merged into the modelling dataset.
