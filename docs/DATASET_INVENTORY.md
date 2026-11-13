@@ -478,3 +478,18 @@ BHARTIARTL 2019 rights and RELIANCE 2020 rights still need exact primary-source 
 - Candidate old-format archive paths identified for 22/23-Apr-2019 and 12/13/14-May-2020; candidate full security-bhavdata CSV route also identified. Exact expected filenames and URLs are recorded in `docs/DATA_RESEARCH.md`.
 - Downloads could not be completed in the research environment: NSE archive host was inaccessible to the web retrieval layer and DNS resolution failed in the container. No raw rows, schemas, checksums or file availability are claimed.
 - Next: retrieve those five dates from the user's Mac/browser or via NSE's official Data for Research route; then inspect target tickers and series. No prices or labels changed.
+
+
+### 2026-11-14 — Official NSE event-window prices acquired
+
+User downloaded and validated five official NSE Bhavcopy ZIPs locally. Each ZIP passed integrity checking and yielded one target symbol row with `SERIES=EQ`:
+
+| Date | Symbol | Close (₹) | Previous close (₹) | Volume |
+|---|---|---:|---:|---:|
+| 22-Apr-2019 | BHARTIARTL | 349.40 | 346.95 | 13,824,740 |
+| 23-Apr-2019 | BHARTIARTL | 316.50 | 349.40 | 11,412,878 |
+| 12-May-2020 | RELIANCE | 1,479.25 | 1,576.80 | 46,029,119 |
+| 13-May-2020 | RELIANCE | 1,496.45 | 1,479.25 | 30,658,051 |
+| 14-May-2020 | RELIANCE | 1,435.95 | 1,496.45 | 22,736,714 |
+
+The five user-reported archive SHA-256 hashes and complete OHLC/schema are in `docs/DATA_RESEARCH.md`. Observed raw close moves: BHARTIARTL -9.416%; RELIANCE +1.162% on ex-date and -4.043% next session. These are not adjusted returns. The earlier Yahoo ×2 reconstruction for RELIANCE is withdrawn as unreliable because its 2020 history may also reflect the 2023 Jio Financial demerger. Next: inspect local market-panel rows and label construction against these exchange values. No data/labels changed.
