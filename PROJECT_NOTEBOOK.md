@@ -99,3 +99,12 @@ No new raw Parquet/CSV/API data files were downloaded or merged in this session.
 - NSE official India VIX page exposes custom date ranges and CSV download with OHLC/change fields; actual historical export remains unacquired.
 - TejHQ is the strongest immediately inspectable private-research cross-check candidate, but provider terms acknowledge no exchange licence and prohibit raw redistribution; NSEDATA4ME and historical-membership reconstructions remain unverified candidates. Existing Northgate panel remains unchanged.
 - No new raw data was downloaded or merged. The public-source route does not depend on an academic institution or user-side contact.
+
+## Research continuation — 2026-11-14 (TejHQ and NSE source audit)
+- TejHQ's current landing page describes raw NSE/BSE bhavcopy, corporate actions, back-adjusted prices, ISIN symbol history and derived metrics; its claimed monthly top-500 liquidity universe could support survivorship-aware research if the historical membership logic is independently verified.
+- TejHQ reports only 89% of 25k Yahoo close comparisons within ±1%. This is not independent QA. Compare raw closes against exchange-origin bhavcopy, then compare adjusted values only after aligning dividend/split/demerger conventions.
+- TejHQ's landing page calls the Parquet data MIT/open, but its dedicated data terms say MIT covers code only, no exchange licence exists, personal model training/local retention is permitted, raw redistribution is not, and exchange terms apply. Treat as private-research candidate only and preserve this conflict.
+- NSE's All Reports page indexes a VIX sample with date-range mismatch and a duplicate preview row; actual CSV and archive coverage remain unverified. India VIX is 30-calendar-day implied volatility from NIFTY options, not realised volatility.
+- PLFS MCP metadata rules reconfirmed: annual 1, quarterly 2, monthly 3; monthly Apr-2025–Sep-2026 All India indicators 1–3; one indicator_code per request.
+- Google BigQuery's documented 1 TB/month free query processing allowance could support a bounded GDELT GKG pilot with strict bytes-scanned limits.
+- No raw data was downloaded or merged in this pass.
