@@ -32,3 +32,9 @@ Only unresolved questions belong here. Do not treat a question or candidate opti
 ## Delivery
 - What can be completed to a correct standard by the recorded 15 November 2026 deadline?
 - Which PRD requirements, if any, need an explicitly approved scope adjustment?
+
+
+## MoSPI CPI API integration
+- The portal OpenAPI fetched by the user documents /api/cpi/getCPIData, while the current official NSO India MCP server source maps CPI Group/Item retrieval to /api/cpi/getCPIIndex and /api/cpi/getItemIndex. Are these parallel/legacy API routes, or does the direct portal spec differ from the MCP server's bundled specification? Compare identical bounded filters and sample months before choosing the automated route.
+- Does the direct CPI endpoint's status=F field mean final, or something else? Verify against the official data dictionary/release PDFs rather than infer from the label.
+- Does the direct CPI API expose revisions or vintage snapshots? The currently reviewed specification does not document as-of retrieval; contemporaneous release-vintage records remain the safer backtest source.
