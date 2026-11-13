@@ -431,3 +431,11 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - New HF page review shows a 7.36M-row NSE price subset and a 2026-11-09 price commit; the current card claims seven Parquet trees including raw prices, corporate actions, adjusted prices, symbol history, derived metrics, PIT liquidity universe and delivery data.
 - The HF viewer/card snapshots conflict: MIT badge vs provider's specific terms; 8.33M corporate-action preview vs 7.36M NSE price subset; old card says no corporate actions/adjusted prices yet, while newer card describes them. Coverage/layout claims also differ. Treat as revision/viewer drift; pin a commit and inspect manifests/files before any sample QA.
 - Dedicated TejHQ terms (2026-11-08) state MIT covers code only, no exchange licence/clarification exists, private personal research/backtesting/model training/local retention is permitted by TejHQ, raw redistribution is prohibited, and exchange terms independently apply. No raw Parquet downloaded or validated.
+
+
+## Research continuation — 2026-11-14 (live TejHQ tree + NSE UDiFF)
+- Rechecked core project docs and continued source research. Live TejHQ HF tree now shows verified 2026-11-11 revision short hash `10bd698`, ~1.25 GB, annual NSE adjusted Parquet partitions 2010–2026. Full commit SHA and raw-price tree path still need pinning.
+- TejHQ public pipeline README is stale relative to the live dataset: it describes five trees and a 2024-01-01 coverage start, while the live dataset exposes seven trees and NSE adjusted partitions from 2010. Do not assume README's old path layout is current.
+- Provider README says historical adjusted prices are recomputed from corporate actions, including dividends. These are retrospective and must not enter a PIT backtest as if future actions were known. Provider's 89% within ±1% Yahoo reconciliation is self-reported, not independent validation.
+- NSE confirms current CM-UDiFF ZIP and separate readme workbook; old CM CSV discontinued 2024-07-08. UDiFF guidance gives general encoding/date/compression conventions, but the CM readme and actual sample have not been inspected.
+- No files downloaded, no values compared, no dataset validation, no panel changes and no model training.
