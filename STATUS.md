@@ -317,3 +317,11 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Reconfirmed RBI DBIE Key Rates table financial_sector.r531_key_rates displays CSV/JSON export and 271 effective-date rows through 7 October 2026. This is an identified manual export path; no CSV/JSON retrieved. Effective-date semantics remain essential.
 - Identified NSE corporate filings as a candidate regulatory-disclosure stream, distinct from editorial news. Public third-party scraper descriptions mention filing and dissemination timestamps, but no official free bulk API contract was verified. No filings/news retrieved.
 - No new PLFS/RBI/VIX/news observations downloaded or merged in this pass. Continue with official exports and preserve actual publication/effective timestamps.
+
+
+## 2026-11-13 — Corrected PLFS status and improved NSE filings candidate
+
+- Corrected an earlier overly cautious statement: official e-Sankhyiki catalogue entries for monthly PLFS LFPR/WPR/UR explicitly state **Current Weekly Status (CWS)**. September 2026 entries have release date 15 October 2026 and table IDs PLFSFY26001SEP / 002SEP / 003SEP. The annual-only `weekly_status_code` filter in MCP metadata must not be mistaken for the published monthly series definition. Retrieve each indicator separately with `frequency_code=3`, inspect metadata and use only returned filter values.
+- Added an upcoming PLFS comparability issue: PIB's 23 October 2026 notice proposes January 2027 sampling/schedule changes, new digital-platform-worker stratum and refreshed Panel 6 frame. The first three months are planned to combine Panel 5 and Panel 6 samples, with pooled monthly estimates and no RSE. Verify final implementation documentation and flag the transition before comparing across it.
+- NSE Corporate Filings Summary Documents provides date/company/subject filters, CSV export and a broadcast/dissemination timestamp display. A shown example has broadcast 19-Sep-2026 14:47:29 and dissemination 14:47:34. This strengthens it as a timestamped regulatory event candidate, subject to archive-depth, category, CSV schema, attachment and timezone validation.
+- No raw PLFS, RBI, VIX or filings observations have been downloaded. Source metadata and UI evidence only; no merge or model feature update.
