@@ -1,0 +1,4 @@
+# Install PyTorch using the official selector for the GPU laptop's OS and CUDA runtime:
+# https://pytorch.org/get-started/locally/
+# Then install this file:
+torch>=2.5,<3.0
