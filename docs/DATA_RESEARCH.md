@@ -1733,3 +1733,27 @@ These calculations are only F&O-method reference points; they are not cash-marke
 Correction to an earlier provisional inference in this document: it is **not valid** to infer RELIANCE's May-2020 raw close merely by doubling Yahoo's displayed Close for the later 1:1 bonus. RELIANCE also underwent the Jio Financial demerger in July 2023, and Yahoo's history can reflect multiple corporate-action adjustments. The Yahoo value ×2 is not a reliable pre-bonus/raw price reconstruction. Retain official NSE values as the raw reference and compare vendor series directly from the local panel in the next step.
 
 The user reports that the ZIPs are saved under `data/raw/nse_bhavcopy/`; only the terminal output and SHA-256 values are available in this research record. The files have not been independently opened in this assistant environment. Next: inspect `market_panel.csv` rows around all five event dates, compare `Close`, `Adj Close` and target columns, and trace how the pipeline formed next-session labels. No prices or labels have been modified; no models trained.
+
+
+## 2026-11-14 — Yahoo historical OHLC basis checked against official NSE Bhavcopy
+
+The user compared the original Yahoo CSVs in `data/raw/yahoo/` with the processed market panel for two corporate-action event dates. The original raw CSV and processed panel rows match exactly, so the panel assembly did not introduce the observed differences.
+
+| Event | NSE Bhavcopy EQ Close | Yahoo raw CSV Close | Yahoo raw CSV Adj Close |
+|---|---:|---:|---:|
+| BHARTIARTL, 23-Apr-2019 | ₹316.50 | ₹310.667236 | ₹298.786957 |
+| RELIANCE, 13-May-2020 | ₹1,496.45 | ₹690.611450 | ₹672.677063 |
+
+The comparison is based on the five official NSE Bhavcopy rows and hashes recorded above, plus the user's terminal output from the original Yahoo CSV and processed panel.
+
+### What is established
+- `market_panel.csv` faithfully preserves the two inspected Yahoo raw CSV rows; its values are not changed by panel concatenation or sorting.
+- The download script calls `yf.download(..., auto_adjust=False, actions=True)` and contains no explicit rescaling of OHLC values. The user's installed yfinance version is 1.8.0.
+- Despite `auto_adjust=False`, Yahoo's returned historical `Close` values do not match the official unadjusted NSE EQ Bhavcopy close for either inspected event. Therefore the panel's `Close` must not be assumed to be the literal unadjusted exchange close.
+- The RELIANCE Yahoo value is on a substantially different historical price scale from the contemporaneous NSE Bhavcopy. Retrospective corporate-action adjustment is a plausible explanation, especially given later bonus/demerger events, but the exact Yahoo transformation has not been reconstructed. BHARTIARTL's smaller discrepancy also remains unexplained.
+- `Adj Close` is a separate vendor series and the next-session labels are calculated from it by `scripts/build_next_day_dataset.py`. Neither the Yahoo `Close` nor `Adj Close` has yet been validated as a complete investor total-return series across rights issues and demergers.
+
+### Methodological consequence
+Do not use the current Yahoo OHLC fields as if they were official unadjusted NSE prices. Do not infer a universal adjustment multiplier, reverse-engineer raw prices by doubling, or overwrite existing prices/labels using NSE F&O contract factors. Keep the original Yahoo downloads and NSE Bhavcopy archives immutable. Before model training, define and document the price basis for features and labels, then test it across the full event ledger. Any reconstructed series must be separately named and reproducible.
+
+No data, target labels, or code were changed in this audit. Model training remains paused pending the price-basis decision.
