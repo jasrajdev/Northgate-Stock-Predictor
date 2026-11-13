@@ -715,3 +715,10 @@ The remaining gap in the release-date register is the direct PDF confirmation fo
 - Added `cpi_mospi_2012base_release_events_2024-07_to_2025-12.csv`, an 18-row compact table of each release's current-month provisional combined index and YoY inflation, with actual release timestamp and first eligible NSE session. April 2025 becomes available on 14 May 2025 following its actual 13 May 16:00 release.
 - Added `data/external/README_CPI.md` describing the files, base-year boundaries, annexure-numbering change and backward as-of join rule.
 - The as-of event source is ready, but a daily market-aligned feature table has not yet been generated: the 29,484-row market panel remains local to the user's Mac and is not present in the GitHub repository. Do not substitute an invented calendar or synthetic sessions. Once that market panel is accessible, join on its actual trading dates using the latest event with `next_nse_session <= market_date`.
+
+
+### Leakage-safe market-panel join — prepared 2026-11-13
+- Added `scripts/merge_cpi_release_events.py`. It performs a backward as-of join from actual market dates to the latest CPI release event whose `next_nse_session` is on/before the market date. It preserves the market panel's row order, leaves dates before the first event unmatched, and checks for duplicate CPI availability sessions and future-dated matches.
+- Added `tests/test_cpi_asof.py` with tests for release-day exclusion/next-session inclusion, original market-row ordering and duplicate event rejection. The committed pytest file has not yet been run in the repository environment.
+- A separate synthetic boundary check was executed in the analysis environment: 15 April 2025 (release date) correctly retained the prior CPI event; 16 April switched to March 2025 CPI; 13 May retained March CPI; 14 May switched to April CPI. Result: PASS for these four date boundaries.
+- A daily join against the actual market panel is still pending because the market panel CSV is not available in GitHub or the current Project file list. The script is ready to run when that exact local dataset is supplied; no synthetic trading calendar has been substituted.
