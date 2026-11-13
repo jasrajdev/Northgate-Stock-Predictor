@@ -195,3 +195,43 @@ Before training, run an event-window audit around every rights, bonus and demerg
 A key data-quality caveat is now explicit: Yahoo Finance's published `Adj Close` description specifies split and cash-dividend multipliers. It does not prove complete handling of rights issues, demergers, mergers or other non-cash events. NSE/NSE Clearing corporate-action guidance lists these event types, but the cited adjustment methodology is for derivatives positions and contract specifications, not a guarantee about third-party cash-market adjusted-close histories. NSE's adjusted 52-week high/low note covers bonus, consolidation, splits and rights, while Bhavcopy prices are actual unadjusted prices; this summary field cannot stand in for a complete adjusted daily series.
 
 Research safeguard: keep raw and adjusted fields side by side, maintain an event ledger with primary-source terms and timestamps, and inspect event windows before trusting next-session price/return labels. Rights issues and demergers remain high-priority unresolved cases. Do not patch factors or change the target definition without evidence and an explicit decision. The current session did not have `market_panel.csv` attached, so no event-window inspection or data modification occurred.
+
+
+## 2026-11-14 — Walk-forward model comparison completed and audited
+The first expanding-window walk-forward experiment was executed in Kaggle on a Tesla T4 using the existing training and validation CSVs. It used five chronological validation folds: 2024-H1, 2024-H2, 2025-H1, 2025-H2 and 2026-YTD (the available validation history ends 2026-05-08). The universe was 10 equities; the comparison contained two simple baselines plus Ridge, RandomForest, SVR_RBF, XGBoost, LSTM, GRU, BiLSTM and Transformer. The sequence length for deep models was 30.
+
+**Integrity audit (user-provided Kaggle output):**
+- 500 result rows total, exactly 50 per model and 100 per fold.
+- 10 unique equity tickers and all five folds represented.
+- Run report explicitly states `test_partition_loaded: false`.
+- Run report explicitly states `preprocessing_fit_on_training_only`.
+- All five folds and all listed models completed. The final test partition was not loaded.
+
+**Overall pooled price-level metrics:**
+
+| Model | MAE | Directional accuracy |
+|---|---:|---:|
+| Always-up direction baseline | 18.3253 | 49.392% |
+| Naive last adjusted close | 18.3253 | 0.495% |
+| GRU | 18.4545 | 50.085% |
+| BiLSTM | 18.4853 | 50.167% |
+| Transformer | 18.5315 | 50.186% |
+| Ridge | 18.6427 | 50.335% |
+| LSTM | 19.0195 | 49.716% |
+| RandomForest | 19.9923 | 48.774% |
+| XGBoost | 20.2513 | 49.689% |
+| SVR_RBF | 26.7689 | 49.502% |
+
+The naive and always-up baselines share the same price forecast (zero predicted return, hence last adjusted close); their directional scores differ because their direction rules differ. No trained model beat the naive baseline on pooled price MAE. The best overall directional score was Ridge at about 50.33%, which is too close to chance to establish a reliable signal without uncertainty analysis. Deep models were also around 50%.
+
+Fold-level results do not show a stable winner. GRU had a small advantage over the baseline in 2025-H2; BiLSTM showed the strongest directional result in 2026-YTD (about 53.29%) but did not beat the baseline on MAE there. Other periods were mixed. These isolated fold results should be treated as exploratory, not evidence of durable predictive edge.
+
+**Interpretation and limitations:**
+- High price-level R² is not sufficient evidence of useful forecasting skill: the next adjusted close is strongly anchored by the current price, making the naive persistence baseline difficult to beat.
+- Overall MAE pools stocks with different price scales. A follow-up should include normalized price errors and return-based losses, plus uncertainty intervals/statistical comparisons and per-ticker stability.
+- This experiment reuses the existing validation history, which had already featured in earlier model comparisons. Walk-forward folds improve temporal robustness analysis but do not turn this history into a pristine independent test.
+- The final six-month test partition remains sealed. No final-test metrics or PRD-completion claim is made.
+- The results/checkpoints were generated in Kaggle. Their durable GitHub storage has not yet been verified.
+- This result does not resolve the open price-basis/corporate-action concerns documented elsewhere in this notebook, nor does it satisfy the PRD's news/sentiment, multi-horizon, portfolio/backtesting, dashboard or final-report scope.
+
+**Next research step:** audit per-ticker and return-based performance, quantify uncertainty and fold consistency, and reconcile price-basis/corporate-action treatment before any model-selection or final-test decision.
