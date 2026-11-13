@@ -1410,3 +1410,59 @@ Sources:
 - SEBI Circular 2024/178: https://www.sebi.gov.in/legal/circulars/dec-2024/policy-for-sharing-data-for-the-purpose-of-research-analysis_90088.html
 - NSE Data List under research policy (PDF, 28-Jul-2025): https://nsearchives.nseindia.com/web/sites/default/files/inline-files/Data%20list%20under%20NSE%20Data%20Sharing%20Policy%20for%20Research%20and%20Analysis_20250728.pdf
 - NSE Data Sharing & Usage Policy: https://www.nseindia.com/static/market-data/nse-data-policy
+
+
+## Public NSE/NSE Indices historical UI audit — 2026-11-14
+
+A review of official historical-report pages found several candidate datasets with visible selectors and CSV export controls. This is stronger evidence of a public/manual retrieval route than merely seeing a dataset listed in the research-policy inventory, but it is **not** proof that bulk downloads are unrestricted, that every historical date is available, or that automated extraction is permitted.
+
+### Security-wise price/volume archive
+Official page: https://www.nseindia.com/report-detail/eq_security
+- Search controls: security type, symbol and series; presets 1D, 1W, 1M, 3M, 6M, 1Y, 5Y and Custom.
+- CSV export control is visible.
+- Displayed fields: symbol, series, date, previous close, open, high, low, last, close, VWAP, traded quantity, turnover, number of trades, deliverable quantity and delivery percentage.
+- This archive may provide a direct validation source for Northgate's ten symbols and richer volume/delivery features.
+- A rendered page snapshot includes a sample SBI row dated 14-Jan-2019, but it does not prove full 2016-onward availability for every ticker. The selected-symbol/date result and CSV were not actually downloaded. The page does not establish the maximum Custom range.
+
+### Corporate actions
+Official page: https://www.nseindia.com/companies-listing/corporate-filings-actions
+- Corporate Actions tab has company/symbol, purpose, meeting and date filters (1D through 1Y and Custom), plus CSV export.
+- Fields shown: symbol, company name, series, purpose, face value, ex-date, record date and book-closure start/end.
+- Search-indexed examples show older records (including 2012 dates for some securities) and a current-symbol page with a 2022–2026 history. This suggests a potentially useful archive, but target-specific history depth and completeness remain unverified.
+- Ex-date is not the announcement/publication timestamp. This is suitable for event/ex-date validation and corporate-action adjustment checks, not as a substitute for time-stamped news/announcement features.
+
+### NIFTY index and TRI history
+Official page: https://www.niftyindices.com/reports/historical-data
+- Historical Index Data offers index type/subtype/index selection and date range, with CSV-format outputs.
+- A separate Total Returns Index Values section exposes Total Returns Index and Net Total Return Index columns.
+- This makes official NIFTY 50 TRI/Net TRI a stronger benchmark-data candidate than using only the Yahoo NIFTY price index. TRI includes reinvested dividends by index methodology; use the benchmark definition consistently.
+- No date range was submitted and no CSV was downloaded, so exact historical depth, daily continuity, and download terms remain unverified.
+
+### India VIX
+Official page: https://www.nseindia.com/reports-indices-historical-vix
+- The page exposes preset ranges 1D through 1Y plus Custom and a CSV download control.
+- The rendered page does not expose its selected data rows or establish full historical depth in the inspected snapshot. No CSV acquired.
+
+### FII/FPI and DII
+Official page: https://www.nseindia.com/reports/fii-dii
+- Separate CSV download controls are shown for (a) NSE-only capital-market activity and (b) combined NSE+BSE+MSEI capital-market activity.
+- These are aggregate investor-category flows, not stock-specific flows. They can be considered broad market context, but do not claim company-level buying/selling.
+- Historical depth, revisions/provisional status, precise publication time and actual CSV schema were not established in this page inspection. No CSV acquired.
+
+### Daily/monthly report archives and UDiFF
+Official All Reports page: https://www.nseindia.com/all-reports
+- Historical Reports view exposes date-filtered reports including legacy CM Bhavcopy, CM-UDiFF Common Bhavcopy Final (ZIP), CM Bhavcopy (PR.zip), security-wise delivery positions and full Bhavcopy/security-deliverable data.
+- The page explicitly marks old CM Bhavcopy CSV and Common Bhavcopy CSV discontinued from 08-Jul-2024 and directs users to UDiFF.
+- The rendered current reports snapshot shows a daily UDiFF filename pattern and daily files, but the historical report view does not establish the full archive's earliest date or that 2016–2024 files are all accessible in the same UI.
+- A regional service-unavailable response occurred when opening one NSE hostname. Search-indexed content and official page snapshots were still visible. Do not infer that the download itself is consistently accessible.
+
+**Research conclusion:** public/manual official UI candidates now exist for (1) per-security daily OHLCV + delivery data, (2) corporate actions, (3) NIFTY TRI, (4) India VIX, and (5) FII/DII aggregates. These may reduce dependence on yfinance and improve feature coverage. They are not yet acquired datasets. Before any scripted collection, review NSE terms and the research-access conditions; use the UI manually or request permission rather than reverse-engineering protected endpoints.
+
+Sources:
+- NSE Security-wise Archives: https://www.nseindia.com/report-detail/eq_security
+- NSE Corporate Actions: https://www.nseindia.com/companies-listing/corporate-filings-actions
+- NSE Historical Reports: https://www.nseindia.com/static/resources/historical-reports-capital-market-daily-monthly-archives
+- NSE All Reports: https://www.nseindia.com/all-reports
+- NSE India VIX history: https://www.nseindia.com/reports-indices-historical-vix
+- NSE FII/FPI & DII: https://www.nseindia.com/reports/fii-dii
+- NIFTY Indices Historical Data: https://www.niftyindices.com/reports/historical-data
