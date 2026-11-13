@@ -69,3 +69,25 @@ The original 30-page PRD v1.0 has now been supplied in the Northgate project con
 The uploaded market panel was independently inspected in this conversation: 29,484 rows, ten provisional Indian equities plus ^NSEI, with OHLCV/adjusted-close and corporate-action columns. The uploaded CPI workbook has 31,460 rows for base-2024 Current data from Jan 2025 through Oct 2026 in the inspected records. Neither upload has been committed as a raw binary data file to GitHub. The user's previously reported feature panel, labelled dataset and split CSVs are not in the GitHub repository.
 
 A reproducible GPU-laptop preparation script is now committed to regenerate the first price/volume-only dataset. This is baseline-trainable but not full PRD-complete. Macro/news/sentiment and point-in-time universe limitations remain. See `docs/DATASET_INVENTORY.md` and `docs/GPU_LAPTOP_SETUP.md`.
+
+## Research continuation — 2026-11-14
+
+Expanded the official/free data-source search without relying on user-specific access or academic sponsorship.
+
+### New evidence
+- Extracted actual values from MoSPI's 10-Nov-2026 PLFS quarterly bulletin: CWS age 15+ combined LFPR 55.5%, WPR 52.7%, unemployment 5.1%; rural/urban splits and five quarters of context recorded in DATA_RESEARCH.md.
+- Identified official RBI DBIE daily USD/INR interbank table (Aug-2000 to Jun-2026, OHLC + RBI reference rate) and RBI daily call/notice money rates as a useful short-term liquidity source. A daily official 10Y generic G-Sec yield endpoint remains unconfirmed.
+- Identified broad public EOD dataset candidates (aswinv90, TejHQ, NSEDATA4ME), historical index-membership reconstructions, official NSE corporate-action CSV and trading calendar, NSE breadth archives, FRED/ALFRED vintage API and GDELT GKG 2.1.
+- News search found multiple Indian sentiment-labelled corpora, but none yet supplies a complete, verified 8–10-year Indian company-specific timestamped article archive. GDELT GKG metadata is the strongest historical open candidate, but full archive is too large to mirror locally.
+- Identified NSE terms that restrict systematic automated collection; documented source-rights cautions. Public website visibility or a third-party mirror is not proof of a licence for automated ingestion or redistribution.
+
+### Research status / limitations
+No new raw Parquet/CSV/API data files were downloaded or merged in this session. PLFS quarterly figures are manually extracted from an official published bulletin; all other newly identified sources remain candidates pending bounded sample retrieval and QA. Do not claim the PRD data layer is complete.
+
+### Next research sequence
+1. Test bounded official RBI DBIE exports (daily USD/INR, daily call/notice money, key rates) and preserve original raw files/retrieval metadata.
+2. Test a bounded MoSPI PLFS API metadata/data request; keep monthly and quarterly tables separate.
+3. Compare a small set of Northgate's 10 symbols and NIFTY 50 against one survivorship-aware public EOD candidate, including corporate-action and date-gap checks.
+4. Inspect historical NSE corporate-action exports and point-in-time index-membership reconstruction against original circulars.
+5. Pilot GDELT GKG queries for selected Indian issuers, measuring entity precision, timestamp availability and data volume before any broader pull.
+6. Extend FRED retrieval to ALFRED vintage-aware observations; keep latest-value graph CSVs explicitly non-PIT.
