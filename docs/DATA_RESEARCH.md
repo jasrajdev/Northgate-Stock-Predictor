@@ -1032,3 +1032,28 @@ Official links:
 - Because the page describes activity for “today” but does not expose a reliable publication timestamp in the reviewed rendering, treat the observation as unavailable to the same-day close prediction until its actual dissemination time is measured. Safest baseline alignment is next eligible trading session; preserve retrieval timestamp and any provisional/final status.
 - The official NSE data-for-research list includes FII/FPI and DII trading activity, so include it in a research data request if useful.
 - Source: https://www.nseindia.com/reports/fii-dii
+
+## 2026-11-14 — Additional public Indian-market dataset audit
+
+### Candidate A: aswinv90/indian-market-historical-data
+A second broad public dataset was discovered and its GitHub repository metadata, licence, README and verification script were inspected directly.
+- Repository was created 18-Sep-2026 and last pushed 12-Nov-2026. It is a large repository (GitHub reports size 3,016,379 KB); its README claims NSE 2,577 symbols and BSE 4,399 symbols from 1991 to present, plus NIFTY/SENSEX, sector indices, India VIX, corporate actions, FII/DII cash/derivatives, macro series (CPI, RBI rates, 10-year yield, FX), commodities and mutual funds.
+- The repository contains an explicit **Non-Commercial Research and Personal Use License**. It permits personal, non-commercial and educational research, but prohibits commercial use, redistribution and paid/proprietary automated trading systems without written permission. It is not an OSI/open-data licence; GitHub reports license SPDX as NOASSERTION. Data source rights are not independently established by the repository licence.
+- README-reported equity history, indices, corporate actions and macro data are unusually broad, but the repository is very new (created Sep 2026) and its counts/coverage are publisher claims, not independently validated. No data files were downloaded or parsed in this research pass.
+- Its own `scripts/verify_data.py` checks file existence, emptiness, staleness, date ranges and failed tickers, but that is not a statistical QA audit: it does not establish correct adjustment factors, point-in-time availability, duplicate handling, price continuity, survivorship correctness, corporate-action correctness or source reconciliation. It reads Parquet files locally; it was not executed here.
+- Promising for a narrow sample cross-check, but not yet an approved replacement for the project's existing labelled panel. A validation must compare several representative tickers and the benchmark against independent sources over identical dates; inspect splits/dividends, missing sessions, symbol/ISIN changes, adjusted vs raw close, and exact licence/source provenance.
+- Links: https://github.com/aswinv90/indian-market-historical-data ; https://github.com/aswinv90/indian-market-historical-data/blob/main/LICENSE ; https://github.com/aswinv90/indian-market-historical-data/blob/main/scripts/verify_data.py
+
+### Candidate B: tejhq/indian-markets
+- Hugging Face dataset card currently previews 7.36M NSE rows, partitioned Parquet, with raw OHLCV and separate trees for corporate actions, adjusted prices, symbol history, derived metrics, liquidity universe and delivery. Publisher claims NSE coverage from 2010-01-04 and BSE from 2024-07-08. Its GitHub pipeline reports daily updates and end-of-day availability.
+- This source has more explicit provenance from official Bhavcopy ingestion and a more focused market-data pipeline than the broad multi-domain repository above, but the exchange-derived data is not covered by the code's MIT licence. Its own terms allow personal research/backtesting/model training and local storage, prohibit redistribution and state that exchange terms still apply.
+- Neither source is yet validated against the Northgate panel. Keep both as independent candidate sources; do not blend them together or replace the current dataset on claims alone.
+
+### Candidate-source triage
+1. Keep existing Northgate 29,473-row labelled panel as the current baseline source until a controlled comparison is complete.
+2. Sample aswinv90 and TejHQ for the exact 8–15 project symbols and benchmark only after checking licences and data terms.
+3. For every source, preserve raw vendor file, retrieval timestamp, original columns, source version/commit, licence text and checksum; create a separate canonical panel after QA.
+4. Compare date coverage, duplicates, OHLC invariants, zero-volume handling, corporate-action discontinuities, adjusted-price factors, symbol changes, delisted securities and cross-source price differences.
+5. Do not use back-adjusted prices containing future corporate-action factors as historical point-in-time inputs without explicitly checking the effect on features/labels. For return targets, use a consistent corporate-action-adjusted target definition and avoid leakage from adjustments not known at prediction time.
+
+No candidate Parquet data was downloaded, and no independent quality score is claimed.
