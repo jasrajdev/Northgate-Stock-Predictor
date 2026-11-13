@@ -455,3 +455,11 @@ BHARTIARTL 2019 rights and RELIANCE 2020 rights still need exact primary-source 
 - **RELIANCE 2020:** 1:15 entitlement; record date 14-May-2020; ex-rights date 13-May-2020; ₹1,257 issue price; ₹314.25 application payment plus ₹942.75 subsequent call(s); issue 20-May–03-Jun-2020; allotment 11-Jun-2020; listing scheduled 12-Jun-2020. Issuer Letter of Offer, issue advertisement and allotment disclosure verified; ex-date cross-checked against NSE derivatives notice bulletin.
 - These records close the event-terms research gap, not the price-adjustment audit. Rights entitlements, especially RIL's partly-paid instrument, require event-specific economic reconciliation; do not apply a generic split factor.
 - Primary document URLs and provenance are recorded in `docs/DATA_RESEARCH.md`. No raw panel was available, so no event-window data inspection or label changes were made.
+
+
+## 2026-11-14 — Rights adjustment methodology source added
+
+- NSE publishes a rights-event formula for **F&O contract adjustment**: for A new rights shares per B existing shares, cum-date close P and issue price S, E=(P−S)×A/(A+B), and adjustment factor=(P−E)/P. This is designed to preserve derivatives-position value; it must not be assumed to be the adjustment factor used by Yahoo/yfinance for historical cash-market prices.
+- NSE also confirms rights entitlements have a separate ISIN and their own trading/base-price convention. This supports treating rights entitlements as distinct instruments in the event ledger.
+- For BHARTIARTL 2019 (19:67 at ₹220) and RELIANCE 2020 (1:15 at ₹1,257), the actual cum-date close is still needed before any illustrative factor can be computed. Reliance's partly-paid rights shares additionally require accounting for the later ₹942.75 call obligation.
+- Source URLs and limitations are documented in docs/DATA_RESEARCH.md. No factor was computed, no price series was altered and no model labels were changed.
