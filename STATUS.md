@@ -160,3 +160,15 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 - This is the earliest cumulative annexure release confirmed so far. Annexure numbering later changes (e.g. Oct 2025 uses VI/VII), so extraction must detect table titles rather than fixed annex numbers.
 - Earlier Jan 2016 and Jan 2017 releases and uploaded July–October 2024 workbooks have no cumulative historical annexures. Pre-Nov-2024 releases must be reconstructed from monthly provisional/final headline records; full monthly vintage snapshots begin with the Nov-2024 reference-month release, based on evidence so far.
 - Research evidence and exact official source URL saved in docs/DATA_RESEARCH.md and verified by read-back. Next: implement a title-driven PDF table parser pilot on Dec 2024 and Oct 2025 releases, then define how to ingest monthly pre-Nov-2024 headline releases.
+
+### 2026-11-13 — CPI workbook audit
+
+- Inspected 18 uploaded official MoSPI monthly annexure Excel workbooks covering July 2024–December 2025 (four months in 2024 and all twelve months in 2025).
+- July–October 2024 workbooks contain only Annex-I to Annex-IV. Cumulative historical General CPI index (2012=100, since Jan 2013) and YoY inflation (since Jan 2014) tables appear from the November 2024 release onward in the uploaded set. Annexure numbering changes, so extraction must identify sheets by title.
+- Ran an overlap consistency smoke test across the cumulative tables: 281 month/series keys were compared across available workbook vintages, with no differing values at stored precision. This is not proof that revisions never occurred and does not cover missing releases.
+- Confirmed the Annex-I headline table distinguishes prior-month Final from current-month Provisional observations. The workbook audit has not yet produced a normalized CSV or vintage dataset.
+- Detailed audit, coverage limitations, and parser requirements are in docs/DATA_RESEARCH.md.
+
+## Next action
+Implement and test a reproducible parser for the uploaded CPI workbooks. Normalize the cumulative index and inflation tables to tidy monthly observations, retain release-vintage metadata and publication timestamps, and cross-check each release's current provisional / prior final headline index against its cumulative-table endpoint. Do not merge into the Northgate model dataset until this validation passes.
+
