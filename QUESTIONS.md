@@ -48,3 +48,9 @@ Only unresolved questions belong here. Do not treat a question or candidate opti
 ### NSE academic data request
 - Which institution should be named on the NSE Data Seeking Request Form, and can an academic supervisor/department support the application?
 - What date range and exact fields should the request prioritize (daily EOD OHLCV, corporate actions, historical indices, VIX, company announcements, FII/DII activity)?
+
+
+### NSE research-data access (reviewed 2026-11-14)
+- Does NSE accept an individual student request, or must this Northgate research be formally sponsored/submitted by an accredited academic institution or recognised research organisation under the current Data for Research eligibility terms?
+- For a bounded request covering ten equities plus NIFTY, 2016 onward, what exact EOD fields, corporate-action history, index history and announcement data are available, in which formats, and what portion fits within the 2 GB/researcher/year free threshold?
+- What are the permitted retention, local storage, model-training, backtesting, publication and derived-output terms under the NDA/undertaking, and what attribution or progress reporting is required?
