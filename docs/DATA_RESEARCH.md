@@ -1804,3 +1804,16 @@ This is a diagnostic of the vendor's returned columns, not a reconstruction of c
 
 ### Next validation
 Compare Yahoo `Close` against official NSE EQ Bhavcopy closes for multiple dates immediately before and after the RELIANCE and HDFCBANK bonus events, and obtain official event-window Bhavcopy checks for the rights and demerger cases. In particular, test whether Yahoo's pre-bonus values are already expressed on the post-bonus share basis. Preserve original Yahoo and Bhavcopy files; no derived series or labels have been created.
+
+
+## 2026-11-14 — NSE archive format for 2024–2025 bonus-date checks
+
+The next validation requires historical NSE daily EQ prices on and around the RELIANCE 2024-10-28 and HDFCBANK 2025-08-26 bonus dates. NSE's All Reports page explicitly says the legacy CM Bhavcopy CSV and Common Bhavcopy CSV were discontinued from 2024-07-08 and directs users to CM-UDiFF Common Bhavcopy Final. The same page lists Full Bhavcopy and Security Deliverable data and states that actual (unadjusted) 52-week high/low prices should be taken from Bhavcopy, not the adjusted 52-week summary columns. Source: NSE All Reports (https://www.nseindia.com/all-reports).
+
+A community-maintained Python archive implementation (`jugaad-data`, `NSEArchives`) documents a historical full-bhavcopy endpoint pattern: `https://nsearchives.nseindia.com/products/content/sec_bhavdata_full_{DD}{MM}{YYYY}.csv`. Its implementation uses this full-bhavcopy endpoint as the historical fallback for dates on/after the UDiFF transition, because the daily-reports API only exposes current/previous reports. Reference implementation: https://github.com/jugaad-py/jugaad-data/blob/master/jugaad_data/nse/archives.py (see `bhavcopy_raw` and `full_bhavcopy_raw`). This is a retrieval lead, not a claim that our six files have been downloaded or verified.
+
+Target dates for the bonus audit:
+- RELIANCE: 2024-10-25, 2024-10-28, 2024-10-29.
+- HDFCBANK: 2025-08-25, 2025-08-26, 2025-08-28 (27 Aug is omitted from the requested set; the 28 Aug date is the first post-event session in the proposed comparison).
+
+The web retrieval attempt could not fetch the archive binary directly. No NSE archive files were downloaded in this step, and no Yahoo values were compared against NSE for these six dates. Next local step: request the six `sec_bhavdata_full` CSVs from the documented archive pattern, validate HTTP status and CSV schema, retain original files and hashes, then extract the exact `SYMBOL`/`SERIES=EQ` rows for RELIANCE and HDFCBANK. Do not use F&O bhavcopy or NSE adjusted 52-week summary values as substitutes.
