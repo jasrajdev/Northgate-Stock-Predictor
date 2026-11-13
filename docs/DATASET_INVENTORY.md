@@ -246,3 +246,13 @@ The API spec does not document historical vintage/as-of queries. Its current res
 
 ### Additional official CPI 2024 methodological finding (MoSPI FAQ)
 MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, Urban and Combined covers Jan 2013–Dec 2024 and is linked using the 2025 overlap between old (2012) and new (2024) series. The general-level linking factors listed are Rural 0.5222, Urban 0.5320 and Combined 0.5267; the FAQ defines the factor as the ratio of annual-average (geometric-mean) new-series CPI to old-series CPI for the overlap year. This creates a comparable historical index scale; it does not make those linked historical values contemporaneous release vintages. Do not use the back series as point-in-time investor information for 2013–2024. Preserve source series and vintage separately. MoSPI FAQ: https://mospi.gov.in/uploads/documents/documents/1770891066052-Annexure_V.pdf (questions 36–38, pp. 4–5).
+
+
+## 2026-11-13 — Latest official release check
+
+- **CPI:** MoSPI's October 2026 release was published 12 November 2026 at 16:00 IST under base 2024=100. Combined General CPI index 110.05; YoY inflation 6.09% provisional (rural 6.63%, urban 5.41%); combined food inflation 8.94% provisional. This is a new-base release and must remain separately labelled from the 2012-base history. It becomes eligible only after its release timestamp, not for the 12 November 15:30 close.
+- **PLFS:** Latest monthly bulletin currently available is September 2026, released 15 October. The July–September 2026 quarterly bulletin was released 10 November. October 2026 monthly bulletin is scheduled for 15 November and is not yet released as of 13 November. Keep monthly API observations, monthly bulletin tables and quarterly bulletin estimates separate.
+- **RBI Key Rates:** Official DBIE indexed table currently reports 271 effective-date records through 7 October 2026 and CSV/JSON export controls. Export not yet retrieved.
+- **India VIX:** Official NSE historical page provides date-range controls and CSV download. Unfiltered “No Records” is an empty-query state, not evidence of absent historical data. CSV not yet retrieved.
+- **NSE announcements:** Official Corporate Filings Summary Documents page exposes date/company/subject filters and CSV export; broadcast and exchange-dissemination timestamps are visible in the indexed example. This is a regulatory event stream, not comprehensive editorial news. No announcement corpus retrieved.
+- **Acquisition state:** These are source/release checks, not dataset downloads. No PLFS, RBI, VIX or announcement rows have been merged into market features.
