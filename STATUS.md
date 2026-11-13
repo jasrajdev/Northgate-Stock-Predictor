@@ -372,3 +372,8 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 
 ### Daily institutional-flow candidate — 2026-11-14
 - NSE FII/FPI & DII page exposes CSV tables for NSE-only and combined NSE+BSE+MSEI Capital Market activity, with buy/sell/net ₹ crore. FII/FPI values are provisional and subject to custodial confirmation; final values are directed to NSDL/CDSL. No rows downloaded. Treat as market-wide context and use next-session availability until dissemination timing is verified.
+
+### Public market dataset candidates — 2026-11-14
+- Discovered aswinv90/indian-market-historical-data: publisher claims broad NSE/BSE coverage from 1991 plus indices/VIX/corporate actions/FII-DII/macro. Repo created Sep 2026; custom non-commercial research licence; no raw files or independent QA yet.
+- Discovered TejHQ/indian-markets: Hugging Face preview 7.36M NSE rows, publisher claims NSE 2010+ and BSE 2024+ with corporate actions/adjusted prices/delivery. Data not covered by code MIT licence; exchange terms still apply.
+- Both are candidate cross-check sources only. Existing Northgate labelled panel remains unchanged until sample-level reconciliation. No new data downloaded.
