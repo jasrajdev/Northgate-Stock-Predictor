@@ -434,3 +434,16 @@ Required validation before using event-affected observations as model labels:
 - Treat rights issues and demergers as unresolved until independently reconciled. Do not silently patch prices or labels.
 
 No `market_panel.csv` was available among the current Project attachments on 2026-11-14, so no event-window rows were inspected and no data was modified. See `docs/DATA_RESEARCH.md` for source references and interpretation limits.
+
+
+## 2026-11-14 — Selected corporate-action event terms (primary-source status)
+
+Confirmed terms for audit queue (these confirm event details, **not** vendor price-adjustment correctness):
+- ITC Hotels demerger: NSE circular NSE/FAOP/65846; ex-date/record date 06-Jan-2025; 1 ITC Hotels share per 10 ITC shares.
+- HINDUNILVR ice-cream business demerger: scheme effective 01-Dec-2025; record date 05-Dec-2025; 1 Kwality Wall's (India) share per HUL share.
+- RELIANCE 1:1 bonus: NSE circular NSE/FAOP/64621; ex/effective date 28-Oct-2024; derivatives adjustment factor 2.
+- HDFCBANK 1:1 bonus: ex-date 26-Aug-2025, record date 27-Aug-2025; bank disclosed allotment on 28-Aug-2025.
+- RELIANCE/Jio Financial demerger: record date 20-Jul-2023; one resulting-company share per Reliance share; NSE used a special pre-open session.
+- BHARTIARTL 2021 rights: 1:14, issue price ₹535, ex-date 27-Sep-2021, record date 28-Sep-2021.
+
+BHARTIARTL 2019 rights and RELIANCE 2020 rights still need exact primary-source terms/ex-dates before an adjustment can be calculated. Event details and derivative contract adjustments must not be mistaken for cash-market adjusted-close factors. No panel rows have been inspected in this session.
