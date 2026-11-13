@@ -226,3 +226,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Important distinction: the reported CUDA 13.1 is the NVIDIA driver's compatibility level; PyTorch should be installed using the supported CUDA wheel, not by trying to install a CUDA 13.1 wheel.
 - **Not yet verified:** no Python syntax/runtime test or GPU training has been executed on the Victus. CUDA must be verified on that machine before proceeding.
 - **Next user action:** pull latest `main` on the Victus, create/activate the Python 3.11 environment, install requirements and the CUDA 12.8 PyTorch wheel, then run the one-line CUDA verification command in `docs/GPU_LAPTOP_SETUP.md`. Stop and send its output if CUDA is unavailable.
+
+
+### 2026-11-13 — PyTorch wheel compatibility rechecked
+
+- Current official PyTorch installation matrix lists PyTorch 2.14.1 Windows wheels for CUDA 12.6, 13.0 and 13.2; CUDA 12.8 is no longer in the current matrix.
+- Corrected the Victus instructions to install `torch==2.14.1` from the official CUDA 12.6 wheel index. This is the conservative compatible choice for the reported driver CUDA 13.1; do not use the previously written cu128 command.
+- Source checked: official PyTorch previous-version installation matrix and release compatibility matrix. See the project handoff document for the exact command.
