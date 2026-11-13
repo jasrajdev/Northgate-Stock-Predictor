@@ -15,7 +15,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import Ridge
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
@@ -71,9 +71,13 @@ def make_models(xgb_device="cuda"):
 def metrics(y_true, y_pred, current):
     actual_direction = np.sign(np.asarray(y_true) - np.asarray(current))
     predicted_direction = np.sign(np.asarray(y_pred) - np.asarray(current))
+    actual = np.asarray(y_true, dtype=float)
+    predicted = np.asarray(y_pred, dtype=float)
     return {
-        "mae": float(mean_absolute_error(y_true, y_pred)),
-        "rmse": float(np.sqrt(mean_squared_error(y_true, y_pred))),
+        "mae": float(mean_absolute_error(actual, predicted)),
+        "rmse": float(np.sqrt(mean_squared_error(actual, predicted))),
+        "mape_pct": float(np.mean(np.abs((actual - predicted) / np.maximum(np.abs(actual), 1e-12))) * 100),
+        "r2": float(r2_score(actual, predicted)),
         "directional_accuracy": float(np.mean(actual_direction == predicted_direction)),
     }
 
@@ -187,7 +191,7 @@ def main():
         raise RuntimeError("No model results produced.")
     result.to_csv(OUT_DIR / "model_comparison_validation.csv", index=False)
     summary = (
-        result.groupby("model")[["mae", "rmse", "directional_accuracy"]]
+        result.groupby("model")[["mae", "rmse", "mape_pct", "r2", "directional_accuracy"]]
         .mean().sort_values("mae").reset_index()
     )
     summary.to_csv(OUT_DIR / "model_summary_validation.csv", index=False)
