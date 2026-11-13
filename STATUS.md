@@ -377,3 +377,8 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Discovered aswinv90/indian-market-historical-data: publisher claims broad NSE/BSE coverage from 1991 plus indices/VIX/corporate actions/FII-DII/macro. Repo created Sep 2026; custom non-commercial research licence; no raw files or independent QA yet.
 - Discovered TejHQ/indian-markets: Hugging Face preview 7.36M NSE rows, publisher claims NSE 2010+ and BSE 2024+ with corporate actions/adjusted prices/delivery. Data not covered by code MIT licence; exchange terms still apply.
 - Both are candidate cross-check sources only. Existing Northgate labelled panel remains unchanged until sample-level reconciliation. No new data downloaded.
+
+### PLFS values extracted — 2026-11-14
+- Opened official MoSPI July–September 2026 quarterly bulletin (published 10-Nov). Age 15+ CWS combined LFPR 55.5%, WPR 52.7%, UR 5.1%; rural/urban splits are recorded in DATA_RESEARCH.md.
+- Same bulletin gives five quarters of combined UR from 5.2% (Jul-Sep 2025) to 5.1% (Jul-Sep 2026). Sample size 11,229 FSUs / 133,570 households / 555,593 persons; combined UR RSE 1.72%.
+- These are actual quarterly bulletin values, not monthly API rows. Monthly API observations remain unacquired; October monthly bulletin is scheduled for 15-Nov-2026.
