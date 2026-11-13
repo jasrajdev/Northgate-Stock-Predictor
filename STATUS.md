@@ -92,3 +92,12 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 - GitHub copy fetched back and verified at 18 data rows. Details and sources are in `docs/DATA_RESEARCH.md`.
 
 **Current CPI status:** extraction and release/session mapping are documented; not yet integrated into market features. Next: locate/verify April 2025's PDF, join the availability map to the two vintage datasets, create a leakage-safe as-of feature table, then validate null handling and chronological availability.
+
+
+### 2026-11-13 — CPI vintage source and availability pipeline
+- User supplied the April 2025 MoSPI Excel annexure workbook. Verified it contains Annex-VI/VII and explicitly marks April 2025 CPI index 192.6 and YoY inflation 3.16% as provisional; March 2025 is final.
+- Verified the corresponding official April 2025 CPI release was actually published 13 May 2025 at 16:00 IST, not the previously expected 12 May. It becomes available for this project's close-based NSE features from the next eligible session, 14 May 2025.
+- Inspected all 18 monthly CPI workbooks (July 2024–December 2025). Annex-VI/VII cumulative historical time-series snapshots are available in 14 releases (November 2024–December 2025), yielding 3,990 index/inflation vintage rows. Provisional markers are preserved; duplicate vintage keys = 0.
+- Added `data/external/cpi_release_availability_map_2012base.csv` and `scripts/build_cpi_vintages.py`. The script is saved and fetched back from GitHub; local execution against the complete input folder remains pending.
+- The extracted vintage CSV and original workbook-derived snapshots are present in the working environment, but the new large generated vintage CSV has not yet been committed to GitHub through the repository connector. Do not claim it is durably saved until verified in the repository.
+- No daily NSE-aligned feature table has been built yet. The deterministic as-of join remains the next data-engineering step; it must use the next eligible NSE session after actual release and retain vintage status.
