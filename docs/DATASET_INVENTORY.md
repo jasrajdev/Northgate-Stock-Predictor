@@ -375,3 +375,16 @@ No raw observations were downloaded or reconciled in this research pass.
 | NSE UDiFF | Official Forms & Formats page lists catalogue v1–v4, CM Bhavcopy File Format and sample file; All Reports has daily UDiFF ZIP and readme workbook. Circular NSE/MSD/62424 says parallel legacy/new format through 2024-07-05; old format discontinued 2024-07-08. | Cutover confirmed. Exact CM sample workbook/ZIP still not downloaded or inspected. |
 
 | Target-universe corporate-action exposure | TejHQ target pages list ITC demerger (2025-01-06), HINDUNILVR demerger (2025-12-05), RELIANCE demerger (2023-07-20) and rights issue (2020-05-13), BHARTIARTL rights issues (2019-04-23, 2021-09-27). Inspected factor code assigns 1.0 to demerger and rights. | High-priority event-window check: compare raw and adjusted closes and target labels around these dates. Do not assume provider adj_close adjusts these events. |
+
+
+## NSE official research-data access (reviewed 2026-11-14)
+
+| Route / dataset | Published terms and coverage | Northgate implication |
+|---|---|---|
+| NSE Data for Research application | Dedicated page updated 04-Nov-2026; academic/non-commercial only; form submitted to nseri@nse.co.in; access restricted to accredited academic institutions, recognised research organisations and think tanks; NDA and progress reports may be required. | Potential official source, but eligibility and approval are not confirmed. No request sent. |
+| Basket 1 public/research data | Published list includes historical reports, security-wise OHLC/turnover, Bhavcopy archives, historical index data, FII/FPI/DII activity, company financial results, shareholding, announcements and corporate actions. | Directly relevant fields exist in the official inventory. Need verify actual files, date coverage, schemas and lawful retrieval method. |
+| Basket 1 up to 2 GB | Up to 2 GB per researcher/year without extra computation is the reasonable free amount; high-volume and/or processed requests may be cost-based. | Not a blanket free full-history guarantee. Request a narrow universe/date range and ask NSE to confirm volume/charges. |
+| Voluminous Basket 1 | NSE list classifies historical EOD/Bhavcopy data, corporate data and other historical datasets as chargeable when above 2 GB. | Full broad-market archive may incur fees; a bounded ten-stock request may be more feasible but is not guaranteed. |
+| Basket 2 restricted | PAN/KYC/client-identifiable trades, order/trade logs and client positions. | Not required; do not request. |
+
+The older NSE Data Sharing & Usage Policy definition mentions students/researchers among non-commercial users, but the current Data for Research disclaimer explicitly applies institutional affiliation restrictions. Do not assume a student qualifies independently; obtain written confirmation. No application, permission, data delivery or dataset validation has occurred.
