@@ -278,3 +278,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Verified RBI DBIE Key Rates has effective-date history and CSV/JSON downloads for repo, reverse repo, SDF, MSF, bank rate and CRR; preserve source events before deriving a daily forward-filled policy-rate panel.
 - Verified revised PLFS monthly bulletins begin April 2025; September 2026 bulletin is available and October 2026 is scheduled for 15 November 2026. Methodology changed from January 2025; retain a structural-break flag.
 - Syntax-compiled `scripts/download_macro_context.py` successfully. No network download was run, so no FRED dataset row counts are claimed.
+
+
+### 2026-11-13 — RBI Key Rates and PLFS source-access audit
+- Confirmed the official RBI DBIE Key Rates table (`financial_sector.r531_key_rates`) reports 271 effective-date rows from 1935-07-06 through 2026-10-07, with repo/reverse repo/SDF/MSF/bank rate/CRR and related measures; the page advertises CSV/JSON export. RBI RTI responses independently direct users to this DBIE table for historical rate changes.
+- Automated RBI extraction remains blocked: browser access to the table's export controls failed, and the public RBI Innovation Hub mirror documents Key Rates as outside its guest-accessible SDMX CSV set. No third-party substitute has been accepted.
+- Confirmed MoSPI's revised PLFS monthly CWS series starts April 2025; September 2026 is the 18th monthly bulletin. The e-Sankhyiki catalogue exposes monthly UR entries with release dates and table IDs (example: August 2026 release dated 15 September 2026). Structured table download/API route is not yet verified.
+- No RBI rate or PLFS data has been downloaded, committed, or merged. Preserve the January 2025 PLFS methodology break and use release dates for point-in-time joins.
