@@ -293,3 +293,10 @@ User should use the HP Victus (not the Mac) to clone main, run the reproducible 
 - Found conflicting official CPI timing references: MoSPI FAQ says 5:30 PM; recent releases show 4:00 PM embargo; scheduled and actual dates can differ. Avoid a hard-coded universal timestamp; use actual archived publication timestamps or a conservative next-session rule when only a date is known.
 - Confirmed NSE official Historical Data – India VIX page provides date-range selection and CSV download. Prefer this over the current yfinance fallback after validating coverage. RBI DBIE Key Rates remains the official effective-date event source; CSV/JSON export is advertised, but no file has been downloaded yet.
 - No PLFS, India VIX, or RBI observations have been downloaded/merged in this follow-up. Existing market/macro downloader scripts remain unexecuted locally.
+
+
+## 2026-11-13 — PLFS latest release and frequency correction
+- Checked the current official NSO India e-Sankhyiki MCP source: monthly PLFS API coverage is documented as April 2025–September 2026 (All India; indicators 1–3); quarterly bulletin coverage runs through 2026 with indicators 1–4. These are distinct frequencies and must remain separate.
+- Found the latest official PLFS quarterly bulletin: July–September 2026, published 10 November 2026. It reports LFPR, WPR, UR and worker distributions under CWS for rural, urban and combined areas. April–June 2025 was the first quarterly bulletin extending estimates to rural and urban India; earlier quarterly bulletins covered urban areas only.
+- Corrected the project wording: September 2026 is not a “monthly bulletin”; it is the reference end month of the monthly API coverage and also the end month of the latest quarterly bulletin. No PLFS data has yet been retrieved or merged.
+- Next PLFS step: execute the official MCP sequence (list_datasets → get_indicators → get_metadata → get_data), then retain monthly and quarterly records as separate products and validate release/publication dates before any time-series merge.
