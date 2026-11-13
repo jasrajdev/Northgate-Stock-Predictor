@@ -121,3 +121,11 @@ India PLFS is the preferred domestic unemployment source. Its monthly series und
 RBI DBIE Key Rates is the preferred source for Indian policy-rate events (repo, SDF, MSF, bank rate and CRR). Preserve its event/effective-date structure; create daily features by forward-filling only after each effective date, never backward.
 
 No macro or market-context series has yet been downloaded by the committed scripts or merged into the modelling dataset.
+
+
+## Official release-time and India labour/policy source confirmation (2026-11-13)
+
+- MoSPI confirms CPI is disseminated at **16:00 IST on the 12th of the following month**, moving to the next working day if the 12th is a holiday. MoSPI also publishes an advance release calendar with precise scheduled dates. The CPI observation's reference month must never be treated as its availability date. Source: MoSPI FAQ and PIB release-time revision (5 Nov 2024).
+- RBI DBIE's official **Key Rates** table provides repo, reverse repo, SDF, MSF, bank rate and CRR (among other columns), effective-date observations, and CSV/JSON downloads. The indexed table covers 1935-07-06 through 2026-10-07 (271 rows). Preserve the irregular event table as source data; only then derive a daily effective-rate panel by forward-fill from each effective date. RBI's own RTI responses direct users to DBIE → Statistics → Financial Sector → Key Rates → Major Monetary Policy Measures.
+- MoSPI PLFS monthly bulletins under the revised methodology begin April 2025. The current advance calendar lists monthly bulletins through September 2026 and October 2026 scheduled for 15 November 2026. The methodology changed from January 2025; flag this break and do not splice earlier annual/quarterly PLFS measures as if definitionally identical.
+- The committed FRED macro downloader passed a Python syntax compilation check in this session. Network execution has not been run here; dataset row counts remain unverified until the script is run on a connected machine.
