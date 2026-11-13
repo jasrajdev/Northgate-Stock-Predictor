@@ -479,3 +479,12 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - SEBI Circular 2024/178 and NSE's published Basket 1 list provide up to 2 GB per researcher/year free where no extra computation is needed; high-volume/processed requests may be charged. Historical EOD/Bhavcopy and corporate data are listed as chargeable when voluminous (>2 GB).
 - Published eligible datasets include security-wise OHLC/turnover, Bhavcopy archives, index history, FII/FPI/DII activity, company results, announcements and corporate actions. Restricted client-identifiable datasets are not relevant.
 - Eligibility, exact requested fields/period, charges, local storage/backtesting rights and UDiFF schema access remain unconfirmed. No application sent and no data received.
+
+
+### 2026-11-14 — Public historical-data UI audit
+- NSE Security-wise Archives page exposes symbol/series/date filters, CSV export, and OHLC/VWAP/quantity/turnover/trades/delivery fields; presets include up to 5Y plus Custom. This is a candidate per-stock validation source, not yet a downloaded dataset.
+- NSE Corporate Actions page exposes company/purpose/date filters and CSV export with ex-date, record date and book-closure fields. Ex-date is not the publication timestamp needed for news features.
+- NIFTY Indices historical page exposes historical index CSV and separate TRI/Net TRI values; a better benchmark candidate than price-only NIFTY, pending actual coverage/download checks.
+- NSE India VIX page exposes Custom range and CSV; NSE FII/FPI-DII page exposes NSE-only and combined-exchange CSV downloads. Flow data is aggregate, not stock-specific.
+- Historical All Reports page lists UDiFF ZIP, Bhavcopy and delivery reports; legacy CSV formats discontinued 2024-07-08. Exact historical coverage and UDiFF mapping remain open.
+- No CSV/ZIP downloaded, no endpoint reverse-engineered, and no data ingested. Treat as public/manual UI candidates only pending rights and access review.
