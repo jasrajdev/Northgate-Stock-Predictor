@@ -316,3 +316,8 @@ Neither candidate replaces the current Northgate 29,473-row labelled dataset. A 
 - CBOE VIXCLS daily close is a US-market feature; keep distinct from India VIX and align to the latest completed US session before the Indian prediction session.
 - GDELT GKG 2.1 is a historical document metadata/tone source, but its raw archive is enormous (2015 GKG alone >2.5 TB). Bounded BigQuery or filtered downloads are more practical than mirroring all data. No query output acquired.
 - News sentiment corpora (IN-FINews, Financial News Headlines, FLAME, Indian_Financial_News) can support classifier tests, but none currently establishes a complete 8–10-year India-specific timestamped article feed.
+
+### Official RBI FX data
+- RBI DBIE daily interbank USD/INR table: 6,319 daily observations, 08-Aug-2000 to 30-Jun-2026, OHLC plus RBI Reference Rate; CSV/JSON export available. No export acquired.
+- RBI Reference Rate Archive offers date-range Excel download. RBI says FBIL took over computation/publication of major-currency reference rates from 10-Jul-2018. Preserve provider/source transition and fixing-time availability.
+- CC0 Zenodo mirror covers RBI/FBIL reference rates 1998-08-25 to 2026-09-30, but remains a secondary convenience mirror; validate against RBI/FBIL official series. No download.
