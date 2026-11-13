@@ -911,3 +911,7 @@ Verified contract from the retrieved OpenAPI document:
 
 ### Status
 Specification successfully retrieved by the user (HTTP 200). No CPI API observation page was downloaded by this work session; no API rows have been merged into market data. The existing Excel-annexure parser and release-vintage pipeline remain the only established point-in-time CPI path in the repository.
+
+
+### Additional official CPI 2024 methodological finding (MoSPI FAQ)
+MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, Urban and Combined covers Jan 2013–Dec 2024 and is linked using the 2025 overlap between old (2012) and new (2024) series. The general-level linking factors listed are Rural 0.5222, Urban 0.5320 and Combined 0.5267; the FAQ defines the factor as the ratio of annual-average (geometric-mean) new-series CPI to old-series CPI for the overlap year. This creates a comparable historical index scale; it does not make those linked historical values contemporaneous release vintages. Do not use the back series as point-in-time investor information for 2013–2024. Preserve source series and vintage separately. MoSPI FAQ: https://mospi.gov.in/uploads/documents/documents/1770891066052-Annexure_V.pdf (questions 36–38, pp. 4–5).
