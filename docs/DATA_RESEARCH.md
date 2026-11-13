@@ -1184,3 +1184,19 @@ No news corpus or GDELT query output has been downloaded or benchmarked in this 
 - Links: https://github.com/ancap97/NSEDATA4ME ; https://github.com/ancap97/NSEDATA4ME/blob/main/README.md
 
 No calendar, corporate-action CSV, historical membership file or EOD database was downloaded in this review.
+
+## 2026-11-14 — Official RBI daily FX source confirmed
+
+- RBI DBIE has an official table, **Daily interbank forex rates (USD vis-a-vis INR)**, with daily frequency and 6,319 rows from 08-Aug-2000 through 30-Jun-2026. It exposes Download CSV and JSON. Fields include Date, Interbank Open/High/Low/Close and RBI Reference Rate. This is a stronger official long-history FX source than the previously identified third-party FRED/OECD monthly proxies.
+- RBI's separate Reference Rate Archive provides date-range selection and Excel download for USD, GBP, EUR, JPY, AED, IDR and RUB. RBI states it stopped publishing its own major-currency reference rates from 10-Jul-2018 when FBIL took over computation/publication; use the DBIE series or FBIL continuation and do not assume one uninterrupted RBI-only publisher.
+- A public CC0 Zenodo reconstruction of RBI/FBIL reference rates covers 25-Aug-1998 to 30-Sep-2026, with CSV/Parquet. Its README says it filled the RBI archive's Jul-2018–Mar-2022 gap using FBIL data and cross-checked public APIs. This is a candidate for a convenient mirror, but the official RBI/FBIL records remain the validation authority.
+- MSEI's public RBI-reference-rate page displays recent rates and notes the rates are for viewing only and should not be used for any other purpose; do not use that page as a licensed model-training data source.
+- Availability timing still needs validation. Preserve rate date and retrieval/publication timestamp; until confirmed, apply only from the next eligible NSE session. RBI reference rate is a fixing, not a continuously tradable spot quote.
+- Sources:
+  - RBI DBIE daily USD/INR: https://dbie.rbihub.in/tables?table=financial_markets.r691_daily_interbank_forex_rates_usd_vis_a_vis_inr
+  - RBI Reference Rate Archive: https://rbi.org.in/scripts/ReferenceRateArchive.aspx
+  - RBI notice on FBIL taking over from 10-Jul-2018: https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=44447
+  - CC0 archive: https://zenodo.org/records/23076503
+  - MSEI reference rate archive: https://www.msei.in/markets/Currency/Historical-Data/RBIReferenceRateArchives
+
+No RBI forex CSV/JSON export was downloaded in this pass.
