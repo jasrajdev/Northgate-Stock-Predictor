@@ -559,3 +559,12 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Ingestion script review found `auto_adjust=False`, `actions=True`, and no explicit OHLC price rescaling in the script. Installed yfinance version reported by the user: 1.8.0.
 - Conclusion is limited: our processed-panel copy is faithful to the raw Yahoo CSV for these two rows; Yahoo's supplied historical OHLC basis is not interchangeable with the official unadjusted NSE Bhavcopy values. Do not describe the panel `Close` as raw exchange close without further validation.
 - No raw files, prices, labels, or model code were modified. Model training remains paused pending a defined price-basis and corporate-action treatment.
+
+
+### 2026-11-14 — Point-in-time price-series methodology scoped
+- Reviewed Yahoo's published adjusted-close definition and NSE corporate-action / Bhavcopy / Nifty index methodology pages. Yahoo describes split and cash-dividend multipliers; NSE documents a broader corporate-action set. NSE F&O adjustment rules are not a cash-equity adjusted-close specification.
+- Recorded the risk that retrospectively restated historical price levels may not be point-in-time observations. This does not prove all return features leak: common multiplicative restatements can cancel in ratios/returns, but event-spanning windows and non-proportional actions require explicit tests.
+- Added a proposed layered architecture to docs/DATA_RESEARCH.md: immutable source prices, corporate-action ledger, distinct raw / point-in-time normalised / dividend-aware / shareholder-wealth series, and separate labels if needed.
+- No target change approved. The PRD-aligned next-session adjusted-close target remains the current implementation until the user explicitly approves any change. A shareholder-wealth return label is only a candidate companion experiment.
+- No price data, labels, features, or code were modified; no model training or backtest occurred.
+- Next: run a small, read-only audit of every known corporate-action event against the original Yahoo CSVs, calculating raw/adjusted price ratios and adjacent-session returns, then decide which events need official Bhavcopy coverage or remain unresolved.
