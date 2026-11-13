@@ -33,7 +33,7 @@ def parse_value(value):
 
 def extract_sheet(path: Path, sheet: str, series: str) -> list[dict]:
     frame = pd.read_excel(path, sheet_name=sheet, header=None)
-    release = re.search(r"Excel ([A-Za-z]+) (20\\d{2})", path.name)
+    release = re.search(r"Excel ([A-Za-z]+) (20[0-9]{2})", path.name)
     if not release:
         raise ValueError(f"Cannot infer release month/year from {path.name}")
     release_month = pd.to_datetime(f"{release.group(1)} 1 {release.group(2)}").strftime("%Y-%m")
