@@ -172,3 +172,14 @@ Map each supplied CPI workbook to its official MoSPI release date/time, verify t
 ## Next action
 Implement and test a reproducible parser for the uploaded CPI workbooks. Normalize the cumulative index and inflation tables to tidy monthly observations, retain release-vintage metadata and publication timestamps, and cross-check each release's current provisional / prior final headline index against its cumulative-table endpoint. Do not merge into the Northgate model dataset until this validation passes.
 
+### 2026-11-13 — CPI parser pilot
+
+- Added scripts/parse_mospi_cpi_annexures.py and declared openpyxl in requirements.txt.
+- Ran the equivalent parser locally against all 18 uploaded workbooks: 3,948 records across 14 cumulative-table vintages; 2,078 CPI-index records (Jan 2013–Nov 2025) and 1,870 YoY-inflation records (Jan 2014–Nov 2025).
+- Checks passed: 3,948 unique vintage/observation/series keys, no duplicates, and no observation later than its workbook release reference month.
+- Pilot CSV was created under /tmp for validation only; it has not been committed or merged into the modelling dataset.
+- Exact publication timestamps remain blank by design. The parser still needs automated tests and Annex-I provisional/final endpoint cross-checks before the data can be treated as validated.
+
+## Next action
+Add tests and cross-check the cumulative series endpoint against each workbook's Annex-I current provisional and previous final Combined General Index. Then build a verified release timestamp map and align each vintage to the first eligible NSE session.
+
