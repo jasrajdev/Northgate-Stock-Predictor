@@ -74,3 +74,11 @@ The supplied tables do not provide exact publication date/time in the extracted 
 - `india_cpi_dataset_qa.json`
 
 These outputs were generated from the conversation's supplied workbooks and are not committed as model-ready repository data. Rebuild them using the script and local raw input files.
+
+
+### Full historical base-2012 headline series recovered (2026-11-13)
+- The December 2025 workbook's Annex-VI and Annex-VII contain the full All-India Combined headline CPI index and year-on-year inflation series: January 2013–December 2025.
+- Extracted 156 monthly index rows. The latest row (December 2025) is explicitly marked provisional with an asterisk in the source; the prior rows are historical/final in that snapshot. Fourteen year-on-year inflation cells are missing in the sheet and remain missing.
+- The snapshot was released with the December 2025 CPI press release on 12 January 2026. This timestamp applies to the downloaded historical snapshot, not to the original release date of each historical monthly observation. Do not back-assign the snapshot's availability to earlier dates.
+- The full historical file is Combined only. The Annex-I vintages retain Rural, Urban and Combined for the more recent supplied release period.
+- This closes the raw historical-coverage gap for base-2012 Combined CPI, but point-in-time feature construction still needs the actual monthly publication dates (official schedule: 12th of the following month, shifted to next working day when needed) or archived press-release dates.
