@@ -1,0 +1,23 @@
+{
+  "project": "Northgate Stock Predictor",
+  "timezone": "Asia/Kolkata",
+  "start_date": "2016-01-01",
+  "end_date": null,
+  "equities": {
+    "BHARTIARTL.NS": "Bharti Airtel",
+    "HDFCBANK.NS": "HDFC Bank",
+    "HINDUNILVR.NS": "Hindustan Unilever",
+    "ICICIBANK.NS": "ICICI Bank",
+    "INFY.NS": "Infosys",
+    "ITC.NS": "ITC",
+    "LT.NS": "Larsen & Toubro",
+    "RELIANCE.NS": "Reliance Industries",
+    "SUNPHARMA.NS": "Sun Pharmaceutical",
+    "TCS.NS": "Tata Consultancy Services"
+  },
+  "benchmark": "^NSEI",
+  "random_seed": 42,
+  "train_target_end": "2023-12-31",
+  "test_months": 6,
+  "target": "next_observed_session_adjusted_close"
+}
