@@ -342,3 +342,15 @@ No new raw data file has been acquired from these sources in this research pass.
 
 - TejHQ Hugging Face listing is mutable and inconsistent across the indexed result and opened page (1.25 GB / Nov-2026 update versus 222 MB / Aug-2026 visible snapshot). Pin a revision and inspect file manifests before recording fixed size/coverage or using it for reconciliation.
 - Dataful's separate RBI annual securities-yield table has 90 rows for FY1980-81–FY2024-25; annual aggregate only, not a maturity-specific daily 10Y yield: https://dataful.in/datasets/17685/.
+
+## TejHQ, NSE and PLFS deeper review — 2026-11-14
+
+| Source | New details verified | Northgate implication |
+|---|---|---|
+| TejHQ current landing page | Five Parquet families; 14-column raw OHLCV schema; NSE from 2010-01-04, BSE from 2024-07; corporate-action adjusted prices and ISIN history; provider claims PIT monthly top-500 liquidity universe | Strong candidate for controlled cross-check and broader-universe research. Need commit-pinned manifest, adjustment-method QA and PIT eligibility audit. |
+| TejHQ data terms | Dedicated terms updated 2026-11-08 say no exchange licence; MIT covers code only, personal research/model training/local retention allowed; raw redistribution prohibited; exchange terms still apply | Not a rights-cleared redistribution/commercial source. Landing page's MIT/open-data claim conflicts with dedicated terms; follow specific data terms and preserve conflict. |
+| NSE VIX / All Reports | Historical VIX page offers custom CSV; All Reports indexed preview contains a VIX sample but date range appears inconsistent and row duplicated; India VIX definition confirmed as 30-calendar-day implied volatility | Route is exposed, but export and archive QA still outstanding. VIX must not be confused with realised volatility. |
+| MoSPI PLFS MCP | Annual=1, quarterly=2, monthly=3; monthly Apr-2025–Sep-2026 All India indicators 1–3; single indicator_code only; four-step metadata workflow | Exact query rules recorded; no data rows retrieved. |
+| Google BigQuery public datasets | First 1 TB processed/month free; beyond that chargeable | Possible bounded GDELT GKG pilot with bytes-scanned limits; not a full archive download. |
+
+No raw observations were downloaded or reconciled in this research pass.
