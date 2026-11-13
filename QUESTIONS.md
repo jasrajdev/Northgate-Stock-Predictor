@@ -38,3 +38,9 @@ Only unresolved questions belong here. Do not treat a question or candidate opti
 - The portal OpenAPI fetched by the user documents /api/cpi/getCPIData, while the current official NSO India MCP server source maps CPI Group/Item retrieval to /api/cpi/getCPIIndex and /api/cpi/getItemIndex. Are these parallel/legacy API routes, or does the direct portal spec differ from the MCP server's bundled specification? Compare identical bounded filters and sample months before choosing the automated route.
 - Does the direct CPI endpoint's status=F field mean final, or something else? Verify against the official data dictionary/release PDFs rather than infer from the label.
 - Does the direct CPI API expose revisions or vintage snapshots? The currently reviewed specification does not document as-of retrieval; contemporaneous release-vintage records remain the safer backtest source.
+
+## Data access rights and acquisition
+- Can Northgate's research be submitted through an accredited academic institution under SEBI Circular SEBI/HO/DEPA-II/DEPA-II_SRG/P/CIR/2024/178? The circular's up-to-2-GB/researcher/year free access route is limited to research/research publications undertaken by accredited academic institutions; eligibility and exchange-specific request procedures need confirmation.
+- What written permission/licence, if any, is required for persistent storage and backtesting/simulation using NSE-origin data, given NSE website terms restricting automated collection and simulation?
+- If academic access is unavailable, which source can provide licensed OHLCV, VIX, sector indices and historical corporate disclosures within the zero/low budget?
+- Does the user have an institutional supervisor/contact who can submit a research-data request and confirm the institution's accreditation?
