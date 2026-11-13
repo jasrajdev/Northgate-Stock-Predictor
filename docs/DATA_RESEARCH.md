@@ -886,3 +886,28 @@ python scripts/parse_mospi_cpi_annexures.py /path/to/Annexures*.xlsx --output da
 - RBI's DBIE is the official long-series macro download portal; its 2026 handbook says extended historical time series are available there. Align macro data by release availability, not merely observation period.
 - GDELT raw archives provide historical news metadata from 2015, but the DOC API has a rolling search horizon and GDELT is not a complete financial article archive. The Zenodo IN-FINews corpus (3,348 India-focused articles, Feb–Aug 2025) is only a small supplemental corpus.
 - See `docs/DATASET_INVENTORY.md` for the source-by-source inventory and current gaps.
+
+
+## 2026-11-13 — User-verified MoSPI CPI API specification (OpenAPI 2.0.0)
+
+The user ran Python requests.get against https://esankhyiki.mospi.gov.in/layout/swagger_user_cpi.yaml; terminal evidence returned HTTP 200 and content type application/octet-stream. This is the CPI API specification, not PLFS. Official e-Sankhyiki also renders this specification on its CPI API tab.
+
+Verified contract from the retrieved OpenAPI document:
+- Production host: https://api.mospi.gov.in/.
+- Endpoint: GET /api/cpi/getCPIData.
+- CPI base years: 2010, 2012, 2024. Bearer token is optional; guest requests are supported and rate-limited per IP.
+- For 2010/2012, level (Group or Item) is required; without base_year, the API returns 2010 and 2012 together. 2024 does not use level.
+- Filters vary by base year and level. 2010/2012 Group filters include series, year, month_code, state_code, sector_code, group_code, subgroup_code; Item filters include year, month_code, item_code. 2024 filters include series, year, month_code, state_code, sector_code, division_code, group_code, class_code, sub_class_code, item_code and imputation_code.
+- Multi-code filters accept comma-separated values. Codes are not validated: an invalid code can return HTTP 200 with No Data Found; retrieve valid codes from GET /api/cpi/getCpiFilterByLevelAndBaseYear?base_year=...&level=....
+- Pagination is 1-based (page), limit range 10–100 (default 10); viz_req=true requests the complete filtered result for chart rendering. Responses carry statusCode, msg, data and (where applicable) pagination metadata.
+- The published OpenAPI example for base 2024 shows totalRecords=1,445,316 and totalPages=144,532 at the default 10 records/page. This is a documentation example illustrating scale, not a claim that this many rows were downloaded in Northgate.
+
+### Interpretation and safeguards
+1. This API is a route to retrieve current API records. The spec does not document historical release-vintage snapshots or as-of queries. Do not treat a current response for an old reference month as the value investors could have known at that historical date.
+2. Keep this API path separate from the existing point-in-time CPI archive built from contemporaneous monthly release annexures (base 2012, July 2024–December 2025). The latter preserves release snapshots and availability events; the former can provide a current/expanded CPI panel and metadata.
+3. Never call the endpoint unfiltered or set viz_req=true for broad data without a bounded, reviewed filter and an explicit row/page cap. Rate limits are per IP.
+4. First retrieve filter-code metadata, then pilot one narrowly bounded query, inspect returned fields and pagination, save the untouched JSON response and retrieval timestamp, and only then consider a larger pull.
+5. Preserve base year, series, reference year/month, geography, sector, classification codes, imputation flag, index, inflation, status, request parameters, page, retrieval timestamp and raw response. Do not splice 2012 and 2024 series without an explicit linking methodology.
+
+### Status
+Specification successfully retrieved by the user (HTTP 200). No CPI API observation page was downloaded by this work session; no API rows have been merged into market data. The existing Excel-annexure parser and release-vintage pipeline remain the only established point-in-time CPI path in the repository.
