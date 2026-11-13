@@ -1,6 +1,6 @@
 # Data Research Plan — India-First
 
-Updated: 2026-11-12  
+Updated: 2026-11-14  
 Status: initial market dataset downloaded and processed locally; macro and timestamped news/sentiment source selection remains pending.
 
 ## Market and universe
@@ -1537,3 +1537,24 @@ Sources:
 - NSE SUNPHARMA quote/corporate actions: https://www.nseindia.com/get-quote/equity/SUNPHARMA/Sun-Pharmaceutical-Industries-Limited
 - NSE TCS corporate actions: https://www.nseindia.com/companies-listing/corporate-filings-actions?symbol=TCS
 - NSE BHARTIARTL integrated filing timestamps/revisions: https://www.nseindia.com/companies-listing/corporate-integrated-filing?symbol=BHARTIARTL&tabIndex=equity
+
+
+## 2026-11-14 — Price-adjustment semantics and event-window audit requirement
+
+A source-semantics check identified a material limitation for the provisional Yahoo Finance/yfinance panel:
+
+- Yahoo's own adjusted-close explanation says its adjusted close applies split and cash-dividend multipliers to historical prices. It does not establish that rights issues, demergers, mergers, hive-offs or other non-cash corporate actions are comprehensively reflected in the series.
+- NSE's corporate-action adjustment guidance lists bonus, rights, merger/demerger, amalgamation, splits, consolidations, hive-offs and cash dividends. However, the cited NSE/NSE Clearing guidance describes adjustments to derivatives positions and contract specifications, not a guarantee about vendor-supplied historical cash-market adjusted-close data.
+- NSE's All Reports page distinguishes actual unadjusted Bhavcopy prices from adjusted 52-week high/low fields. The NSE note says those adjusted high/low fields cover bonus, consolidation, splits and rights. This is a useful independent cross-check, but it is not a full adjusted daily price history and does not establish treatment of demergers.
+- Therefore, do not assume the existing `Adj Close` field fully neutralises rights issues or demergers. Retain raw `Close`, `Adj Close`, `Dividends`, and `Stock Splits`; build a separately sourced corporate-action event ledger; inspect event windows and compare with official unadjusted Bhavcopy and available exchange adjustment references.
+- The event-window audit remains pending because `market_panel.csv` was not present among the currently attached Project files in this session. No price rows were inspected and no adjustment factors or labels were changed.
+
+Primary references checked 2026-11-14:
+- Yahoo Finance Help, “What is the adjusted close?”: https://in.help.yahoo.com/kb/adjusted-close-sln28256.html
+- NSE, “Adjustments in case of Corporate Actions”: https://www.nseindia.com/static/products-services/equity-derivatives-corporate-actions-adjustments
+- NSE Clearing, “Corporate Actions Adjustment”: https://www.nseclearing.in/clearing-settlement/equity-derivatives/corporate-actions-adjustment
+- NSE All Reports (Bhavcopy and adjusted 52-week field note): https://www.nseindia.com/all-reports
+- NSE Security-wise Archives: https://www.nseindia.com/report-detail/eq_security
+- NSE Corporate Actions archive: https://www.nseindia.com/companies-listing/corporate-filings-actions
+
+Interpretation guardrail: exchange derivatives adjustment rules and adjusted 52-week summary fields must not be presented as proof that a third-party adjusted-close series is correct for all cash-equity corporate actions.
