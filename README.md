@@ -17,6 +17,7 @@ India-focused research project testing whether machine-learning forecasts and ca
 - `docs/MODEL_TRAINING_GUIDE.md` — model-training workflow, datasets, model order, outputs and safeguards
 - `docs/GPU_LAPTOP_SETUP.md` — exact HP Victus Windows/PyTorch/CUDA setup and commands
 - `docs/CONTINUITY_PROTOCOL.md` — instructions for future project sessions
+- `docs/SUBMISSION_HANDOFF.md` — Kaggle artifact export, local folder layout, and Claude Code dashboard integration handoff
 
 ## Start every session
 Read `STATUS.md`, `PROJECT_NOTEBOOK.md`, `DECISIONS.md`, and the relevant plan/research files. Keep conversational brainstorming separate from confirmed repository decisions. After a requested repository edit, fetch and verify every changed file.
