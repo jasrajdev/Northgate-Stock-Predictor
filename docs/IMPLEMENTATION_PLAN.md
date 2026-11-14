@@ -127,3 +127,22 @@ The Mac's local feature/model/split CSVs were not found in GitHub, so the GPU ma
 ## Training milestone correction — 2026-11-14
 
 The 2026-11-12 implementation milestone above is historical; its statement that no models were trained has been superseded. The first price/volume-only training and five-fold expanding validation comparison has now completed in Kaggle. See STATUS.md and PROJECT_NOTEBOOK.md for the reported results and limitations. Do not repeat the initial training run blindly. Preserve its reports/checkpoints, validate the new official NSE bonus-date Bhavcopy files, resolve the price-basis methodology, then decide whether a corrected price-only sensitivity run is warranted before any final-test evaluation.
+
+
+## Dashboard MVP implementation update — 2026-11-14 (local report; GitHub review pending)
+
+Claude reports a local Streamlit MVP and modular backend have been created. The reported implementation includes Market Overview, Stock Explorer, Model Performance and Risk Analysis; Portfolio Analytics is marked pending, News/Sentiment unavailable, and Predictions unavailable. The reported launch command is `.venv/bin/streamlit run dashboard/app.py`.
+
+The implementation reportedly reads saved data/results and does not train or download data on page load. A headless Streamlit test-harness run reportedly loaded all seven sections without exceptions; only the Model Performance page received browser visual inspection. These are reported local results, not independently verified GitHub artifacts.
+
+**Model integration gate:** no usable local checkpoint, PyTorch installation, or complete 25-input experiment feature pipeline was available. Therefore no model is connected and no predictions are produced. Do not add placeholder outputs. Recover the actual Kaggle checkpoint(s), model configuration, feature-generation code, preprocessing/scaler objects, and dependency versions before implementing inference. Test one genuine prediction against a known saved experiment input/output before enabling the Predictions page.
+
+**Immediate sequence**
+1. Review the local dashboard/backend source and provenance of transcribed Kaggle result tables.
+2. Verify that dashboard data paths point to genuine local artifacts and that plotted metrics match the experiment source.
+3. Visually inspect all remaining dashboard pages and verify graceful handling of missing files.
+4. Commit/push the reviewed dashboard files and fetch them back from GitHub.
+5. Recover genuine model artifacts and exact feature/preprocessing pipeline; implement and smoke-test inference only if recovery succeeds.
+6. Keep portfolio, recommendations, news/sentiment and final-test evaluation unavailable until their required data and methodology are actually complete.
+
+The existing Kaggle validation experiment is not a proven profitable signal; no model beat the naive pooled price-MAE baseline. Keep the final six-month test sealed and do not use dashboard presentation as a reason to relax the research safeguards.
