@@ -608,3 +608,18 @@ MoSPI's CPI 2024 FAQ states that the base-2024 back series for All-India Rural, 
 - Limitation: this is a walk-forward robustness analysis over the existing validation history, which had already been used in earlier model comparisons; it is not a pristine independent test. The final test partition remains sealed. This does not complete the PRD's news/sentiment, portfolio/backtesting, dashboard, report, or multi-horizon requirements.
 - Generated Kaggle outputs/checkpoints were verified in the user's session but have not been confirmed committed to GitHub. Preserve/download them before the Kaggle workspace is lost.
 - Next: audit ticker-level and return-based metrics, quantify uncertainty and fold consistency, and resolve the price-basis/corporate-action caveats before deciding whether to proceed to any final-test evaluation.
+
+
+## 2026-11-14 — Local Streamlit dashboard MVP (not yet committed)
+
+Claude reports a local dashboard implementation in the working checkout. This is user-provided execution evidence; the files have not yet been pushed to GitHub or independently inspected here.
+
+- Added a Streamlit entry point at `dashboard/app.py`, styling, and backend modules for market data, risk calculations, experiment summaries, and inference interface under `src/northgate/backend/`.
+- Reported working sections against local real data: Market Overview, Stock Explorer, Model Performance (saved Experiment 01 validation summaries), and Risk Analysis.
+- Portfolio Analytics is explicitly pending; News and Sentiment are unavailable; Predictions are unavailable.
+- Claude reports all seven sections loaded in Streamlit's headless test harness without exceptions and visually inspected the Model Performance page only. Other pages have not had a visual review.
+- No usable trained checkpoint is present on the inspected local machine. The dashboard does not connect a real model and does not display fabricated predictions. PyTorch and the experiment's 25-input feature pipeline are also unavailable locally.
+- Experiment summary tables were transcribed from the Kaggle notebook into `reports/experiments/exp01_kaggle_walk_forward/`; provenance metadata was added. These are reported local files, not yet independently verified or saved to GitHub.
+- Reported launch command from repository root: `.venv/bin/streamlit run dashboard/app.py`.
+
+**Next:** inspect the local dashboard/backend diff and the experiment-table provenance; verify the real data paths and metric values; then commit/push the dashboard and its supporting files. Separately recover the genuine Kaggle checkpoints and exact feature/preprocessing pipeline before attempting model inference. Keep the final test sealed. Do not claim a deployable model until a real checkpoint loads and a genuine inference smoke test passes.
