@@ -1,0 +1,7 @@
+2018-06-29 rows 6795 | feature cells that differ from full-history computation: 0 | columns: []
+2021-03-31 rows 14239 | feature cells that differ from full-history computation: 0 | columns: []
+2024-10-25 rows 23941 | feature cells that differ from full-history computation: 0 | columns: []
+2026-05-08 rows 28098 | feature cells that differ from full-history computation: 0 | columns: []
+Result: code is backward-looking given its INPUT; look-ahead (L-02/L-03) enters through the vendor Adj Close series, which this test cannot see.
+zero-volume equity rows: 19 ['2025-03-18', '2026-01-15']
+symbol-dates with ratio==1 (Yahoo equals NSE exactly): 82 of 110

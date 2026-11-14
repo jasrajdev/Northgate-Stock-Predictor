@@ -1,0 +1,65 @@
+# Leakage and Code Audit
+
+Audit run 2026-11-14 (IST). Scope: every script on GitHub `origin/main` (62e5272) and on the local checkout, plus the Kaggle notebook `~/Desktop/Northgate - Stock Predictor/notebookf887dc542c.ipynb` (79 cells), which holds the code that **actually produced** the reported results. No script was modified. Line numbers refer to files as read in this audit.
+
+**Method.** (a) Full read of all 14 scripts, 2 test files; (b) in-memory recomputation of features, labels and all three splits from `market_panel.csv`: all bit-identical to the saved files (`evidence/04_*`); (c) truncation test of `build_features.py` at 4 cut dates: 0 cells differ (`evidence/10_*`); (d) `py_compile` of 13 scripts: all pass; (e) pytest. **Not done:** no model was retrained; the test partition was opened only to check keys, dates, shape and equality with the recomputed partition. No test-period outcome statistic was computed or displayed.
+
+**Test results (actual).**
+
+| Run | Result |
+|---|---|
+| `python -m pytest tests` in a copy of origin/main | 5 passed |
+| plain `pytest tests` (documented style) in the same copy | **error**: `ModuleNotFoundError: No module named 'scripts'` |
+| `python -m pytest tests` in the local checkout | 2 passed (the 3 CPI tests do not exist locally) |
+
+**Headline.** Chronological ordering of data, the label construction and the split logic are correct. Test data was not used for fitting or selection in anything inspected. The serious defects are (1) a proven look-ahead feature and restated price levels inside vendor data, (2) a split rule that moves with the data, (3) the executed experiment differing from committed code, and (4) optimistic model-selection practice in the committed deep script.
+
+## Severity key
+Critical = invalidates a reported result or a rule of the PRD; High = can silently bias results; Medium = reproducibility or interpretability; Low = hygiene.
+
+## Findings
+
+| ID | Sev. | File : lines | Defect | Evidence | Proposed fix | Test required |
+|---|---|---|---|---|---|---|
+| L-01 | High | `scripts/create_chronological_splits.py:58-59,66`; `scripts/prepare_gpu_training_data.py:166-172` | Test cut-off = (latest target date in the file) − 6 months, so it **moves whenever data is refreshed**. Mac build (data to 2026-11-09): cut-off 2026-05-09, first test target 2026-05-11. Kaggle build (data to 2026-11-11): feature dates of test start 2026-05-11, validation ends feature date 2026-05-08, i.e. the session with target 2026-05-11 is **validation** there and **test** locally. "Sealed test" is therefore not a fixed set of rows. | Notebook cell 52 vs `chronological_split_report.json`: validation 6,390 vs 6,379 rows; test 1,397 vs 1,386 | Freeze absolute `test_target_start/end` and a `data_snapshot_id` in config; assert | Rebuild on a later date → identical partition keys, or hard failure |
+| L-02 | **Critical** | `scripts/build_features.py:82` (`adj_close_vs_close = price/close - 1`) | **Look-ahead feature.** Equals one minus the product of all *future* dividend factors. Reconstructed for ITC to 3×10⁻⁷; ITC value −0.320 on 2016-01-04. Also near-monotone in time, so it acts as a clock. Present in the local `feature_panel.csv`, `modeling_dataset_next_day.csv` and all splits; `train_baseline_models.py:107-111` and `train_deep_models.py:224-227` take **every numeric column**, so it would be used. Not among Experiment 01's 25 features (different pipeline). | `evidence/04` last section | Delete the column; replace numeric auto-selection by an allow-list | Feature at t unchanged when a later dividend is injected into the raw series |
+| L-03 | High | `scripts/build_features.py:45,48-50,73` and GPU script (feature `Adj Close` retained: notebook cell 67 shows `'Adj Close'` as feature #1) | **Rupee-level inputs restated by later actions**: `Adj Close`, `sma_*`, `ema_*`, `macd`, `volume_sma_20`. Value at t depends on events after t. Also non-stationary and not comparable across tickers. | Section 7 of CORPORATE_ACTION_AUDIT | Use ratios/returns only | As L-02 |
+| L-04 | Medium | `scripts/train_baseline_models.py:26,107-111` | Committed version regresses the **price level** with Ridge/RF/SVR/XGBoost and feeds raw `Open/High/Low/Close/Volume/Dividends/Stock Splits` (32 features). Result in notebook cell 16: Ridge MAE 38, RandomForest 223, SVR 819, R² negative. These committed results were later discarded. | Notebook cell 16 output | Superseded by log-return target (cell 39) but never committed | Unit test on target name |
+| L-05 | Medium | `scripts/train_deep_models.py:240` | Validation sequences built from `valid` alone, so the first 29 validation rows per ticker are dropped (no history window). Notebook cell 32 adds the last 29 train rows as context. Legitimate context (no future info) but **not in Git**. | Cell 32 | Port patch | Sequence count = rows − 0 for scored period |
+| L-06 | High | `scripts/build_features.py` vs `scripts/prepare_gpu_training_data.py:90-125` | **Two pipelines, same output file names**, different feature sets (24 Mac features vs 24 GPU features; only `rsi_14`/`volume_change_1d` share names, with different definitions). `prepare_gpu_training_data.py:137-163` overwrites `market_panel.csv`, `feature_panel.csv`, `modeling_dataset_next_day.csv` and splits if run locally. | Section J of the full audit | Single config-driven pipeline with versioned output folders | Both entry points yield identical hashes |
+| L-07 | High | Notebook cells 26, 27, 32, 39, 70 | The experiment that produced every reported number ran **patched code that exists only in the notebook**: ATR rebuilt on Adj basis (cell 26), raw columns excluded (27), validation context (32), classical target switched to log-return and baselines redefined (39), and a 1,170-line `run_walk_forward.py` written by `%%writefile` (70). `git diff` shown in the notebook (cell 61) lists three modified scripts and two `*_original.py` backups, none committed. | Cells 60-63 | Commit under `experiments/exp01_…`, then merge into the pipeline | Rerun reproduces cell 67's 25-feature list |
+| L-08 | Medium | `scripts/train_deep_models.py:160-173,194` | Early stopping and best-epoch selection use the **same validation set whose metrics are then reported**. Optimistic by construction. The walk-forward runner (notebook cell 70, `run_deep_fold`) fixes this with an inner chronological split (last 15 % of each fold's training dates) and refits; that structure is sound. | Code | Keep the walk-forward structure; never report single-split numbers as results | Review |
+| L-09 | Low | Notebook cell 70 `build_folds` | Fold *k* training rows include the last pre-fold session whose label uses the first day of the validation fold (e.g. 2024-06-28 → 2024-07-01). One-session overlap, not a prediction leak. | Fold audit prints | Optional one-session embargo | Boundary test |
+| L-10 | Medium | Notebook cell 70 `make_sequences` | Deep models are **pooled** with a one-hot ticker; classical models are per-ticker. The PRD requires identical features/splits; model scope differs. | Code | State in the protocol or run both scopes for all | Protocol |
+| L-11 | Medium | `scripts/prepare_gpu_training_data.py:123-124`; Mac `build_features.py:72` | `pct_change()` default fill differs between pandas 2 (pads) and pandas 3 (none); Kaggle emitted FutureWarning, the Mac used `fill_method=None`. Python 3.14/pandas 3.1.1 locally vs Python 3.13 on Kaggle; requirements are open ranges. | Notebook cell 15 warnings; `.venv` versions | Pin; set `fill_method=None` | Same-hash rebuild |
+| L-12 | Medium | `scripts/download_market_data.py:25,93,179` | Re-running overwrites `data/raw/yahoo/*.csv` and `download_report.json`; Yahoo returns a **restated** history each time. `END_DATE` uses UTC date (exclusive), not Asia/Kolkata. Raw data are therefore not immutable. | Code | Timestamped snapshot folders + manifest | Second run leaves first folder intact |
+| L-13 | Medium | `scripts/download_market_data.py:96-100,116` | Reported "invalid OHLC" and "calendar gaps >7 days" checks cannot detect the real defects (phantom session, flat zero-volume bars, stale prices). The report says 0 problems for all tickers. | `download_report.json` vs `evidence/01` | Add flat-bar, zero-volume, calendar-membership and cross-ticker checks | Fixture with injected stale bar |
+| L-14 | Medium | `scripts/build_next_day_dataset.py:23-24` | "Next session" = next *row in the vendor file*. Because the vendor file contains a non-session (2026-01-15) and omits real sessions, targets can point to a non-session or span two sessions. | 19 zero-return labels; calendar | Join to an official calendar table | Label target must be a calendar session |
+| L-15 | Low | `scripts/build_next_day_dataset.py:32,59` | `target_direction_t1` is ternary (−1/0/+1; 60 zeros). A zero forecast scores as "correct" only on the 0.45 % of rows with exactly zero return, which is why the naive baseline shows 0.5 % directional accuracy. Project notes explain this as "classified as non-positive/down", which is incorrect for the code that ran (`np.sign(y_true) == np.sign(0)`). | Notebook cells 44-46 | Fix the convention in the protocol (drop zero labels from direction metrics) | Metric unit test |
+| L-16 | Low | `scripts/merge_cpi_release_events.py:36,89` | Default date column is `date`; the real panel uses `Date`; the documented README command fails (`ValueError: missing date column: date`). Joining logic itself is correct. | `evidence/05` | Default to `Date` or auto-detect | CLI smoke test |
+| L-17 | Medium | `data/external/cpi_mospi_2012base_point_in_time_vintages_part1/2_*.csv` | Three records are fused to the preceding line (missing newline) so `pd.read_csv` raises `ParserError: Expected 16 fields … saw 31`; GitHub connector round-trip likely cause. Content is otherwise correct (repaired in memory: all 3,990 rows equal the rebuild). | `evidence/05_cpi_checks_output.txt` | Regenerate the parts with the script | Read both parts with plain pandas |
+| L-18 | Low | `scripts/download_market_context.py:35`, `download_macro_context.py:21` | Both scripts are unrun; output folders do not exist. FRED graph CSV is not point-in-time (documented by the author). | File listing | Run after design | n/a |
+| L-19 | Low | `tests/test_cpi_asof.py:4` | Imports `scripts.merge_cpi_release_events` but there is no `scripts/__init__.py`, `conftest.py` or `pythonpath` setting | Plain `pytest` error above | Add `pyproject.toml [tool.pytest] pythonpath=["."]` | pytest from clean clone |
+
+## What was checked and found correct
+
+| Check | Result |
+|---|---|
+| Rolling windows grouped by ticker, backward-looking | Yes (`groupby("Ticker")`, `min_periods` set). **Truncation test: 0 differing cells at 4 cut dates** |
+| Features reproduce from the panel | Bit-identical (max abs and rel diff 0.0; NaN pattern identical) |
+| Labels = next observed row of the same ticker | True for all 29,473 rows; target-date gap 1–5 calendar days |
+| Target columns excluded from features | Yes in split report and in both training scripts (`target_*` excluded; assertion in deep script `:230`) |
+| Split by target date; train < validation < test; each row once; no duplicate keys | Verified by recomputation: train 21,708 / validation 6,379 / test 1,386; union 29,473, 0 duplicates; file equality True |
+| Scalers/imputers fit on training only | Yes in sklearn `Pipeline`s (fit inside each call) and in the deep pre-processing (`train_deep_models.py:233-237`; notebook `fit_scaling` on fold training only; inner stopping split fits on inner-train only) |
+| Test partition not loaded by training code | True for `train_baseline_models.py`, `train_deep_models.py`, and `run_walk_forward.py` (`load_data` reads train/validation only). **Process note:** notebook cell 52 loaded `test.csv` to print row counts and dates (no outcome statistics). `test_partition_loaded=False` in reports is a hard-coded literal, not a measurement. |
+| Walk-forward folds: training ends before fold starts | Verified in notebook output (no date overlap, 5 folds) |
+| Early stopping in the walk-forward runner uses inner data only | Yes (inner 15 %), then refit on full fold training data |
+| Seeds | `SEED=42` for numpy/torch/random; one seed per model, no repeats |
+| CPI as-of join | No look-ahead: tested at 7 boundary dates; `next_nse_session` equals the first panel session after the release for all 18 events |
+| CPI used in any model | **No.** The merged file exists only in scratch; no training script reads CPI or macro columns |
+| Macro/news/sentiment used in any model | No data exists |
+
+## Items I could not verify
+* The contents of the Kaggle `fold_results.csv` beyond what the notebook printed (500 rows, 50/model, 100/fold, 10 tickers, 5 folds are printed and consistent).
+* Whether the Kaggle build's Yahoo download differs from the Mac's beyond the two extra days (29,506 vs 29,484 rows; values for earlier dates will differ whenever new dividends were paid in between).
+* `train_deep_models.py` / `train_baseline_models.py` were not executed here (no scikit-learn/torch in the local environment).

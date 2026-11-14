@@ -1,0 +1,43 @@
+shapes panel/feature/model: (29484, 11) (29484, 35) (29473, 39)
+feature columns ( 24 ): ['log_return_1d', 'log_return_lag_1', 'log_return_lag_2', 'log_return_lag_3', 'log_return_lag_5', 'log_return_lag_10', 'sma_5', 'price_to_sma_5', 'sma_10', 'price_to_sma_10', 'sma_20', 'price_to_sma_20', 'sma_50', 'price_to_sma_50', 'ema_12', 'ema_26', 'macd', 'rsi_14', 'volatility_20d', 'bollinger_width_20', 'volume_change_1d', 'volume_sma_20', 'volume_to_sma_20', 'adj_close_vs_close']
+feature panel reproduces from market_panel: same keys: True | max abs diff: 0.0 | max rel diff: 0.0 | NaN pattern identical: True
+labels reproduce: rows 29473 29473 | key equal: True | max abs diff target_adj_close: 0.0 | max abs diff target_logret: 0.0
+target date == next observed row for same ticker: True | target adj close == next row adj close: True
+dup keys: 0 | target after feature date: True | missing targets: 0 | nonpositive target: 0
+calendar gap feature->target days distribution: {1: 22367, 2: 880, 3: 5464, 4: 717, 5: 45}
+rows per ticker: {'BHARTIARTL.NS': 2680, 'HDFCBANK.NS': 2680, 'HINDUNILVR.NS': 2680, 'ICICIBANK.NS': 2680, 'INFY.NS': 2680, 'ITC.NS': 2680, 'LT.NS': 2680, 'RELIANCE.NS': 2680, 'SUNPHARMA.NS': 2680, 'TCS.NS': 2680, '^NSEI': 2673}
+direction label values (all rows, counts by value): {1: 14990, -1: 14423, 0: 60}
+zero-return labels in train+val equities: 53 (0.2075%)
+validation equities: rows 5800 | exact zero-return share: 0.4483% | up share: 49.6897% | down share: 49.8621%
+validation zero-return labels by target date (>=3 tickers): {'2025-03-18': 9, '2026-01-15': 10}
+
+Naive baseline on LOCAL validation rows per ticker (price-scale effect):
+               mean_price  naive_mae  naive_mape_pct    n  share_of_pooled_abs_error
+Ticker                                                                              
+BHARTIARTL.NS   1649.6694    16.1232          0.9938  580                     0.0895
+HDFCBANK.NS      852.0976     7.6837          0.9221  580                     0.0427
+HINDUNILVR.NS   2367.1395    21.6848          0.9175  580                     0.1204
+ICICIBANK.NS    1259.2535    11.0458          0.8858  580                     0.0613
+INFY.NS         1501.5375    16.7534          1.1238  580                     0.0930
+ITC.NS           384.9911     3.2294          0.8464  580                     0.0179
+LT.NS           3589.2853    41.1690          1.1536  580                     0.2286
+RELIANCE.NS     1393.6038    13.8268          0.9995  580                     0.0768
+SUNPHARMA.NS    1657.0551    15.6437          0.9488  580                     0.0869
+TCS.NS          3370.1130    32.9409          0.9866  580                     0.1829
+
+latest target 2026-11-09 cutoff 2026-05-09
+train: rows=21708 cols=39 tickers=11 feature dates 2016-01-01..2023-12-28 target dates 2016-01-04..2023-12-29 dupkeys=0 | equals recomputed partition keys=True values=True | report rows=21708
+validation: rows=6379 cols=39 tickers=11 feature dates 2023-12-29..2026-05-07 target dates 2024-01-01..2026-05-08 dupkeys=0 | equals recomputed partition keys=True values=True | report rows=6379
+test: rows=1386 cols=39 tickers=11 feature dates 2026-05-08..2026-11-06 target dates 2026-05-11..2026-11-09 dupkeys=0 | equals recomputed partition keys=True values=True | report rows=1386
+union of splits rows: 29473 dup across splits: 0
+split report candidate feature columns: ['Adj Close', 'Close', 'Dividends', 'High', 'Low', 'Open', 'Stock Splits', 'Volume', 'log_return_1d', 'log_return_lag_1', 'log_return_lag_2', 'log_return_lag_3', 'log_return_lag_5', 'log_return_lag_10', 'sma_5', 'price_to_sma_5', 'sma_10', 'price_to_sma_10', 'sma_20', 'price_to_sma_20', 'sma_50', 'price_to_sma_50', 'ema_12', 'ema_26', 'macd', 'rsi_14', 'volatility_20d', 'bollinger_width_20', 'volume_change_1d', 'volume_sma_20', 'volume_to_sma_20', 'adj_close_vs_close']
+
+download_report total_rows 29484 retrieved 2026-11-11T19:53:00.333940+00:00 end_exclusive 2026-11-11 | per-ticker invalid/dup/gaps: {'HDFCBANK.NS': (0, 0, 0), 'ICICIBANK.NS': (0, 0, 0), 'TCS.NS': (0, 0, 0), 'INFY.NS': (0, 0, 0), 'RELIANCE.NS': (0, 0, 0), 'ITC.NS': (0, 0, 0), 'HINDUNILVR.NS': (0, 0, 0), 'SUNPHARMA.NS': (0, 0, 0), 'BHARTIARTL.NS': (0, 0, 0), 'LT.NS': (0, 0, 0), '^NSEI': (0, 0, 0)}
+feature_report missing counts match actual: True
+missing by feature: {'log_return_1d': 11, 'log_return_lag_1': 22, 'log_return_lag_2': 33, 'log_return_lag_3': 44, 'log_return_lag_5': 66, 'log_return_lag_10': 121, 'sma_5': 44, 'price_to_sma_5': 44, 'sma_10': 99, 'price_to_sma_10': 99, 'sma_20': 209, 'price_to_sma_20': 209, 'sma_50': 539, 'price_to_sma_50': 539, 'ema_12': 121, 'ema_26': 275, 'macd': 275, 'rsi_14': 154, 'volatility_20d': 220, 'bollinger_width_20': 209, 'volume_change_1d': 2722, 'volume_sma_20': 3244, 'volume_to_sma_20': 3244, 'adj_close_vs_close': 0}
+next_day report: 29484 29473 {'duplicate_ticker_feature_dates': 0, 'target_date_after_feature_date_all_rows': True, 'missing_target_values': 0, 'non_positive_target_adjusted_close': 0}
+
+LOOK-AHEAD DEMONSTRATION (retrospective dividend adjustment)
+ITC: max |Adj/Close - product of (1 - future dividend/prev close)| = 3.078961381408618e-07
+ITC adj_close_vs_close on 2016-01-04: -0.32024377992687036 -> equals minus the cumulative dividend yield paid AFTER that date through the download date
+price-LEVEL engineered features (rupee units, restated by every later dividend): ['sma_5', 'sma_10', 'sma_20', 'sma_50', 'ema_12', 'ema_26', 'macd'] + raw Adj Close/Open/High/Low/Close passed by train scripts

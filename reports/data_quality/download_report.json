@@ -1,0 +1,275 @@
+{
+  "source": "Yahoo Finance via yfinance",
+  "retrieved_at_utc": "2026-11-11T19:53:00.333940+00:00",
+  "start_date": "2016-01-01",
+  "end_date_exclusive": "2026-11-11",
+  "tickers_requested": [
+    "HDFCBANK.NS",
+    "ICICIBANK.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "RELIANCE.NS",
+    "ITC.NS",
+    "HINDUNILVR.NS",
+    "SUNPHARMA.NS",
+    "BHARTIARTL.NS",
+    "LT.NS",
+    "^NSEI"
+  ],
+  "tickers_downloaded": [
+    "HDFCBANK.NS",
+    "ICICIBANK.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "RELIANCE.NS",
+    "ITC.NS",
+    "HINDUNILVR.NS",
+    "SUNPHARMA.NS",
+    "BHARTIARTL.NS",
+    "LT.NS",
+    "^NSEI"
+  ],
+  "failures": [],
+  "total_rows": 29484,
+  "processed_panel": "data/processed/market_panel.csv",
+  "ticker_checks": [
+    {
+      "ticker": "HDFCBANK.NS",
+      "name": "HDFC Bank",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/HDFCBANK_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "ICICIBANK.NS",
+      "name": "ICICI Bank",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/ICICIBANK_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "TCS.NS",
+      "name": "Tata Consultancy Services",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/TCS_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "INFY.NS",
+      "name": "Infosys",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/INFY_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "name": "Reliance Industries",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/RELIANCE_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "ITC.NS",
+      "name": "ITC",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/ITC_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "HINDUNILVR.NS",
+      "name": "Hindustan Unilever",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/HINDUNILVR_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "SUNPHARMA.NS",
+      "name": "Sun Pharma",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/SUNPHARMA_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "BHARTIARTL.NS",
+      "name": "Bharti Airtel",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/BHARTIARTL_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "LT.NS",
+      "name": "Larsen & Toubro",
+      "benchmark": false,
+      "rows": 2681,
+      "first_date": "2016-01-01",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/LT_NS.csv",
+      "status": "OK"
+    },
+    {
+      "ticker": "^NSEI",
+      "name": "NIFTY 50 price index",
+      "benchmark": true,
+      "rows": 2674,
+      "first_date": "2016-01-04",
+      "last_date": "2026-11-09",
+      "duplicate_dates": 0,
+      "missing_required_values": {
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0
+      },
+      "missing_adjusted_close": 0,
+      "invalid_ohlc_or_nonpositive_price_rows": 0,
+      "calendar_gaps_over_7_days": 0,
+      "raw_file": "data/raw/yahoo/NSEI.csv",
+      "status": "OK"
+    }
+  ],
+  "limitations": [
+    "Yahoo Finance data is third-party convenience data, not an exchange-certified archive.",
+    "Today's stock list can create survivorship bias; historical index membership is not reconstructed.",
+    "The NIFTY 50 ticker downloaded here is the price index (^NSEI), not the Total Returns Index.",
+    "Calendar gaps are flagged for inspection; weekends and exchange holidays are not treated as missing rows.",
+    "This first pass preserves raw downloads and creates a combined panel; it does not impute missing prices."
+  ]
+}

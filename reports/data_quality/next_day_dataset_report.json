@@ -1,0 +1,47 @@
+{
+  "input": "data/processed/feature_panel.csv",
+  "output": "data/processed/modeling_dataset_next_day.csv",
+  "rows_before_label_filter": 29484,
+  "rows_after_label_filter": 29473,
+  "rows_without_next_session_label_removed": 11,
+  "ticker_counts": {
+    "BHARTIARTL.NS": 2680,
+    "HDFCBANK.NS": 2680,
+    "HINDUNILVR.NS": 2680,
+    "ICICIBANK.NS": 2680,
+    "INFY.NS": 2680,
+    "ITC.NS": 2680,
+    "LT.NS": 2680,
+    "RELIANCE.NS": 2680,
+    "SUNPHARMA.NS": 2680,
+    "TCS.NS": 2680,
+    "^NSEI": 2673
+  },
+  "date_range": {
+    "feature_date_start": "2016-01-01",
+    "feature_date_end": "2026-11-06",
+    "target_date_end": "2026-11-09"
+  },
+  "target_columns": [
+    "target_date_t1",
+    "target_adj_close_t1",
+    "target_log_return_t1",
+    "target_direction_t1"
+  ],
+  "checks": {
+    "duplicate_ticker_feature_dates": 0,
+    "target_date_after_feature_date_all_rows": true,
+    "missing_target_values": 0,
+    "non_positive_target_adjusted_close": 0
+  },
+  "important_notes": [
+    "Targets are created independently within each ticker using the next observed row.",
+    "The target is the next observed trading session in the source data, not the next calendar day.",
+    "Feature columns remain unchanged and use information available at the feature date.",
+    "target_* columns are labels and must never be included in model input features.",
+    "The final row per ticker is removed because its next-session target is not yet observed.",
+    "This first dataset supports one-session-ahead forecasting only; multi-day horizons are not defined in the PRD and remain open.",
+    "No train/validation/test split or scaler is created here.",
+    "This does not yet add macroeconomic or news-sentiment data required elsewhere in the PRD."
+  ]
+}

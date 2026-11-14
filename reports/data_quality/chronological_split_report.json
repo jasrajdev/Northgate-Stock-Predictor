@@ -1,0 +1,131 @@
+{
+  "input": "data/processed/modeling_dataset_next_day.csv",
+  "output_directory": "data/processed/splits",
+  "method": "Chronological partitions assigned by target_date_t1.",
+  "training_target_end_inclusive": "2023-12-31",
+  "final_test_window_calendar_months": 6,
+  "latest_target_date": "2026-11-09",
+  "test_cutoff_calendar_date": "2026-05-09",
+  "actual_first_test_target_date": "2026-05-11",
+  "partitions": {
+    "train": {
+      "rows": 21708,
+      "feature_date_start": "2016-01-01",
+      "feature_date_end": "2023-12-28",
+      "target_date_start": "2016-01-04",
+      "target_date_end": "2023-12-29",
+      "rows_by_ticker": {
+        "BHARTIARTL.NS": 1974,
+        "HDFCBANK.NS": 1974,
+        "HINDUNILVR.NS": 1974,
+        "ICICIBANK.NS": 1974,
+        "INFY.NS": 1974,
+        "ITC.NS": 1974,
+        "LT.NS": 1974,
+        "RELIANCE.NS": 1974,
+        "SUNPHARMA.NS": 1974,
+        "TCS.NS": 1974,
+        "^NSEI": 1968
+      }
+    },
+    "validation": {
+      "rows": 6379,
+      "feature_date_start": "2023-12-29",
+      "feature_date_end": "2026-05-07",
+      "target_date_start": "2024-01-01",
+      "target_date_end": "2026-05-08",
+      "rows_by_ticker": {
+        "BHARTIARTL.NS": 580,
+        "HDFCBANK.NS": 580,
+        "HINDUNILVR.NS": 580,
+        "ICICIBANK.NS": 580,
+        "INFY.NS": 580,
+        "ITC.NS": 580,
+        "LT.NS": 580,
+        "RELIANCE.NS": 580,
+        "SUNPHARMA.NS": 580,
+        "TCS.NS": 580,
+        "^NSEI": 579
+      }
+    },
+    "test": {
+      "rows": 1386,
+      "feature_date_start": "2026-05-08",
+      "feature_date_end": "2026-11-06",
+      "target_date_start": "2026-05-11",
+      "target_date_end": "2026-11-09",
+      "rows_by_ticker": {
+        "BHARTIARTL.NS": 126,
+        "HDFCBANK.NS": 126,
+        "HINDUNILVR.NS": 126,
+        "ICICIBANK.NS": 126,
+        "INFY.NS": 126,
+        "ITC.NS": 126,
+        "LT.NS": 126,
+        "RELIANCE.NS": 126,
+        "SUNPHARMA.NS": 126,
+        "TCS.NS": 126,
+        "^NSEI": 126
+      }
+    }
+  },
+  "target_columns_excluded_from_model_inputs": [
+    "target_date_t1",
+    "target_adj_close_t1",
+    "target_log_return_t1",
+    "target_direction_t1"
+  ],
+  "candidate_feature_columns_excluding_metadata_and_targets": [
+    "Adj Close",
+    "Close",
+    "Dividends",
+    "High",
+    "Low",
+    "Open",
+    "Stock Splits",
+    "Volume",
+    "log_return_1d",
+    "log_return_lag_1",
+    "log_return_lag_2",
+    "log_return_lag_3",
+    "log_return_lag_5",
+    "log_return_lag_10",
+    "sma_5",
+    "price_to_sma_5",
+    "sma_10",
+    "price_to_sma_10",
+    "sma_20",
+    "price_to_sma_20",
+    "sma_50",
+    "price_to_sma_50",
+    "ema_12",
+    "ema_26",
+    "macd",
+    "rsi_14",
+    "volatility_20d",
+    "bollinger_width_20",
+    "volume_change_1d",
+    "volume_sma_20",
+    "volume_to_sma_20",
+    "adj_close_vs_close"
+  ],
+  "checks": {
+    "duplicate_ticker_feature_dates": 0,
+    "all_target_dates_after_feature_dates": true,
+    "train_before_validation": true,
+    "validation_before_test": true,
+    "all_rows_assigned_once": true,
+    "target_columns_excluded_from_candidate_features": true
+  },
+  "important_notes": [
+    "The final six calendar months are reserved as the untouched test period.",
+    "Rows are assigned by target date so outcomes in the test window cannot enter training or validation.",
+    "The feature row immediately before the test window may belong to test if its next-session target falls inside the test window.",
+    "The NIFTY 50 benchmark remains in the partitions for market-context/baseline work; it is not an investable equity.",
+    "All target_* columns are labels and must never be passed as model inputs.",
+    "Fit scalers, imputers, feature selectors, and other learned preprocessing on training data only, then apply unchanged to validation/test.",
+    "Use validation only for model selection. Do not tune against the final test period.",
+    "For multi-session targets, purge any training rows whose forward-label intervals overlap a later partition; this script currently handles the agreed one-session target only.",
+    "This script creates partitions only; it does not train models or establish model performance."
+  ]
+}

@@ -1,0 +1,43 @@
+##### PYTEST (GitHub origin/main copy in scratch; python -m pytest)
+.....                                                                    [100%]
+5 passed in 0.27s
+##### PYTEST plain invocation style (pytest entrypoint, no cwd on sys.path)
+    from scripts.merge_cpi_release_events import merge_cpi_events
+E   ModuleNotFoundError: No module named 'scripts'
+=========================== short test summary info ============================
+ERROR tests/test_cpi_asof.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.20s
+##### PYTEST local main checkout
+..                                                                       [100%]
+2 passed in 0.00s
+##### py_compile all origin scripts
+OK scripts/build_cpi_vintages.py
+OK scripts/build_features.py
+OK scripts/build_next_day_dataset.py
+OK scripts/create_chronological_splits.py
+OK scripts/download_macro_context.py
+OK scripts/download_market_context.py
+OK scripts/download_market_data.py
+OK scripts/extract_mospi_cpi.py
+OK scripts/merge_cpi_release_events.py
+OK scripts/parse_mospi_cpi_annexures.py
+OK scripts/prepare_gpu_training_data.py
+OK scripts/train_baseline_models.py
+OK scripts/train_deep_models.py
+##### build_cpi_vintages against the 18 local workbooks (output to scratch)
+Workbooks scanned: 18
+Time-series sheets detected: 28
+Rows: 3990
+Release snapshots: 14
+Reference months: 156
+Provisional-marked values: 26
+Duplicate vintage keys: 0
+Point-in-time timestamps attached: True
+##### merge on LOCAL market panel (output to scratch)
+Market rows: 29484
+Rows with an available CPI event: 6115
+Rows before first CPI event (left unmatched): 23369
+Unique CPI release months used: 18
+##### default --date-column (documented README command)
+ValueError: Market panel is missing date column: date

@@ -1,0 +1,47 @@
+  cpi_mospi_2012base_point_in_time_vintages_part1_2024-11_to_2025-05.csv: fused records repaired in memory = 2
+  cpi_mospi_2012base_point_in_time_vintages_part2_2025-06_to_2025-12.csv: fused records repaired in memory = 1
+rows: events 18 map1 18 map2 18 PIT parts 3990 snapshots 3990 headline vintages 108 rebuilt 3990
+rebuilt vs committed PIT parts: same keys True | values equal True | release dates equal True | sessions equal True
+snapshot CSV vs PIT parts: same keys True | values equal True | dup keys 0
+two availability maps: column-wise differing rows: [('release_workbook_month', 0), ('reference_month', 0), ('base_year', 0), ('actual_release_date', 0), ('embargo_time_ist', 0), ('timestamp_status', 0), ('next_nse_session', 0), ('source_url', 1), ('notes', 4)]
+  differing source_url rows: [['2025-06', 'https://www.mospi.gov.in/sites/default/files/press_release/CPI_PR_14Jun25.pdf']] vs ['https://www.cpi.mospi.gov.in/PDFile/Press/PR%20June%202025.pdf']
+events vs map1: release date equal True | session equal True | source_url equal rows 17 /18
+ref_month    release dow  time next_session_in_file first_panel_session_after  match  release_day_is_session
+  2024-07 2024-08-12 Mon 17:30           2024-08-13                2024-08-13   True                    True
+  2024-08 2024-09-12 Thu 17:30           2024-09-13                2024-09-13   True                    True
+  2024-09 2024-10-14 Mon 17:30           2024-10-15                2024-10-15   True                    True
+  2024-10 2024-11-12 Tue 16:00           2024-11-13                2024-11-13   True                    True
+  2024-11 2024-12-12 Thu 16:00           2024-12-13                2024-12-13   True                    True
+  2024-12 2025-01-13 Mon 16:00           2025-01-14                2025-01-14   True                    True
+  2025-01 2025-02-12 Wed 16:00           2025-02-13                2025-02-13   True                    True
+  2025-02 2025-03-12 Wed 16:00           2025-03-13                2025-03-13   True                    True
+  2025-03 2025-04-15 Tue 16:00           2025-04-16                2025-04-16   True                    True
+  2025-04 2025-05-13 Tue 16:00           2025-05-14                2025-05-14   True                    True
+  2025-05 2025-06-12 Thu 16:00           2025-06-13                2025-06-13   True                    True
+  2025-06 2025-07-14 Mon 16:00           2025-07-15                2025-07-15   True                    True
+  2025-07 2025-08-12 Tue 16:00           2025-08-13                2025-08-13   True                    True
+  2025-08 2025-09-12 Fri 16:00           2025-09-15                2025-09-15   True                    True
+  2025-09 2025-10-13 Mon 16:00           2025-10-14                2025-10-14   True                    True
+  2025-10 2025-11-12 Wed 16:00           2025-11-13                2025-11-13   True                    True
+  2025-11 2025-12-12 Fri 16:00           2025-12-15                2025-12-15   True                    True
+  2025-12 2026-01-12 Mon 16:00           2026-01-13                2026-01-13   True                    True
+event index == same-release snapshot value (14 releases with snapshots): 14 comparable; 14 equal | inflation diffs max abs: 0.0
+event vs Annex-I provisional headline (18): index equal 18 | inflation equal 18
+combined index, first vs latest vintage (months with >1 distinct value):
+                 first_published  latest_published  n_distinct_values
+reference_month                                                      
+2025-01                    193.5             193.4                2.0
+2025-07                    196.0             196.1                2.0
+2025-09                    197.2             197.0                2.0
+pre-Nov-2024 reference months with any cross-vintage difference: 0 of 142
+
+merged rows 29484 cols 22 matched 6115 first matched date 2024-08-13 max cpi age days 300 | matched rows per ticker: {'BHARTIARTL.NS': 556, 'HDFCBANK.NS': 556, 'HINDUNILVR.NS': 556, 'ICICIBANK.NS': 556, 'INFY.NS': 556, 'ITC.NS': 556, 'LT.NS': 556, 'RELIANCE.NS': 556, 'SUNPHARMA.NS': 556, 'TCS.NS': 556, '^NSEI': 555}
+order preserved vs panel: True | one vintage per date: True
+rows with CPI older than 45 days: 1870 | share of all panel rows with any CPI: 20.74% | train-partition rows with CPI (Date<=2023-12-28): 0
+  2024-08-12 [nan] [nan]
+  2024-08-13 ['2024-07'] [192.9]
+  2025-05-13 ['2025-03'] [192.0]
+  2025-05-14 ['2025-04'] [192.6]
+  2026-01-12 ['2025-11'] [197.9]
+  2026-01-13 ['2025-12'] [198.0]
+  2026-01-15 ['2025-12'] [198.0]

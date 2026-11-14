@@ -1,0 +1,72 @@
+panel shape (29484, 11) cols ['Date', 'Ticker', 'Name', 'Adj Close', 'Close', 'Dividends', 'High', 'Low', 'Open', 'Stock Splits', 'Volume']
+dtypes ok; date range 2016-01-01 2026-11-09 tickers 11
+dup keys 0 | NaN cells 0
+sorted by Ticker,Date: True
+raw==panel per ticker (all rows, all columns): {'BHARTIARTL.NS': True, 'HDFCBANK.NS': True, 'HINDUNILVR.NS': True, 'ICICIBANK.NS': True, 'INFY.NS': True, 'ITC.NS': True, 'LT.NS': True, '^NSEI': True, 'RELIANCE.NS': True, 'SUNPHARMA.NS': True, 'TCS.NS': True}
+union dates 2681 equity-union 2681 index 2674
+weekend dates in panel: ['2019-10-27(Sun)', '2020-11-14(Sat)', '2025-02-01(Sat)']
+in equities not index: ['2016-01-01', '2016-08-12', '2018-01-01', '2019-01-01', '2019-10-27', '2020-11-14', '2026-01-15']
+in index not equities: []
+
+Dates where >=5 of 10 equities have zero volume or unchanged close:
+             n  zero_vol  stale  flat
+Date                                 
+2025-03-18  10         9      9     9
+2026-01-15  10        10     10    10
+
+Index rows on those dates (Close, Volume):
+                Open          High           Low         Close    Volume
+Date                                                                    
+2025-03-18  22662.25  22857.800781  22599.199219  22834.300781  272600.0
+2026-01-15       NaN           NaN           NaN           NaN       NaN
+
+PER-TICKER QUALITY
+                                             0            1              2             3           4           5           6            7             8           9           10
+ticker                            BHARTIARTL.NS  HDFCBANK.NS  HINDUNILVR.NS  ICICIBANK.NS     INFY.NS      ITC.NS       LT.NS  RELIANCE.NS  SUNPHARMA.NS      TCS.NS       ^NSEI
+first_date                           2016-01-01   2016-01-01     2016-01-01    2016-01-01  2016-01-01  2016-01-01  2016-01-01   2016-01-01    2016-01-01  2016-01-01  2016-01-04
+last_date                            2026-11-09   2026-11-09     2026-11-09    2026-11-09  2026-11-09  2026-11-09  2026-11-09   2026-11-09    2026-11-09  2026-11-09  2026-11-09
+rows                                       2681         2681           2681          2681        2681        2681        2681         2681          2681        2681        2674
+union_sessions_in_span                     2681         2681           2681          2681        2681        2681        2681         2681          2681        2681        2680
+missing_vs_union                              0            0              0             0           0           0           0            0             0           0           6
+duplicate_dates                               0            0              0             0           0           0           0            0             0           0           0
+missing_values                                0            0              0             0           0           0           0            0             0           0           0
+invalid_high_low                              0            0              0             0           0           0           0            0             0           0           0
+nonpositive_price_rows                        0            0              0             0           0           0           0            0             0           0           0
+negative_volume                               0            0              0             0           0           0           0            0             0           0           0
+zero_volume_rows                              2            2              2             2           2           1           2            2             2           2          28
+unchanged_close_rows                          8            5              3             5           6          13           2            4             7           5           3
+flat_ohlc_rows                                2            2              2             2           2           1           2            2             2           2           0
+max_calendar_gap_days                         5            5              5             5           5           5           5            5             5           5           5
+gaps_over_5_days                              0            0              0             0           0           0           0            0             0           0           0
+abs_adj_logret_gt_10pct                       3            3              2             8           4           5           3            7             3           0           1
+min_adj_logret                          -0.1273     -0.13475       -0.09289       -0.1966    -0.17659    -0.13338    -0.17752     -0.14103      -0.12171    -0.09883    -0.13904
+max_adj_logret                          0.10698      0.10975        0.12663       0.13704     0.11363     0.09573      0.1322      0.13731       0.10447      0.0939       0.084
+max_abs_diff_close_vs_adj_logret        0.01251       0.0164        0.01157       0.02037     0.02422     0.05212     0.01918       0.0112        0.0087     0.02248         0.0
+dividend_events                              11           12             22            10          23          17          14           11            18          45           0
+split_events                                  0            2              0             1           1           1           1            2             0           1           0
+adj_over_close_min                     0.935431     0.904604       0.842104      0.926023    0.730431    0.679756    0.847066     0.943581      0.916414    0.770247         1.0
+adj_over_close_max                          1.0          1.0            1.0           1.0         1.0         1.0         1.0          1.0           1.0         1.0         1.0
+years_of_history                          10.86        10.86          10.86         10.86       10.86       10.86       10.86        10.86         10.86       10.86       10.85
+BHARTIARTL.NS | missing: - | big moves: 2020-03-23;2020-04-07;2020-05-19 | splits: -
+HDFCBANK.NS | missing: - | big moves: 2020-03-18;2020-03-23;2020-03-25 | splits: 2019-09-19:2.0;2025-08-26:2.0
+HINDUNILVR.NS | missing: - | big moves: 2020-03-20;2020-04-07 | splits: -
+ICICIBANK.NS | missing: - | big moves: 2017-10-25;2018-10-29;2020-03-16;2020-03-23;2020-04-07;2020-05-04;2021-02-01;2021-10-25 | splits: 2017-06-20:1.1
+INFY.NS | missing: - | big moves: 2017-08-18;2019-10-22;2020-03-23;2020-03-24 | splits: 2018-09-04:2.0
+ITC.NS | missing: - | big moves: 2017-07-18;2020-02-03;2020-03-12;2020-03-23;2026-01-01 | splits: 2016-07-01:1.5
+LT.NS | missing: - | big moves: 2016-05-26;2020-03-23;2024-06-04 | splits: 2017-07-13:1.5
+RELIANCE.NS | missing: - | big moves: 2017-02-22;2020-03-09;2020-03-20;2020-03-23;2020-03-25;2020-04-07;2026-11-02 | splits: 2017-09-07:2.0;2024-10-28:2.0
+SUNPHARMA.NS | missing: - | big moves: 2017-05-29;2020-03-23;2020-04-07 | splits: -
+TCS.NS | missing: - | big moves: - | splits: 2018-05-31:2.0
+^NSEI | missing: 2016-08-12;2018-01-01;2019-01-01;2019-10-27;2020-11-14;2026-01-15 | big moves: 2020-03-23 | splits: -
+
+Adj/Close ratio step dates not matching a Dividends entry (tolerance 1e-4), per ticker:
+  BHARTIARTL.NS: steps=11 dividends=11 step_without_div=0 div_without_step=0 | dates: []
+  HDFCBANK.NS: steps=12 dividends=12 step_without_div=0 div_without_step=0 | dates: []
+  HINDUNILVR.NS: steps=22 dividends=22 step_without_div=0 div_without_step=0 | dates: []
+  ICICIBANK.NS: steps=10 dividends=10 step_without_div=0 div_without_step=0 | dates: []
+  INFY.NS: steps=23 dividends=23 step_without_div=0 div_without_step=0 | dates: []
+  ITC.NS: steps=17 dividends=17 step_without_div=0 div_without_step=0 | dates: []
+  LT.NS: steps=14 dividends=14 step_without_div=0 div_without_step=0 | dates: []
+  RELIANCE.NS: steps=11 dividends=11 step_without_div=0 div_without_step=0 | dates: []
+  SUNPHARMA.NS: steps=18 dividends=18 step_without_div=0 div_without_step=0 | dates: []
+  TCS.NS: steps=45 dividends=45 step_without_div=0 div_without_step=0 | dates: []

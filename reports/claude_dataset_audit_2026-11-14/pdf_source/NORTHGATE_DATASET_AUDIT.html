@@ -1,0 +1,202 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Northgate Dataset Audit</title>
+<style>
+@page{size:A4;margin:18mm 16mm 18mm 16mm}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:10.2pt;line-height:1.42;color:#1b1f24}
+h1{font-size:22pt;margin:0 0 4pt}h2{font-size:14pt;margin:18pt 0 6pt;padding-bottom:3pt;border-bottom:1.5pt solid #1f4e79;color:#1f4e79;page-break-after:avoid}
+h3{font-size:11pt;margin:12pt 0 4pt;page-break-after:avoid}
+p{margin:0 0 7pt}ul,ol{margin:0 0 7pt 16pt;padding:0}li{margin-bottom:2.5pt}
+table{border-collapse:collapse;width:100%;margin:6pt 0 10pt;font-size:8.8pt;page-break-inside:auto}
+th{background:#1f4e79;color:#fff;text-align:left;padding:4pt 5pt;font-weight:600}
+td{border-bottom:.5pt solid #c9d1d9;padding:3.5pt 5pt;vertical-align:top}tr{page-break-inside:avoid}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.box{border:1pt solid #1f4e79;background:#f1f6fb;padding:8pt 10pt;margin:8pt 0 10pt;page-break-inside:avoid}
+.warn{border-color:#9a3412;background:#fff5ee}
+.small{font-size:8.5pt;color:#57606a}code{font-family:Menlo,monospace;font-size:8.6pt}
+.cover{margin-top:60mm}.cover p{font-size:11pt}.pb{page-break-before:always}
+.ok{color:#1a7f37;font-weight:600}.bad{color:#b42318;font-weight:600}.mid{color:#9a6700;font-weight:600}
+</style></head><body>
+
+<div class="cover">
+<p class="small">NORTHGATE STOCK PREDICTOR</p>
+<h1>Dataset, Data-Research and Project-Completion Audit</h1>
+<p>Executive report for the project owner</p>
+<p class="small">Audit date: 14 November 2026 (IST, UTC+05:30) &nbsp;·&nbsp; Mode: read-only &nbsp;·&nbsp; Repository: jasrajdev/Northgate-Stock-Predictor, branch main<br>
+Full technical detail: <code>FULL_TECHNICAL_AUDIT.md</code> in the same folder. This PDF is a summary of that file.</p>
+<div class="box"><b>In one sentence.</b> The price data, labels and splits you built are internally correct and reproducible, and the main "mystery" about Yahoo prices is now explained; but the dataset is not yet trustworthy enough for conclusions because of 19 bad price rows, two distorted labels, one look-ahead feature, a moving test boundary, and an experiment whose code and data are not in the repository; and the macro, news, sentiment, portfolio, dashboard and report parts of the brief have not been started.</div>
+<p class="small">This is a research and decision-support project. Nothing in this report is financial advice and no profitability is promised.</p>
+</div>
+
+<h2 class="pb">1. Executive summary</h2>
+<p><b>What I did.</b> I read the project documents and the original 30-page brief (found in your Downloads folder), read every script and the Kaggle notebook, recomputed your features, labels and splits from the raw files, checked all eleven NSE files you downloaded against Yahoo, rebuilt the CPI tables from the eighteen government workbooks, ran the tests, and listed every file with its fingerprint (hash). I changed nothing in your project.</p>
+<p><b>The five things to know.</b></p>
+<ol>
+<li><b>Your numbers check out.</b> 29,484 price rows, 29,473 labelled rows and the 21,708 / 6,379 / 1,386 split all reproduce exactly. The saved files are bit-for-bit what the scripts produce.</li>
+<li><b>The Yahoo-versus-NSE gap is explained.</b> Yahoo rewrites old prices every time a company later has a split, bonus, rights issue or (usually) a demerger. On all 110 stock-days I could compare, Yahoo equals the official NSE price multiplied by the factors of later events, with no remainder. For days with no later event, Yahoo equals NSE exactly.</li>
+<li><b>The data contains real errors.</b> Nineteen rows are copies of the previous day's price with zero volume: ten on a day the exchange was closed (15 Jan 2026) and nine on a normal trading day (18 Mar 2025). At least seven real trading sessions are missing. Two labels are distorted by demergers (ITC, Hindustan Unilever).</li>
+<li><b>The first model experiment is not reproducible from the repository.</b> It ran on a different dataset from the one on your Mac, with code edited inside the Kaggle notebook and never committed. Its results exist only as text printed in that notebook unless the Kaggle files are downloaded.</li>
+<li><b>Most of the brief is still ahead.</b> Macro data beyond a partial inflation table, all news and sentiment, portfolio optimisation, backtesting, recommendations, the dashboard and the report are not started. My estimate of the remaining work is seven to eight weeks for one person. The recorded deadline is 15 November 2026.</li>
+</ol>
+
+<h2>2. What is complete (verified in this audit)</h2>
+<table><tr><th style="width:36%">Item</th><th>Evidence</th></tr>
+<tr><td>Raw Yahoo downloads, 10 stocks + NIFTY 50, 2016-01-01 to 2026-11-09 (10.9 years)</td><td>11 files; identical to the combined panel on every row; no duplicates, no missing values, no impossible high/low values</td></tr>
+<tr><td>Feature panel (24 features) and next-session labels</td><td>Recomputed in memory: zero difference. Label date is always the next row for the same stock.</td></tr>
+<tr><td>Train / validation / test files</td><td>Recomputed: identical. No row appears twice; periods do not overlap.</td></tr>
+<tr><td>Backward-looking feature code</td><td>Cut the data at four dates and recomputed: no feature value changed</td></tr>
+<tr><td>Eleven official NSE price files</td><td>All fingerprints match your notes; correct dates; one ordinary-share row per target stock. The six "not yet validated" files are now validated.</td></tr>
+<tr><td>Inflation (CPI) release tables, July 2024 to December 2025</td><td>Rebuilt from the 18 workbooks: 3,990 rows match. Each release is mapped to the first trading day after publication. The join to prices reproduces the documented 6,115 matched rows.</td></tr>
+<tr><td>Test period isolation</td><td>No training code opens the test file. No test-period result has been computed by anyone, including this audit.</td></tr>
+<tr><td>Tests</td><td>5 of 5 pass when started as <code>python -m pytest</code></td></tr></table>
+
+<h2>3. What is incomplete</h2>
+<table><tr><th style="width:30%">Area</th><th style="width:16%">Status</th><th>What is missing</th></tr>
+<tr><td>Clean, frozen price dataset</td><td class="mid">Partial</td><td>Bad rows, missing sessions, no fixed snapshot; a new download changes history</td></tr>
+<tr><td>Corporate-action record</td><td class="mid">Partial</td><td>15 price-changing events found (8 were known); 7 lack primary-source confirmation; completeness unproven</td></tr>
+<tr><td>Official benchmark with dividends (NIFTY 50 TRI)</td><td class="bad">Not started</td><td>Only the price index is held</td></tr>
+<tr><td>Volatility index, interest rates, exchange rate</td><td class="bad">Not started</td><td>Two downloader scripts exist; neither has ever been run</td></tr>
+<tr><td>Inflation as a model input</td><td class="mid">Partial</td><td>Covers none of the training period (0 rows) and 21% of all rows; stops at December 2025</td></tr>
+<tr><td>Historical news</td><td class="bad">Not started</td><td>No news file of any kind exists</td></tr>
+<tr><td>FinBERT / VADER sentiment</td><td class="bad">Not started</td><td>Depends on news</td></tr>
+<tr><td>Exploratory analysis notebook; finance maths from scratch</td><td class="bad">Not started</td><td>Both are graded items in the brief</td></tr>
+<tr><td>Eight-model comparison</td><td class="mid">Partial</td><td>Run once, untuned, on validation data only; code not in Git</td></tr>
+<tr><td>Multi-day forecasts</td><td class="bad">Not started</td><td>Horizons not chosen</td></tr>
+<tr><td>Portfolio, backtest, recommendations, dashboard, report</td><td class="bad">Not started</td><td>-</td></tr></table>
+
+<h2>4. Critical blockers (priority P0)</h2>
+<table><tr><th style="width:4%">#</th><th style="width:30%">Blocker</th><th>Why it matters</th><th style="width:22%">Fix</th></tr>
+<tr><td>1</td><td>Your local folder is 319 commits behind GitHub</td><td>24 files (settings, CPI data, 9 scripts, tests, 6 documents) are missing locally; anything run on the Mac uses old material</td><td>One <code>git pull</code> (safe: no file collisions)</td></tr>
+<tr><td>2</td><td>The experiment's code and results are not in the repository</td><td>The edited scripts and the 1,170-line walk-forward program exist only inside a notebook on your Desktop; result files and 24 model files only on Kaggle</td><td>Download from Kaggle; commit code</td></tr>
+<tr><td>3</td><td>19 stale or phantom price rows</td><td>They create 19 false "no change" labels (73% of all such labels in validation) and 19 two-day moves counted as one-day</td><td>Remove 10; replace 9 from one official file</td></tr>
+<tr><td>4</td><td>Seven or more real trading sessions missing; index and stocks disagree on dates</td><td>The brief requires one exchange calendar with no unexplained gaps</td><td>Build an official calendar table; apply one rule</td></tr>
+<tr><td>5</td><td>One feature uses future information (<code>adj_close_vs_close</code>)</td><td>Its value on any day is set by dividends paid later. It is in your local dataset and would be fed to the models by the committed training scripts</td><td>Delete it; use an approved feature list</td></tr>
+<tr><td>6</td><td>Price levels are used as inputs</td><td>"Adjusted" prices from years ago change whenever a new dividend is paid, so the level on a past day is not what anyone saw then</td><td>Use returns and ratios only</td></tr>
+<tr><td>7</td><td>The test boundary moves when data is refreshed</td><td>One trading day that is "test" on your Mac was "validation" on Kaggle</td><td>Write fixed dates into the settings file</td></tr>
+<tr><td>8</td><td>Two demerger labels are distorted</td><td>ITC (3 Jan 2025) and Hindustan Unilever (4 Dec 2025) show losses of 4.7% and 5.2% that partly reflect shares handed to investors, not money lost</td><td>Flag; test with and without</td></tr>
+<tr><td>9</td><td>Two different pipelines write files with the same names</td><td>The Mac scripts and the GPU script create different features; running the GPU script on the Mac would overwrite your dataset</td><td>Merge into one pipeline</td></tr>
+<tr><td>10</td><td>Price data is not protected from accidental upload</td><td>Data folders are not in <code>.gitignore</code>; Yahoo and NSE terms do not allow redistribution</td><td>Add ignore rules; write a data-rights note</td></tr></table>
+
+<h2>5. Dataset status in detail</h2>
+<h3>5.1 Price data per stock</h3>
+<table><tr><th>Stock</th><th class="num">Rows</th><th class="num">Bad rows</th><th class="num">Dividends</th><th class="num">Splits / bonuses</th><th>Notes</th></tr>
+<tr><td>BHARTIARTL</td><td class="num">2,681</td><td class="num">2</td><td class="num">11</td><td class="num">0</td><td>Two rights issues (2019, 2021) correctly smoothed by Yahoo</td></tr>
+<tr><td>HDFCBANK</td><td class="num">2,681</td><td class="num">2</td><td class="num">12</td><td class="num">2</td><td>2019 split, 2025 bonus: verified against NSE</td></tr>
+<tr><td>HINDUNILVR</td><td class="num">2,681</td><td class="num">2</td><td class="num">22</td><td class="num">0</td><td><b>December 2025 demerger not adjusted</b></td></tr>
+<tr><td>ICICIBANK</td><td class="num">2,681</td><td class="num">2</td><td class="num">10</td><td class="num">1</td><td>-</td></tr>
+<tr><td>INFY</td><td class="num">2,681</td><td class="num">2</td><td class="num">23</td><td class="num">1</td><td>-</td></tr>
+<tr><td>ITC</td><td class="num">2,681</td><td class="num">1</td><td class="num">17</td><td class="num">1</td><td><b>January 2025 demerger only partly adjusted</b></td></tr>
+<tr><td>LT</td><td class="num">2,681</td><td class="num">2</td><td class="num">14</td><td class="num">1</td><td>-</td></tr>
+<tr><td>RELIANCE</td><td class="num">2,681</td><td class="num">2</td><td class="num">11</td><td class="num">2</td><td>Rights 2020, demerger 2023, bonus 2024: explained</td></tr>
+<tr><td>SUNPHARMA</td><td class="num">2,681</td><td class="num">2</td><td class="num">18</td><td class="num">0</td><td>-</td></tr>
+<tr><td>TCS</td><td class="num">2,681</td><td class="num">2</td><td class="num">45</td><td class="num">1</td><td>-</td></tr>
+<tr><td>NIFTY 50 (price index)</td><td class="num">2,674</td><td class="num">-</td><td class="num">0</td><td class="num">0</td><td>6 real sessions missing; volume unusable; no dividends</td></tr></table>
+<p class="small">All series: no duplicate dates, no missing values, no invalid high/low, longest gap 5 calendar days.</p>
+
+<h3>5.2 How Yahoo's prices relate to official NSE prices</h3>
+<p>Think of five different "prices" for the same day: (1) the price actually traded, (2) that price rescaled for later splits, bonuses and rights, (3) rescaled again for later dividends, (4) a full "what did a shareholder earn" series, and (5) a series using only what was known on that day. Yahoo's <code>Close</code> is type 2, <code>Adj Close</code> is type 3. You hold type 1 for only 11 days. Types 4 and 5 do not exist in the project.</p>
+<table><tr><th>Example</th><th class="num">NSE close</th><th class="num">Yahoo close</th><th class="num">Ratio</th><th>Explanation</th></tr>
+<tr><td>BHARTIARTL 23 Apr 2019</td><td class="num">316.50</td><td class="num">310.67</td><td class="num">0.98157</td><td>2021 rights issue</td></tr>
+<tr><td>BHARTIARTL 22 Apr 2019</td><td class="num">349.40</td><td class="num">314.90</td><td class="num">0.90126</td><td>0.91818 (2019 rights) × 0.98157</td></tr>
+<tr><td>RELIANCE 13 May 2020</td><td class="num">1,496.45</td><td class="num">690.61</td><td class="num">0.46150</td><td>0.923 (2023 demerger) × 0.5 (2024 bonus)</td></tr>
+<tr><td>HDFCBANK 22 Apr 2019</td><td class="num">2,268.70</td><td class="num">567.17</td><td class="num">0.25000</td><td>2019 split × 2025 bonus</td></tr>
+<tr><td>ITC 25 Oct 2024</td><td class="num">482.30</td><td class="num">464.41</td><td class="num">0.96292</td><td>2025 hotel demerger (partial)</td></tr>
+<tr><td>TCS, INFY, LT, SUNPHARMA, ICICIBANK (11 days each)</td><td class="num">-</td><td class="num">-</td><td class="num">1.00000</td><td>No later event: Yahoo equals NSE</td></tr></table>
+<p>What this means for you: daily returns from Yahoo are sound for model training except around the two demergers; price <i>levels</i> are not what was seen at the time and should not be model inputs. Do not "undo" Yahoo by doubling or by a single multiplier; the factor differs by date and by stock.</p>
+
+<h3>5.3 Inflation (CPI) data</h3>
+<p>The work is careful and correct: values, provisional/final markers and actual publication times are preserved, and each release is used only from the next trading day. Two limits stop it being useful yet. It begins in August 2024, after the training period ends, so no model can learn from it. And it ends with December 2025, after which the same value is repeated for 300 days. One of the saved files is also damaged (three records run together) and cannot be opened by standard tools; the content is recoverable.</p>
+
+<h2>6. Research status</h2>
+<table><tr><th style="width:26%">Topic</th><th>Status</th></tr>
+<tr><td>Price sources</td><td>Thoroughly researched. Official NSE routes identified; rights position unresolved (NSE's terms restrict automated collection).</td></tr>
+<tr><td>Corporate actions</td><td>Eight events documented from primary sources; this audit adds seven and explains Yahoo's treatment.</td></tr>
+<tr><td>Macro sources</td><td>Researched: RBI policy rate, USD/INR, call money, US yields. Nothing downloaded.</td></tr>
+<tr><td>News</td><td>Candidates compared. No free source is known to cover ten Indian stocks for ten years with reliable times; a one-day trial is needed to find out.</td></tr>
+<tr><td>Academic papers</td><td>Two reviewed papers study monthly returns across thousands of stocks. Useful for method discipline; their results do not transfer to a ten-stock daily study.</td></tr>
+<tr><td>First experiment</td><td>Structure was sound (five time-ordered folds, no test data). It is best labelled "exploratory": untuned models, one random seed, flawed data rows, and a headline average dominated by the two highest-priced stocks (41% of the error comes from LT and TCS).</td></tr></table>
+<div class="box"><b>About "no model beat the simple baseline".</b> Predicting that tomorrow's price equals today's is very hard to beat for next-day prices, and the brief treats reporting this honestly as a valid outcome. The first experiment neither proves the models useless nor shows any edge. The differences seen (0.7% to 1.7% of average error) are too small to interpret without uncertainty ranges. One correction to the notes: the baseline's "0.5% directional accuracy" is simply the share of days with exactly zero change, because a forecast of "no change" was scored as neither up nor down.</div>
+
+<h2>7. Data-source recommendations</h2>
+<table><tr><th style="width:20%">Need</th><th style="width:30%">Recommended source</th><th>Cost / access</th><th>Caution</th></tr>
+<tr><td>Daily prices</td><td>Keep Yahoo for returns; check against NSE per-stock archive exports</td><td>Free; manual exports</td><td>Keep files private; freeze one snapshot</td></tr>
+<tr><td>Corporate actions</td><td>NSE corporate-actions export per stock + exchange circulars</td><td>Free; manual</td><td>Ex-date is not announcement date</td></tr>
+<tr><td>Benchmark</td><td>NIFTY 50 Total Returns Index (NSE Indices)</td><td>Free; manual</td><td>Price index understates the benchmark by the dividend yield</td></tr>
+<tr><td>Volatility</td><td>India VIX; US VIX with one-day lag</td><td>Free</td><td>US close comes after India's</td></tr>
+<tr><td>Rates and currency</td><td>RBI policy-rate table; RBI/FBIL USD/INR; US 10-year and 3-month yields</td><td>Free</td><td>Use announcement dates</td></tr>
+<tr><td>Inflation</td><td>MoSPI monthly press releases back to 2015</td><td>Free; 1.5–2 days of extraction</td><td>Never invent release times</td></tr>
+<tr><td>News</td><td>GDELT (trial first) + NSE announcements</td><td>Free tier; Google account</td><td>Store headlines and scores only</td></tr>
+<tr><td>Sentiment</td><td>FinBERT and VADER, as the brief names</td><td>Free</td><td>FinBERT licence is non-commercial</td></tr>
+<tr><td>Company financials</td><td>Not required by the brief</td><td>-</td><td>Optional extension only</td></tr></table>
+<p class="small">The full comparison of 36 sources is in <code>DATA_SOURCE_MATRIX.csv</code>.</p>
+
+<h2>8. Leakage and integrity findings</h2>
+<p>"Leakage" means information from the future reaching a model. I found <b>no leakage in how the data is split, labelled or scaled</b>, and the test period is untouched. The problems are:</p>
+<table><tr><th style="width:11%">Severity</th><th style="width:34%">Finding</th><th>Where</th></tr>
+<tr><td class="bad">Critical</td><td>A feature built from future dividends</td><td><code>scripts/build_features.py</code> line 82</td></tr>
+<tr><td class="bad">High</td><td>Restated price levels used as inputs</td><td><code>build_features.py</code> lines 45–50; "Adj Close" among the 25 experiment inputs</td></tr>
+<tr><td class="bad">High</td><td>Test boundary recalculated from the newest data</td><td><code>create_chronological_splits.py</code> lines 58–59</td></tr>
+<tr><td class="bad">High</td><td>Executed experiment differs from committed code</td><td>Notebook cells 26, 27, 32, 39, 70</td></tr>
+<tr><td class="bad">High</td><td>Two pipelines, same file names</td><td><code>prepare_gpu_training_data.py</code> versus the three Mac scripts</td></tr>
+<tr><td class="mid">Medium</td><td>Committed deep-learning script picks its best version using the same data it reports on</td><td><code>train_deep_models.py</code> lines 160–194 (the notebook's walk-forward version fixes this)</td></tr>
+<tr><td class="mid">Medium</td><td>Quality report says "0 problems" although 19 bad rows exist</td><td><code>download_market_data.py</code> lines 96–116</td></tr>
+<tr><td class="mid">Medium</td><td>Damaged CPI files; documented command fails</td><td><code>data/external/…part1/part2.csv</code>; <code>README_CPI.md</code></td></tr>
+<tr><td>Low</td><td>The test file was opened once on Kaggle to print its size and dates (no results looked at)</td><td>Notebook cell 52</td></tr></table>
+<p class="small">All 19 findings with line numbers, evidence, fixes and tests: <code>LEAKAGE_CODE_AUDIT.md</code>.</p>
+
+<h2>9. Priority order, effort and dependencies</h2>
+<table><tr><th style="width:8%">Phase</th><th style="width:30%">Goal</th><th>Main tasks</th><th class="num" style="width:13%">Est. days</th></tr>
+<tr><td>0</td><td>Secure what exists</td><td>Sync with GitHub; rescue Kaggle files; correct the notes; protect data from upload</td><td class="num">1</td></tr>
+<tr><td>1</td><td>Trustworthy data</td><td>Frozen snapshot; trading calendar; fix bad rows; complete the event record; check against official prices</td><td class="num">6–8</td></tr>
+<tr><td>2</td><td>One reproducible, leak-proof pipeline</td><td>Remove look-ahead and level features; merge pipelines; tests; fixed evaluation rules</td><td class="num">4–5</td></tr>
+<tr><td>3</td><td>Complete the dataset in the brief</td><td>Benchmark, volatility, rates, currency, inflation history, news trial, sentiment, analysis notebook</td><td class="num">8–10</td></tr>
+<tr><td>4</td><td>Experiments</td><td>Re-run price-only; add context; add sentiment; robustness; one final test</td><td class="num">8–9</td></tr>
+<tr><td>5</td><td>Product</td><td>Portfolio, backtest, recommendations, dashboard, report</td><td class="num">7–8</td></tr>
+<tr><td colspan="3"><b>Total (one person, ±30%)</b></td><td class="num"><b>34–41</b></td></tr></table>
+<p>Do not start phases 4 or 5 while any phase 1–2 blocker is open; results built on unresolved data would have to be redone. All 52 tasks, each with dependencies and a pass/fail test, are in <code>REMAINING_TASKS.csv</code>.</p>
+
+<h2>10. Decisions only you can make</h2>
+<table><tr><th style="width:5%">ID</th><th style="width:27%">Decision</th><th>My recommendation</th></tr>
+<tr><td>D-15</td><td>What to submit on 15 November</td><td>An honest partial submission now; request more time if possible</td></tr>
+<tr><td>D-02</td><td>What exactly the models predict</td><td>Next-day return on the current data, with the two demerger days flagged; report prices from it. The brief allows "next-day adjusted close or next-day log return".</td></tr>
+<tr><td>D-03</td><td>Labels that cross a demerger</td><td>Keep and flag; also report results without them</td></tr>
+<tr><td>D-04</td><td>Fixed split dates</td><td>Freeze the Mac dates (test from 11 May 2026)</td></tr>
+<tr><td>D-05</td><td>The 19 bad rows</td><td>Delete the 10 phantom rows; replace the 9 stale rows from the official file</td></tr>
+<tr><td>D-06</td><td>Special sessions</td><td>Exclude them for all instruments and say so</td></tr>
+<tr><td>D-01</td><td>When the prediction is made</td><td>After the close; state the assumed buying price in any backtest</td></tr>
+<tr><td>D-17</td><td>How results are scored</td><td>Per-stock, return-based, equal weight per stock; uncertainty ranges</td></tr>
+<tr><td>D-14</td><td>Use of NSE data</td><td>Manual exports for checking only; kept private</td></tr>
+<tr><td>D-08</td><td>Benchmark</td><td>NIFTY 50 Total Returns Index</td></tr>
+<tr><td>D-07</td><td>Stock universe</td><td>A fixed, named ten-stock case study with the bias stated</td></tr>
+<tr><td>D-10</td><td>Inflation data</td><td>Extend to 2015 if time allows; otherwise leave out of models</td></tr>
+<tr><td>D-09</td><td>US series named in the brief</td><td>Include yields and VIX, lagged one day</td></tr>
+<tr><td>D-11</td><td>News source</td><td>Run the one-day trial before committing</td></tr>
+<tr><td>D-12</td><td>Sentiment licence</td><td>Accept FinBERT's non-commercial licence for this academic project</td></tr>
+<tr><td>D-13</td><td>Multi-day horizons</td><td>5 and 21 trading days</td></tr>
+<tr><td>D-16</td><td>Split proportions</td><td>Keep the agreed split; explain the difference from 70/15/15</td></tr>
+<tr><td>D-18</td><td>Trading costs</td><td>One stated cost assumption with a doubled-cost check</td></tr></table>
+<p class="small">Options and trade-offs for each: <code>USER_DECISIONS_REQUIRED.md</code>.</p>
+
+<h2>11. Recommended next steps</h2>
+<ol>
+<li><b>Today:</b> download the Kaggle output folder (results and model files) before the session storage is cleared.</li>
+<li>Approve the three no-risk housekeeping steps: sync the local folder with GitHub, correct four statements in the notes, and add data folders to <code>.gitignore</code>.</li>
+<li>Decide D-15 (deadline) and D-02 to D-06 (target, splits, bad rows, sessions). These unblock everything else.</li>
+<li>Build the trading-calendar table and repair the dataset; freeze it with fingerprints.</li>
+<li>Merge the pipelines, remove the look-ahead and level features, add tests.</li>
+<li>Only then re-run the price-only comparison, add context and news, and move to the portfolio and dashboard.</li>
+</ol>
+<div class="box warn"><b>Limits of this audit.</b> Three long documents were read in part, not in full. Most statements about outside data sources come from your own research notes and were not re-checked today; eleven were checked afresh and are listed in the technical report. Seven older bonus/split events and the earliest special sessions are not confirmed from exchange documents. Dividend amounts were not checked. No models were run. The Kaggle result files were not available to me.</div>
+
+<h2>12. Deliverables in this folder</h2>
+<table><tr><th>File</th><th>Purpose</th></tr>
+<tr><td><code>NORTHGATE_DATASET_AUDIT.pdf</code></td><td>This summary</td></tr>
+<tr><td><code>FULL_TECHNICAL_AUDIT.md</code></td><td>Complete findings, sections A–T</td></tr>
+<tr><td><code>REMAINING_TASKS.csv</code> / <code>.json</code></td><td>52 tasks with priority, dependencies and acceptance tests</td></tr>
+<tr><td><code>DATASET_INVENTORY.csv</code> / <code>.json</code></td><td>77 files and expected-but-missing items, with fingerprints</td></tr>
+<tr><td><code>DATA_SOURCE_MATRIX.csv</code></td><td>36 data sources compared</td></tr>
+<tr><td><code>CORPORATE_ACTION_AUDIT.md</code>, <code>corporate_action_event_ledger.csv</code>, <code>price_basis_comparison.csv</code></td><td>Price-basis evidence and decision memo</td></tr>
+<tr><td><code>FEATURE_LABEL_DICTIONARY.csv</code></td><td>Every feature and label defined</td></tr>
+<tr><td><code>LEAKAGE_CODE_AUDIT.md</code></td><td>19 code findings with line numbers</td></tr>
+<tr><td><code>IMPLEMENTATION_ROADMAP.md</code></td><td>Phases and gates</td></tr>
+<tr><td><code>USER_DECISIONS_REQUIRED.md</code></td><td>18 decisions with options</td></tr>
+<tr><td><code>audit_scripts/</code>, <code>evidence/</code></td><td>Code and raw output behind every number here</td></tr></table>
+</body></html>

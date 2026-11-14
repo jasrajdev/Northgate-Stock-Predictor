@@ -21,3 +21,30 @@ __pycache__/
 # Editor and OS files
 .DS_Store
 .vscode/
+
+# --- Market and exchange data: local only (vendor/exchange terms; large; rebuildable) ---
+/data/raw/**
+!/data/raw/.gitkeep
+/data/interim/
+/data/processed/**
+!/data/processed/.gitkeep
+!/data/processed/**/
+# data/external/ and data/reference/ stay tracked (small official/derived tables)
+
+# --- Model artefacts and experiment outputs ---
+/models/
+*.pt
+*.pkl
+*.joblib
+*.parquet
+
+# --- Notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- Kept local pending review: NSE/Yahoo price excerpts and the NSE downloader ---
+/reports/claude_dataset_audit_2026-11-14/price_basis_comparison.csv
+/reports/claude_dataset_audit_2026-11-14/evidence/nse_vs_yahoo_all_universe_rows.csv
+/reports/claude_dataset_audit_2026-11-14/evidence/yahoo_event_windows.csv
+/reports/claude_dataset_audit_2026-11-14/evidence/02_price_basis_output.txt
+/reports/claude_dataset_audit_2026-11-14/evidence/03_event_windows_output.txt
+/download_nse_bhavcopy.py
