@@ -1,0 +1,16 @@
+{
+  "_note": "All values are documented ASSUMPTIONS pending project-owner approval (see reports/claude_dataset_audit_2026-11-14/USER_DECISIONS_REQUIRED.md D-17, D-18). Change here, not in code.",
+  "risk_free_rate_annual": 0.065,
+  "transaction_cost_bps_one_way": 10,
+  "max_weight": 0.30,
+  "rebalance_band": 0.05,
+  "require_validated_edge": true,
+  "signal_weights": {"forecast": 0.5, "sentiment": 0.25, "risk": 0.25},
+  "buy_threshold": 0.5,
+  "sell_threshold": -0.5,
+  "volatility_window_sessions": 60,
+  "sentiment_lookback_sessions": 3,
+  "sentiment_min_articles": 3,
+  "backtest": {"rebalance_every_sessions": 63, "lookback_sessions": 504, "initial_value_inr": 1000000},
+  "example_portfolio_notional_per_stock_inr": 100000
+}

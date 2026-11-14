@@ -623,3 +623,16 @@ Claude reports a local dashboard implementation in the working checkout. This is
 - Reported launch command from repository root: `.venv/bin/streamlit run dashboard/app.py`.
 
 **Next:** inspect the local dashboard/backend diff and the experiment-table provenance; verify the real data paths and metric values; then commit/push the dashboard and its supporting files. Separately recover the genuine Kaggle checkpoints and exact feature/preprocessing pipeline before attempting model inference. Keep the final test sealed. Do not claim a deployable model until a real checkpoint loads and a genuine inference smoke test passes.
+
+
+## 2026-11-15 — Investor dashboard, model persistence, portfolio and recommendation engine
+
+- **Dashboard** (`dashboard/app.py`, launch `streamlit run dashboard/app.py`): seven PRD panels with an investor landing page (portfolio value, watchlist with decisions, allocation vs target, risk snapshot, market and sector context). Model Comparison is secondary. Reads saved data and persisted models only.
+- **Models:** all eight families are registered (`src/northgate/backend/inference.py`). The four classical models were re-fitted per stock on the **training partition only** and persisted (`scripts/persist_classical_models.py`); local validation reproduces the Kaggle single-split results closely (Ridge MAE 18.49 vs naive 18.01). The four deep models have a strict checkpoint loader (`src/northgate/models/deep.py`), unit-tested with synthetic checkpoints; the real Kaggle checkpoints are **not yet installed** (`scripts/install_kaggle_artifacts.py` is ready for `artifacts/incoming/northgate_submission_artifacts.zip`).
+- **Selection and decisions:** selected model = loadable model with the lowest Experiment-01 validation MAE (currently Ridge). No model beat the naive forecast, so the forecast carries zero weight and every stock is HOLD ("no action"). Rules and thresholds are documented assumptions in `config/recommendation.json`.
+- **Finance:** returns, covariance, Ledoit-Wolf, volatility, beta, Sharpe, Sortino, drawdown, Calmar, historical VaR, min-variance and max-Sharpe (30% cap), efficient frontier, 20,000-portfolio Monte Carlo, and a quarterly-rebalanced backtest with 10 bps costs **on the validation window only**.
+- **Context:** India VIX, NIFTY sector indices and FRED series downloaded and displayed (not model inputs; not point-in-time).
+- **Sentiment:** GDELT fetch, VADER/FinBERT scoring and after-close session mapping implemented and tested; no headlines stored because the GDELT API rate-limited this machine and returned empty results. Sentiment panel shows "unavailable".
+- **Tests:** 19 passing (`pytest`), including a dashboard smoke test of every panel. The held-out test window was not opened or evaluated.
+- **Report draft:** `docs/RESEARCH_REPORT.md`.
+- **Next:** install the Kaggle ZIP and verify the deep checkpoints; owner decisions on data repair, split freeze and thresholds (see `reports/claude_dataset_audit_2026-11-14/USER_DECISIONS_REQUIRED.md`).

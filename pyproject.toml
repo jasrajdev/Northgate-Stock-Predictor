@@ -1,0 +1,9 @@
+[project]
+name = "northgate"
+version = "0.2.0"
+description = "Northgate Stock Predictor: India-focused forecasting, portfolio and decision-support research system"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]

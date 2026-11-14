@@ -48,3 +48,6 @@ __pycache__/
 /reports/claude_dataset_audit_2026-11-14/evidence/02_price_basis_output.txt
 /reports/claude_dataset_audit_2026-11-14/evidence/03_event_windows_output.txt
 /download_nse_bhavcopy.py
+
+# --- Local model artefacts and Kaggle exports (rebuild or download; see README) ---
+/artifacts/

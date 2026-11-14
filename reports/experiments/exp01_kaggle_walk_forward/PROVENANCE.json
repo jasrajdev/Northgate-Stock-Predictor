@@ -1,0 +1,12 @@
+{
+  "source": "Printed outputs of Kaggle notebook cells 73 and 75 (0-based)",
+  "notebook_file": "notebookf887dc542c.ipynb",
+  "notebook_sha256": "5e2374b5b7f48496f7c5b6d2c34d95dfac2ed23df502b796957109ce3725aa7e",
+  "status": "TRANSCRIPT of validation results. Original Kaggle CSV/JSON files and all model checkpoints were not recovered.",
+  "partition": "validation only (five expanding folds); test partition not evaluated",
+  "not_available": [
+    "fold_results.csv (per ticker x fold rows)",
+    "20 walk-forward checkpoints",
+    "Kaggle-built dataset"
+  ]
+}

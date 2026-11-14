@@ -1,0 +1,8 @@
+# Dashboard, portfolio and sentiment dependencies (in addition to requirements.txt).
+# Launch from the repository root:  streamlit run dashboard/app.py
+streamlit>=1.40,<2.0
+plotly>=5.24,<8.0
+scipy>=1.11,<2.0
+vaderSentiment>=3.3,<4.0
+# Deep-model inference needs PyTorch (requirements-dl.txt). FinBERT scoring additionally needs:
+#   pip install "transformers>=4.40"
