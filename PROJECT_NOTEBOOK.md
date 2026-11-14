@@ -244,3 +244,23 @@ The earlier 2026-11-12 statement that no model had been trained is historical an
 However, the experiment is not a final model-selection result and should not be treated as evidence that Northgate is complete. It used the existing price/volume-only Yahoo-derived dataset: 10 provisional equities, 24 backward-looking features, next-session adjusted-close target, no aligned macro/news/sentiment features, no point-in-time universe history, and unresolved corporate-action / historical price-basis concerns. The walk-forward folds reused the existing validation history; the final six-month test partition was not loaded. The pooled price MAE did not improve on the naive last-adjusted-close baseline, and directional scores were near 50%.
 
 Retraining should be gated on (1) validating the six newly downloaded NSE bonus-date Full Bhavcopy files, (2) deciding and documenting the price/return basis without silently changing the PRD target, (3) rebuilding and auditing the dataset and chronological partitions, and (4) deciding whether to run another price-only sensitivity experiment or wait for macro/news features. Preserve the prior reports/checkpoints and label them as the earlier experiment; do not overwrite them or call them final. No final-test evaluation until model and feature choices are frozen.
+
+
+## 2026-11-14 — Streamlit dashboard MVP (local, not yet in GitHub)
+
+Claude reports that a local Streamlit dashboard and a modular Python backend were added after the first Kaggle model experiment. This entry records the reported local state only; the dashboard source, extracted experiment tables, and backend have not yet been committed or independently inspected in GitHub.
+
+Reported files:
+- `dashboard/app.py`, `dashboard/theme.py`, `.streamlit/config.toml`
+- `src/northgate/backend/`: `api.py`, `market.py`, `risk.py`, `experiments.py`, `inference.py`, `__init__.py`
+- `scripts/extract_exp01_notebook_tables.py`
+- `reports/experiments/exp01_kaggle_walk_forward/`: `model_summary.csv`, `fold_model_summary.csv`, `walk_forward_report.json`, `PROVENANCE.json`
+- `requirements-dashboard.txt`
+
+Claude reports that Market Overview, Stock Explorer, Model Performance and Risk Analysis render using local real data; Portfolio Analytics is marked pending; News and Sentiment is marked unavailable; Predictions are unavailable. The dashboard reportedly passed a headless Streamlit test-harness run across all seven sections with zero exceptions. Only the Model Performance page was visually inspected in a browser.
+
+No deployable model is currently established. Claude reports no checkpoint files on the local machine, no local PyTorch installation, and no available copy of the experiment's 25-input feature panel. The backend inference interface therefore reports unavailable rather than inventing output. The Kaggle experiment did fit models, but that does not establish that the checkpoints or exact inference pipeline are recoverable.
+
+**Integrity requirements remain:** no fabricated predictions or metrics; no model training on dashboard load; validation results must be labelled as validation; final test remains sealed; no BUY/SELL claims or portfolio performance claims without a defined, tested evaluation contract.
+
+**Next steps:** review the local code and provenance; verify all paths and data sources; visually inspect the remaining pages; commit/push the dashboard after review; recover actual Kaggle checkpoints plus the exact feature/preprocessing code if possible; test real inference before enabling Predictions. Keep unavailable sections visibly unavailable.
