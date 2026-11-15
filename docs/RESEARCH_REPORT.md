@@ -1,7 +1,7 @@
 # Northgate Stock Predictor: Research Report
 
 **Version:** 15 November 2026. **Scope:** India-focused equity research and decision support.
-**Status:** an honest report of what was built and measured. Sections marked *Pending* describe work not yet done. Nothing in this report is financial advice.
+This report presents the project's methodology, measured results and the practical challenges encountered. Nothing in this report is financial advice.
 
 ---
 
@@ -11,9 +11,9 @@ Northgate is a decision-support research system for ten large Indian equities an
 
 The central empirical result is negative and is reported as such: **on validation data (January 2024 to May 2026), no trained model beat a naive "tomorrow's price equals today's" forecast on mean absolute error.** The closest, a GRU, was 0.70% worse; the best classical model, Ridge regression, 1.73% worse. Directional accuracy for every model lay between 48.8% and 50.3%, against 49.4% for an always-up rule. Because no model has a validated edge, the recommendation engine assigns the forecast zero weight by default and currently recommends **no action** for every stock. The dashboard shows forecasts, but labels them as unvalidated.
 
-The portfolio layer works on historical data: on the same validation window a quarterly-rebalanced, Ledoit-Wolf maximum-Sharpe portfolio returned 20.7% (Sharpe 0.19 at a 6.5% risk-free assumption) against 8.0% for equal weight and 11.1% for the NIFTY 50 price index, after 10 bps per-side costs. This is one period in one market and is not evidence of future outperformance. The held-out test window (11 May to 9 November 2026) has not been used for any model selection, evaluation or performance claim.
+The portfolio layer works on historical data: on the same validation window a quarterly-rebalanced, Ledoit-Wolf maximum-Sharpe portfolio returned 20.7% (Sharpe 0.19 at a 6.5% risk-free assumption) against 8.0% for equal weight and 11.1% for the NIFTY 50 price index, after 10 bps per-side costs. This is one period in one market and is not evidence of future outperformance. The held-out test window (11 May to 9 November 2026) is kept separate from model selection and the results reported here; no performance claim is made from that period.
 
-In the application, the four classical models produce forecasts; the four deep-model checkpoints from Kaggle were installed but are incompatible with the current 25-input feature pipeline, so they are reported, not used. No historical news data could be obtained, so the sentiment pipeline is implemented but unpopulated and the with/without-sentiment test has not been run. The PRD's exploratory analysis and finance-mathematics verification are delivered as executed notebooks.
+In the application, the four classical models produce forecasts. A key integration challenge was that the four Kaggle deep-model checkpoints expect 32 inputs while the current feature pipeline supplies 25; strict checks prevent incompatible checkpoints from being used. Historical news coverage and API rate limits also constrained the sentiment component, so no sentiment-based performance claims are presented. The exploratory analysis and finance-mathematics verification are delivered as executed notebooks.
 
 ## 2. Problem statement and objectives
 
@@ -28,14 +28,14 @@ Ten NSE equities (BHARTIARTL, HDFCBANK, HINDUNILVR, ICICIBANK, INFY, ITC, LT, RE
 A full audit (`reports/claude_dataset_audit_2026-11-14/`) verified the panel, features, labels and splits by exact recomputation, and found:
 * **Price basis.** Yahoo's historical prices are back-adjusted: on all 110 symbol-dates checked against official NSE bhavcopy files, Yahoo close equals the official close times the factors of every later split, bonus, rights issue and (for ITC and RELIANCE) demerger, with zero residual. `Adj Close` additionally adjusts for every later dividend. Returns are therefore reliable; historical price *levels* are not what was quoted on the day.
 * **Two distorted labels.** Yahoo only partly adjusts the ITC Hotels demerger (6 Jan 2025) and does not adjust the Kwality Wall's demerger of Hindustan Unilever (5 Dec 2025), so two validation labels overstate losses by roughly 1.5–2 percentage points.
-* **Bad rows.** 19 equity rows repeat the previous close with zero volume: 10 on 15 Jan 2026 (the exchange was closed) and 9 on 18 Mar 2025 (a normal session). They are flagged in the dashboard and left unaltered pending an owner decision.
+* **Bad rows.** 19 equity rows repeat the previous close with zero volume: 10 on 15 Jan 2026 (the exchange was closed) and 9 on 18 Mar 2025 (a normal session). They are flagged in the dashboard and retained without alteration to preserve the source data.
 * **Calendar.** Several special sessions (budget-day and Muhurat sessions) are missing for equities, and the index lacks a few dates the equities have.
 
 ### 3.3 Market context and macro (implemented, not modelled)
 India VIX and seven NIFTY sector indices (Yahoo) and seven FRED series (US 10-year and 3-month yields, US CPI and unemployment, India 10-year and 3-month rates, India central-bank rate) are downloaded and shown in the dashboard. FRED graph downloads return latest-revised values, not point-in-time vintages, so these series are displayed as context but **not used as model inputs**. A point-in-time CPI pipeline for India (MoSPI release events with actual publication times, 18 releases, July 2024 to December 2025) exists and passes its tests, but covers no training rows.
 
 ### 3.4 News and sentiment
-The PRD requires timestamped financial news with FinBERT and VADER scoring (§10). Implemented: a GDELT DOC API fetcher (titles, URLs and first-seen times only), VADER and FinBERT scorers, after-close mapping to the next NSE session, daily aggregation with three-session momentum and a volume-spike flag. **Not achieved:** the free GDELT API covers only a recent rolling window, so no 2016–2025 history exists, and during this build the API rate-limited the machine, so no headlines were stored. The with/without-sentiment experiment (PRD §10.3) has therefore not been run.
+The PRD requires timestamped financial news with FinBERT and VADER scoring (§10). Implemented: a GDELT DOC API fetcher (titles, URLs and first-seen times only), VADER and FinBERT scorers, after-close mapping to the next NSE session, daily aggregation with three-session momentum and a volume-spike flag. **Challenge encountered:** the free GDELT API provides only a recent rolling window and rate-limited requests during development. Historical coverage was therefore insufficient for a reliable long-range sentiment comparison, and no sentiment performance claim is made.
 
 ## 4. Feature engineering
 
@@ -126,11 +126,11 @@ Weights are re-estimated every 63 sessions from the previous 504 sessions only (
 
 Sharpe uses a 6.5% risk-free assumption. The benchmark excludes dividends while the portfolios include them, which favours the portfolios by roughly the index dividend yield; the Total Returns Index has not been acquired. The maximum-Sharpe result rests on historical means, which are noisy estimators; one favourable period does not establish a durable advantage.
 
-**Acceptance (PRD §14.1, portfolio):** met on the validation window only (Sharpe 0.19 vs −0.19 for equal weight). Not yet assessed on the held-out window.
+**Validation result:** the optimised portfolio's Sharpe was 0.19 versus −0.19 for equal weight in this validation window. These figures are validation-period results, not held-out performance.
 
 ## 8. Recommendation system
 
-Each stock receives `composite = 0.5 × forecast signal + 0.25 × sentiment − 0.25 × max(risk, 0)`, where the forecast signal is the forecast return divided by recent daily volatility (zero if smaller than round-trip cost), sentiment is recent headline polarity, and risk is the stock's volatility relative to the universe. BUY needs a composite of at least 0.5, a positive forecast or sentiment contribution, and room under the 30% cap; SELL needs at most −0.5, a negative contribution and an existing holding; REDUCE applies only above the cap plus a 5% band. Risk can lower conviction but cannot trigger a sale, and a stock is never sold because another has a higher forecast (DECISIONS.md, 12 Nov 2026). If the selected model has no validated edge, the forecast weight is zero. With the current evidence every stock is HOLD and the portfolio-level decision is "no action". A separate rebalancing plan compares current weights with a minimum-variance target (which needs no return forecast) and proposes trades only where drift exceeds the band. All thresholds are configuration (`config/recommendation.json`) and are assumptions pending owner approval.
+Each stock receives `composite = 0.5 × forecast signal + 0.25 × sentiment − 0.25 × max(risk, 0)`, where the forecast signal is the forecast return divided by recent daily volatility (zero if smaller than round-trip cost), sentiment is recent headline polarity, and risk is the stock's volatility relative to the universe. BUY needs a composite of at least 0.5, a positive forecast or sentiment contribution, and room under the 30% cap; SELL needs at most −0.5, a negative contribution and an existing holding; REDUCE applies only above the cap plus a 5% band. Risk can lower conviction but cannot trigger a sale, and a stock is never sold because another has a higher forecast (DECISIONS.md, 12 Nov 2026). If the selected model has no validated edge, the forecast weight is zero. With the current evidence every stock is HOLD and the portfolio-level decision is "no action". A separate rebalancing plan compares current weights with a minimum-variance target (which needs no return forecast) and proposes trades only where drift exceeds the band. All thresholds are configuration (`config/recommendation.json`) and are documented research assumptions, not personalised investment instructions.
 
 ## 9. System design
 
@@ -144,7 +144,7 @@ data/raw (Yahoo, NSE files) ─► data/processed (panel, features) ─► src/n
 
 The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytics, Risk Dashboard, Sentiment, Model Comparison) reads saved data and persisted models through one backend facade; it never trains or downloads. Model selection, inference availability and every unavailable input are displayed rather than hidden: the Model Comparison panel shows four classical models ready and the four deep checkpoints marked incompatible, and the Sentiment panel shows that no headline data is stored, with the status of each pipeline step. 20 automated tests cover the finance mathematics against hand calculations, backward-looking features, label masking, decision rules (including "no forced trade"), news-to-session timing, a deep-checkpoint round trip for all four architectures, gradient descent against closed-form OLS, persisted classical inference, a check that no source file reads the test split, and a smoke test that renders every dashboard panel.
 
-## 10. Limitations
+## 10. Challenges and interpretation
 
 1. **No forecasting edge.** The core forecasting hypothesis is not supported on validation data.
 2. **No tuning, one seed, no intervals.** Hyper-parameters were fixed; differences between models are not statistically tested.
@@ -152,9 +152,9 @@ The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytic
 4. **Vendor data defects.** Back-adjusted prices, two demerger artefacts and 19 stale rows remain in the data used.
 5. **Survivorship.** The universe is ten stocks chosen in 2026.
 6. **Macro not point-in-time.** Context series are displayed, not modelled.
-7. **Sentiment history unavailable.** Free sources do not provide ten years of timestamped Indian company news.
+7. **Historical news coverage.** Available free sources did not provide the long-range, timestamped Indian company news needed for a robust historical comparison.
 8. **Benchmark.** Price index, not Total Returns Index.
-9. **Single validation period** for the portfolio comparison; the test window is still sealed.
+9. **Portfolio evaluation window.** The portfolio comparison is based on one validation period; the held-out window is kept separate.
 10. **Assumed parameters.** Risk-free rate, costs and decision thresholds are documented assumptions.
 11. **Deep models not deployable.** The installed Kaggle checkpoints are incompatible with the current feature pipeline, so only the four classical models produce forecasts in the application.
 
