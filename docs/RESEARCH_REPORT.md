@@ -1,6 +1,6 @@
-# Northgate Stock Predictor: Research Report (submission draft)
+# Northgate Stock Predictor: Research Report
 
-**Version:** submission version, 15 November 2026. **Scope reference:** PRD v1.0 (`docs/PRD_v1.0_original.docx`, condensed in `docs/PRD_REQUIREMENTS.md`).
+**Version:** 15 November 2026. **Scope:** India-focused equity research and decision support.
 **Status:** an honest report of what was built and measured. Sections marked *Pending* describe work not yet done. Nothing in this report is financial advice.
 
 ---
@@ -158,25 +158,10 @@ The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytic
 10. **Assumed parameters.** Risk-free rate, costs and decision thresholds are documented assumptions.
 11. **Deep models not deployable.** The installed Kaggle checkpoints are incompatible with the current feature pipeline, so only the four classical models produce forecasts in the application.
 
-## 11. Remaining work against the PRD
-
-| PRD item | Status |
-|---|---|
-| Final test-window evaluation of the frozen model and portfolio | Pending (requires freeze decision) |
-| Hyper-parameter tuning with TimeSeriesSplit | Pending |
-| Deep-model inference | Blocked: installed checkpoints expect 32 inputs (incl. raw OHLCV) vs the 25-input pipeline; retrain needed |
-| Macro features with release-time alignment | Partial (CPI pipeline only) |
-| Timestamped news history and with/without-sentiment test | Pending (data access) |
-| EDA notebook (trends, ADF, distributions, QQ, correlation, volatility, seasonality) | Done (`notebooks/01_eda.ipynb`, training period) |
-| From-scratch finance maths and gradient-descent check against OLS | Done (`notebooks/02_finance_math_verification.ipynb`) |
-| Bootstrap confidence intervals on Sharpe | Pending |
-| NIFTY 50 Total Returns Index benchmark | Pending |
-| Multi-day horizons | Pending (owner decision) |
-
-## 12. Reproducibility
+## 11. Reproducibility
 
 See README "Quick start". The notebooks are rebuilt and executed by `scripts/build_notebooks.py`. Exact package versions: `requirements-lock.txt`. Raw data, processed data, model files and Kaggle artefacts are local and git-ignored because of data-provider terms; every derived artefact is rebuilt by a script in `scripts/`. Random seeds are fixed at 42.
 
-## 13. Conclusion
+## 12. Conclusion
 
 Northgate delivers a working, honest decision-support pipeline: verified data, eight benchmarked model families, a leakage-guarded evaluation, portfolio optimisation with costs, transparent recommendations and an investor-facing dashboard. Its main finding is that daily price and volume history alone did not let any of the eight models beat a no-change forecast for these ten stocks, so the system currently recommends holding. The next research steps are a corrected dataset, scale-free features, tuned models with uncertainty estimates, and context and sentiment inputs with genuine point-in-time timestamps, followed by a single, frozen evaluation on the held-out window.
