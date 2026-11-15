@@ -1,50 +1,61 @@
 # Northgate Stock Predictor
 
-India-focused research project testing whether machine-learning forecasts and carefully time-aligned information can improve investment decisions versus simple baselines. This is a decision-support research tool, not a live trading bot; profitability is not guaranteed.
+Northgate is an India-focused stock-market research project exploring how machine learning, market indicators and portfolio analysis can support more informed investment decisions.
 
-## Quick start
+The project brings together historical market-data processing, exploratory data analysis, financial calculations, model comparison, portfolio analytics and an interactive Streamlit dashboard.
+
+## What the project includes
+
+- **Market analysis:** historical price trends, technical indicators, returns, volatility and market context.
+- **Exploratory data analysis:** stationarity, return distributions, correlation, volatility clustering and seasonality.
+- **Forecasting research:** comparison of classical machine-learning and deep-learning model families against simple benchmarks.
+- **Portfolio analytics:** portfolio optimisation, risk measures and historical strategy analysis.
+- **Decision support:** transparent BUY / HOLD / SELL logic designed to allow a no-action decision.
+- **Interactive dashboard:** seven sections covering the market overview, prices and predictions, recommendations, portfolio analytics, risk, sentiment and model comparison.
+- **Research verification:** notebooks documenting the EDA and independent checks of financial calculations and gradient descent.
+
+## Technology
+
+Python, pandas, NumPy, scikit-learn, XGBoost, PyTorch, Streamlit, Plotly and Jupyter.
+
+## Run locally
+
+Create and activate a virtual environment, then install the project dependencies:
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt -r requirements-dashboard.txt -r requirements-dl.txt   # exact versions: requirements-lock.txt
-python scripts/download_market_data.py        # Yahoo prices -> data/raw/yahoo, data/processed/market_panel.csv (re-downloads; history may differ slightly)
-python scripts/build_features.py              # feature panel used by the dashboard's price charts
-python scripts/persist_classical_models.py    # fits Ridge / Random Forest / SVR / XGBoost on the TRAIN partition only (~1 min)
-python scripts/download_market_context.py     # optional: India VIX and NIFTY sector indices
-python scripts/download_macro_context.py      # optional: FRED macro series (latest values, not point-in-time)
-streamlit run dashboard/app.py                # investor dashboard at http://localhost:8501
-pytest                                        # 20 unit tests + dashboard smoke test
-python scripts/build_notebooks.py             # optional: re-executes notebooks/01_eda.ipynb and 02_finance_math_verification.ipynb
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dashboard.txt -r requirements-dl.txt
 ```
 
-What is and is not available:
-- **Forecasts:** the four classical models. The Kaggle deep checkpoints (install with `python scripts/install_kaggle_artifacts.py` from `artifacts/incoming/northgate_submission_artifacts.zip`) are **incompatible** with the current 25-input pipeline (they expect 32 inputs), so the dashboard reports them as unavailable.
-- **Sentiment:** `scripts/fetch_news_gdelt.py` then `scripts/score_news_sentiment.py` (FinBERT also needs `pip install transformers`). The free GDELT API returned no data from this machine, so the Sentiment panel currently shows the pipeline status only.
-- **Evaluation:** all reported model and portfolio results are validation results. The final six-month test window is sealed and is not read by any script or by the dashboard.
+Run the automated checks:
 
-Data, models and Kaggle artefacts are local and git-ignored (data-provider terms). The steps above were each run on the development machine; a single end-to-end rebuild on a fresh machine has not been verified.
+```bash
+pytest
+```
 
-Layout: `src/northgate/` (features, models, finance, recommendations, sentiment, backend API), `dashboard/` (Streamlit app, 7 panels), `scripts/` (data and model pipelines), `notebooks/` (EDA, finance verification), `tests/`, `config/` (universe; recommendation assumptions). Report: `docs/RESEARCH_REPORT.md`. Outstanding work: `docs/POST_SUBMISSION_BACKLOG.md`.
+Launch the dashboard:
 
-## Source of truth
-- `STATUS.md` — verified project state and next action
-- `PROJECT_NOTEBOOK.md` — durable project context and research safeguards
-- `DECISIONS.md` — confirmed decisions only
-- `QUESTIONS.md` — unresolved choices
-- `IDEAS_BACKLOG.md` — a concise list of research directions, not a transcript of brainstorming
-- `LEARNING_LOG.md` — concepts learned
-- `docs/IMPLEMENTATION_PLAN.md` — staged project plan
-- `docs/DATA_RESEARCH.md` — data-source and dataset research
-- `docs/RESEARCH_ROADMAP.md` — research questions, source-only prompts, Phase 1 source pack, and research log
-- `docs/PRD_REQUIREMENTS.md` — traceable requirements reference from the supplied PRD v1.0
-- `docs/DATASET_INVENTORY.md` — verified data inventory, source coverage and gaps
-- `docs/MODEL_TRAINING_GUIDE.md` — model-training workflow, datasets, model order, outputs and safeguards
-- `docs/GPU_LAPTOP_SETUP.md` — exact HP Victus Windows/PyTorch/CUDA setup and commands
-- `docs/CONTINUITY_PROTOCOL.md` — instructions for future project sessions
-- `docs/SUBMISSION_HANDOFF.md` — Kaggle artifact export, local folder layout, and Claude Code dashboard integration handoff
+```bash
+streamlit run dashboard/app.py
+```
 
-## Start every session
-Read `STATUS.md`, `PROJECT_NOTEBOOK.md`, `DECISIONS.md`, and the relevant plan/research files. Keep conversational brainstorming separate from confirmed repository decisions. After a requested repository edit, fetch and verify every changed file.
+The data and trained model artefacts are not included in the repository. The research workflow and analysis are documented in the source code, notebooks and report.
 
-## Research safeguards
-Use chronological splits; prevent look-ahead/data leakage; align information to its actual publication time; compare against simple baselines; include costs and limitations; report negative results honestly. Never claim a model works without out-of-sample evidence.
+## Project structure
+
+- `src/northgate/` — features, models, financial calculations, portfolio and recommendation logic
+- `dashboard/` — Streamlit application
+- `scripts/` — data processing and model workflows
+- `notebooks/` — exploratory analysis and financial-mathematics verification
+- `tests/` — automated checks
+- `config/` — project configuration
+- `docs/RESEARCH_REPORT.md` — research methodology, results and interpretation
+
+## Research report
+
+See [the Northgate research report](docs/RESEARCH_REPORT.md) for the methodology, experiments, findings and interpretation.
+
+## Disclaimer
+
+Northgate is an educational research and decision-support project. It is not investment advice or an automated trading system. Historical analysis does not guarantee future performance.
