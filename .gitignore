@@ -51,3 +51,22 @@ __pycache__/
 
 # --- Local model artefacts and Kaggle exports (rebuild or download; see README) ---
 /artifacts/
+
+# Internal project notes and planning files (not part of the public submission)
+/STATUS.md
+/PROJECT_NOTEBOOK.md
+/DECISIONS.md
+/QUESTIONS.md
+/IDEAS_BACKLOG.md
+/LEARNING_LOG.md
+/docs/CONTINUITY_PROTOCOL.md
+/docs/POST_SUBMISSION_BACKLOG.md
+/docs/IMPLEMENTATION_PLAN.md
+/docs/RESEARCH_ROADMAP.md
+/docs/PRD_REQUIREMENTS.md
+/docs/DATA_RESEARCH.md
+/docs/DATASET_INVENTORY.md
+/docs/MODEL_TRAINING_GUIDE.md
+/docs/GPU_LAPTOP_SETUP.md
+/docs/SUBMISSION_HANDOFF.md
+/reports/claude_dataset_audit_2026-11-14/
