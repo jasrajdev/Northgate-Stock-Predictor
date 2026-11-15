@@ -40,7 +40,7 @@ Launch the dashboard:
 streamlit run dashboard/app.py
 ```
 
-The data and trained model artefacts are not included in the repository. The research workflow and analysis are documented in the source code, notebooks and report.
+Large local market-data files and trained model artefacts are excluded from version control. The research workflow and analysis are documented in the source code, notebooks and report.
 
 ## Project structure
 
