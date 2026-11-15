@@ -264,3 +264,7 @@ No deployable model is currently established. Claude reports no checkpoint files
 **Integrity requirements remain:** no fabricated predictions or metrics; no model training on dashboard load; validation results must be labelled as validation; final test remains sealed; no BUY/SELL claims or portfolio performance claims without a defined, tested evaluation contract.
 
 **Next steps:** review the local code and provenance; verify all paths and data sources; visually inspect the remaining pages; commit/push the dashboard after review; recover actual Kaggle checkpoints plus the exact feature/preprocessing code if possible; test real inference before enabling Predictions. Keep unavailable sections visibly unavailable.
+
+
+## 2026-11-15 — Submission state
+The submitted system: verified Yahoo price panel; eight model families benchmarked (Experiment 01, validation only); four classical models persisted and serving forecasts; four deep checkpoints installed but incompatible with the current 25-input pipeline; portfolio optimisation and a validation-window backtest; a transparent recommendation engine that currently recommends no action because no model beat the naive forecast; a seven-panel dashboard; executed EDA and finance-verification notebooks; and `docs/RESEARCH_REPORT.md`. The forecasting acceptance criterion is not met on validation data. The held-out test window remains sealed. Outstanding work is in `docs/POST_SUBMISSION_BACKLOG.md`.

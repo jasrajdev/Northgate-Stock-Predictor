@@ -1,6 +1,6 @@
 # Northgate Stock Predictor: Research Report (submission draft)
 
-**Version:** draft 1, 15 November 2026. **Scope reference:** PRD v1.0 (`docs/PRD_v1.0_original.docx`, condensed in `docs/PRD_REQUIREMENTS.md`).
+**Version:** submission version, 15 November 2026. **Scope reference:** PRD v1.0 (`docs/PRD_v1.0_original.docx`, condensed in `docs/PRD_REQUIREMENTS.md`).
 **Status:** an honest report of what was built and measured. Sections marked *Pending* describe work not yet done. Nothing in this report is financial advice.
 
 ---
@@ -12,6 +12,8 @@ Northgate is a decision-support research system for ten large Indian equities an
 The central empirical result is negative and is reported as such: **on validation data (January 2024 to May 2026), no trained model beat a naive "tomorrow's price equals today's" forecast on mean absolute error.** The closest, a GRU, was 0.70% worse; the best classical model, Ridge regression, 1.73% worse. Directional accuracy for every model lay between 48.8% and 50.3%, against 49.4% for an always-up rule. Because no model has a validated edge, the recommendation engine assigns the forecast zero weight by default and currently recommends **no action** for every stock. The dashboard shows forecasts, but labels them as unvalidated.
 
 The portfolio layer works on historical data: on the same validation window a quarterly-rebalanced, Ledoit-Wolf maximum-Sharpe portfolio returned 20.7% (Sharpe 0.19 at a 6.5% risk-free assumption) against 8.0% for equal weight and 11.1% for the NIFTY 50 price index, after 10 bps per-side costs. This is one period in one market and is not evidence of future outperformance. The held-out test window (11 May to 9 November 2026) has not been used for any model selection, evaluation or performance claim.
+
+In the application, the four classical models produce forecasts; the four deep-model checkpoints from Kaggle were installed but are incompatible with the current 25-input feature pipeline, so they are reported, not used. No historical news data could be obtained, so the sentiment pipeline is implemented but unpopulated and the with/without-sentiment test has not been run. The PRD's exploratory analysis and finance-mathematics verification are delivered as executed notebooks.
 
 ## 2. Problem statement and objectives
 
@@ -50,6 +52,22 @@ Two feature sets exist (documented in `reports/.../FEATURE_LABEL_DICTIONARY.csv`
 
 A truncation test confirms no feature value at date *t* changes when later data is removed. Target: next-session log return of the adjusted close. Price forecasts are derived as price × exp(forecast).
 
+### 4.1 Exploratory analysis (training period only)
+`notebooks/01_eda.ipynb` analyses 2016–2023 only, so it cannot leak later information into modelling choices.
+
+| Finding | Evidence | Decision |
+|---|---|---|
+| Prices are non-stationary, returns stationary | ADF: unit root not rejected for log prices in 11 of 11 series (p 0.36–0.95); rejected for log returns in 11 of 11 | Forecast returns; benchmark against the random walk |
+| Returns are fat-tailed | Excess kurtosis 3.9–22.6; Jarque-Bera rejects normality for every series | Empirical VaR and drawdown; Huber loss for deep models |
+| Correlations are moderate and sector-clustered | Mean pairwise 0.28 (0.18–0.58; Infosys–TCS highest) | Ledoit-Wolf covariance, 30% cap |
+| Volatility clusters | Lag-1 autocorrelation of returns −0.014, of absolute returns +0.18; NIFTY realised volatility vs India VIX 0.86 | Rolling-volatility features; recent-window risk |
+| No seasonality consistent across years | No month consistently positive; one weekday significant in isolation (weak evidence) | No calendar features |
+
+The near-zero autocorrelation of returns anticipated the main forecasting result: past returns alone contain little information about the next session.
+
+### 4.2 Financial mathematics verification
+`notebooks/02_finance_math_verification.ipynb` checks every hand-written measure in `src/northgate/finance.py` (returns, annualisation, covariance, correlation, beta, Sharpe, Sortino, maximum drawdown, historical VaR, Calmar, portfolio variance) against independent library calculations on real training-period data; the largest difference is 8.9e-16. A manual batch gradient-descent linear regression (`src/northgate/models/gradient_descent.py`) converges to the closed-form OLS and scikit-learn coefficients on real RELIANCE features (largest difference 1.9e-18). Its training R² is 0.004, again showing little linear predictability.
+
 ## 5. Methodology
 
 ### 5.1 Chronological partitions
@@ -64,7 +82,9 @@ Rows are assigned by the date the outcome becomes known: training targets up to 
 Five expanding validation folds (2024-H1, 2024-H2, 2025-H1, 2025-H2, 2026 to May). Deep models chose their epoch count on the last 15% of each fold's training dates, were refitted on the full fold, and scored once. Run time 83 minutes; 500 result rows. Fixed hyper-parameters and one seed (no tuning; §10).
 
 ### 5.4 Deployment models
-For the dashboard, the four classical models were re-fitted on this machine's data, on the training partition only, and persisted (`scripts/persist_classical_models.py`). The deep checkpoints from Kaggle are loaded with a strict loader that rebuilds each architecture from its stored hyper-parameters and applies its own training statistics in its own feature order (`src/northgate/models/deep.py`). *Pending:* the checkpoints have not yet been copied to this machine, so deep inference is implemented and unit-tested but not yet exercised on real weights.
+For the dashboard, the four classical models were re-fitted on this machine's data, on the training partition only, and persisted (`scripts/persist_classical_models.py`). The deep checkpoints from Kaggle are read by a strict loader that rebuilds each architecture from its stored hyper-parameters and applies its own training statistics in its own feature order (`src/northgate/models/deep.py`).
+
+The four Kaggle checkpoints (LSTM, GRU, BiLSTM, Transformer) were installed and **all four are incompatible with the current feature pipeline**. They were trained on 32 inputs: the 25 used here plus seven raw columns (open, high, low, close, volume, dividends, stock splits) that the pipeline deliberately excludes because raw price and volume levels are restated by later corporate actions. The loader refuses them rather than feeding them inputs they were not trained on, so **no deep-model inference is available**. Their validation results in Table 1 come from the Kaggle experiment itself. Using deep models in the application requires retraining them on the 25-input pipeline.
 
 ## 6. Results: forecasting (validation only)
 
@@ -122,7 +142,7 @@ data/raw (Yahoo, NSE files) ─► data/processed (panel, features) ─► src/n
         └─► finance.py · recommend.py · sentiment.py ─► backend/api.py ─► dashboard/app.py (7 panels)
 ```
 
-The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytics, Risk Dashboard, Sentiment, Model Comparison) reads saved data and persisted models through one backend facade; it never trains or downloads. Model selection, inference availability and every unavailable input are displayed rather than hidden. 19 automated tests cover the finance mathematics against hand calculations, backward-looking features, label masking, decision rules (including "no forced trade"), news-to-session timing, a deep-checkpoint round trip for all four architectures, persisted classical inference, a check that no source file reads the test split, and a smoke test that renders every dashboard panel.
+The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytics, Risk Dashboard, Sentiment, Model Comparison) reads saved data and persisted models through one backend facade; it never trains or downloads. Model selection, inference availability and every unavailable input are displayed rather than hidden: the Model Comparison panel shows four classical models ready and the four deep checkpoints marked incompatible, and the Sentiment panel shows that no headline data is stored, with the status of each pipeline step. 20 automated tests cover the finance mathematics against hand calculations, backward-looking features, label masking, decision rules (including "no forced trade"), news-to-session timing, a deep-checkpoint round trip for all four architectures, gradient descent against closed-form OLS, persisted classical inference, a check that no source file reads the test split, and a smoke test that renders every dashboard panel.
 
 ## 10. Limitations
 
@@ -136,6 +156,7 @@ The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytic
 8. **Benchmark.** Price index, not Total Returns Index.
 9. **Single validation period** for the portfolio comparison; the test window is still sealed.
 10. **Assumed parameters.** Risk-free rate, costs and decision thresholds are documented assumptions.
+11. **Deep models not deployable.** The installed Kaggle checkpoints are incompatible with the current feature pipeline, so only the four classical models produce forecasts in the application.
 
 ## 11. Remaining work against the PRD
 
@@ -143,18 +164,18 @@ The dashboard (Overview, Price & Prediction, Recommendations, Portfolio Analytic
 |---|---|
 | Final test-window evaluation of the frozen model and portfolio | Pending (requires freeze decision) |
 | Hyper-parameter tuning with TimeSeriesSplit | Pending |
-| Deep-model inference on recovered checkpoints | Code ready; artefacts not yet installed |
+| Deep-model inference | Blocked: installed checkpoints expect 32 inputs (incl. raw OHLCV) vs the 25-input pipeline; retrain needed |
 | Macro features with release-time alignment | Partial (CPI pipeline only) |
 | Timestamped news history and with/without-sentiment test | Pending (data access) |
-| EDA notebook (ADF, QQ, Jarque-Bera, seasonality) | Pending |
-| From-scratch gradient-descent regression check | Pending |
+| EDA notebook (trends, ADF, distributions, QQ, correlation, volatility, seasonality) | Done (`notebooks/01_eda.ipynb`, training period) |
+| From-scratch finance maths and gradient-descent check against OLS | Done (`notebooks/02_finance_math_verification.ipynb`) |
 | Bootstrap confidence intervals on Sharpe | Pending |
 | NIFTY 50 Total Returns Index benchmark | Pending |
 | Multi-day horizons | Pending (owner decision) |
 
 ## 12. Reproducibility
 
-See README "Quick start". Exact package versions: `requirements-lock.txt`. Raw data, processed data, model files and Kaggle artefacts are local and git-ignored because of data-provider terms; every derived artefact is rebuilt by a script in `scripts/`. Random seeds are fixed at 42.
+See README "Quick start". The notebooks are rebuilt and executed by `scripts/build_notebooks.py`. Exact package versions: `requirements-lock.txt`. Raw data, processed data, model files and Kaggle artefacts are local and git-ignored because of data-provider terms; every derived artefact is rebuilt by a script in `scripts/`. Random seeds are fixed at 42.
 
 ## 13. Conclusion
 

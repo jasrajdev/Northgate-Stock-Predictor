@@ -149,3 +149,13 @@ def test_no_source_file_reads_test_split():
     offenders = [p for p in (ROOT / "src").rglob("*.py") if "test.csv" in p.read_text()]
     offenders += [p for p in (ROOT / "dashboard").rglob("*.py") if "test.csv" in p.read_text()]
     assert not offenders, offenders
+
+
+def test_gradient_descent_matches_closed_form_ols():
+    from sklearn.linear_model import LinearRegression
+    from northgate.models.gradient_descent import gd_linreg, ols_closed_form
+    rng = np.random.default_rng(3); X = rng.normal(size=(500, 4)); y = X @ np.array([0.5, -1.0, 0.25, 2.0]) + 0.3 + rng.normal(0, 0.1, 500)
+    w, b, hist = gd_linreg(X, y, lr=0.1, epochs=20000)
+    w_ols, b_ols = ols_closed_form(X, y); sk = LinearRegression().fit(X, y)
+    assert np.allclose(w, w_ols, atol=1e-6) and b == pytest.approx(b_ols, abs=1e-6)
+    assert np.allclose(w_ols, sk.coef_, atol=1e-10) and np.all(np.diff(hist) <= 1e-12)

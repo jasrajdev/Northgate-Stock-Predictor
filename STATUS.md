@@ -636,3 +636,11 @@ Claude reports a local dashboard implementation in the working checkout. This is
 - **Tests:** 19 passing (`pytest`), including a dashboard smoke test of every panel. The held-out test window was not opened or evaluated.
 - **Report draft:** `docs/RESEARCH_REPORT.md`.
 - **Next:** install the Kaggle ZIP and verify the deep checkpoints; owner decisions on data repair, split freeze and thresholds (see `reports/claude_dataset_audit_2026-11-14/USER_DECISIONS_REQUIRED.md`).
+
+
+## 2026-11-15 — Submission completion
+- **EDA delivered:** `notebooks/01_eda.ipynb` (executed; training period 2016–2023 only): trends with 50/200 MAs and volume, ADF (log prices non-stationary 11/11, returns stationary 11/11), distributions, QQ plots, skewness/kurtosis/Jarque-Bera, Pearson/Spearman correlation, rolling volatility vs India VIX (0.86), volatility clustering, month/weekday seasonality and STL, each with a decision-linked caption.
+- **Finance verification delivered:** `notebooks/02_finance_math_verification.ipynb`: every scratch measure in `finance.py` matches library calculations (largest difference 8.9e-16); manual gradient descent (`src/northgate/models/gradient_descent.py`) matches closed-form OLS (1.9e-18). Built by `scripts/build_notebooks.py`.
+- **Deep checkpoints:** installed from the Kaggle ZIP; all four are incompatible with the 25-input pipeline (they expect 32 inputs including raw OHLCV, dividends and splits) and are reported, not used. Dashboard explains this.
+- **Docs:** README quick start corrected; `docs/RESEARCH_REPORT.md` updated to the submission version; `docs/POST_SUBMISSION_BACKLOG.md` added.
+- **Tests:** 20 passing. The sealed test window was not read by any notebook, script or the dashboard.

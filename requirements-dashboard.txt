@@ -6,3 +6,9 @@ scipy>=1.11,<2.0
 vaderSentiment>=3.3,<4.0
 # Deep-model inference needs PyTorch (requirements-dl.txt). FinBERT scoring additionally needs:
 #   pip install "transformers>=4.40"
+# Analysis notebooks (scripts/build_notebooks.py):
+statsmodels>=0.14,<1.0
+matplotlib>=3.8,<4.0
+nbformat>=5.9,<6.0
+nbclient>=0.10,<1.0
+ipykernel>=6.29,<8.0

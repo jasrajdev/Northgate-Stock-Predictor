@@ -102,6 +102,23 @@ def short(t):
     return t.replace(".NS", "")
 
 
+def model_status(m) -> tuple[str, str]:
+    """Readable status and explanation for a registry entry (presentation only; the registry is unchanged)."""
+    if m.loaded:
+        return "Ready", ("Fitted on the training period" if m.family == "Classical" else "Checkpoint loaded")
+    d = m.detail or ""
+    if "feature order differs" in d:
+        import re
+        n = re.search(r"\((\d+) vs (\d+)\)", d)
+        sizes = f"expects {n.group(1)} inputs, pipeline supplies {n.group(2)}" if n else "expects different inputs"
+        return "Unavailable", f"Incompatible checkpoint: {sizes}"
+    if "not present" in d:
+        return "Unavailable", "Checkpoint not installed"
+    if m.family == "Classical":
+        return "Unavailable", "Not fitted yet (scripts/persist_classical_models.py)"
+    return "Unavailable", "Checkpoint failed to load; see technical details"
+
+
 def holdings() -> pd.DataFrame:
     if "holdings" not in st.session_state:
         st.session_state.holdings = api.example_holdings()
@@ -146,14 +163,17 @@ def overview():
                          "1 year": r["1 year (252)"] * 100, "3-month trend": r["3 months"],
                          "Forecast": (fc.loc[t, "forecast_return"] * 100) if fc is not None else np.nan,
                          "Decision": d.action, "Weight": val.loc[t, "Weight"] * 100})
-        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", height=393, column_config={
-            "Company": st.column_config.TextColumn(width="medium"),
-            "Last close": st.column_config.NumberColumn(format="₹%.2f"),
-            "Session": st.column_config.NumberColumn(format="%+.2f%%"), "1 year": st.column_config.NumberColumn(format="%+.1f%%"),
-            "3-month trend": st.column_config.LineChartColumn(width="small"),
-            "Forecast": st.column_config.NumberColumn("Next-session forecast", format="%+.2f%%",
-                                                      help=f"{reg.selected} model; unvalidated, it did not beat the no-change forecast"),
-            "Weight": st.column_config.NumberColumn(format="%.1f%%")})
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", height=388, column_config={
+            "Stock": st.column_config.TextColumn(width=112),
+            "Company": st.column_config.TextColumn(width=190),
+            "Last close": st.column_config.NumberColumn(format="₹%.2f", width=88),
+            "Session": st.column_config.NumberColumn(format="%+.2f%%", width=76),
+            "1 year": st.column_config.NumberColumn(format="%+.1f%%", width=72),
+            "3-month trend": st.column_config.LineChartColumn("3-mo trend", width=92, help="Adjusted close, last 63 sessions"),
+            "Forecast": st.column_config.NumberColumn("Forecast", format="%+.2f%%", width=80,
+                                                      help=f"Next-session forecast from the {reg.selected} model. Unvalidated: it did not beat the no-change forecast."),
+            "Decision": st.column_config.TextColumn(width=76),
+            "Weight": st.column_config.NumberColumn(format="%.1f%%", width=70)})
     left, right = st.columns([2, 3], gap="large")
     with left:
         st.subheader("Decision")
@@ -166,7 +186,7 @@ def overview():
             ("Volatility", pct(FN.annualise_vol(pr), 1), "annualised, 1 year"),
             ("1-day VaR 95%", inr(-FN.var_historical(pr) * total), "historical"),
             ("Beta", f"{FN.beta(pr, api.risk.returns_wide()['^NSEI']):.2f}", "vs NIFTY 50"),
-        ]), unsafe_allow_html=True)
+        ], compact=True), unsafe_allow_html=True)
         st.caption("Today's holdings applied to the past year of returns. Details on the Risk Dashboard.")
     with right:
         st.subheader("Allocation")
@@ -278,9 +298,11 @@ def price_prediction():
             st.dataframe(d, hide_index=True, width="stretch", column_config={
                 "Forecast return": st.column_config.NumberColumn(format="%+.3f%%"),
                 "Validation MAE vs naive": st.column_config.NumberColumn(format="%+.2f%%", help="Experiment 01; positive = worse than no-change")})
-            missing = [m.name for m in reg.models if not m.loaded]
+            missing = [m for m in reg.models if not m.loaded]
             if missing:
-                st.caption("Not loaded: " + ", ".join(missing) + " (checkpoints not present). The models are shown side by side, not averaged.")
+                why = "checkpoints incompatible with the current feature pipeline" if all("feature order" in (m.detail or "") for m in missing) else "not available"
+                st.caption("Not shown: " + ", ".join(m.name for m in missing) + f" ({why}; see Model Comparison). "
+                           "The available models are shown side by side, not averaged.")
     with c2:
         st.subheader("RSI (14)")
         fig = go.Figure(go.Scatter(x=hv.Date, y=hv.rsi_14, mode="lines", line=dict(color=T.BLUE, width=1.4), hovertemplate="%{y:.0f}", name="RSI"))
@@ -303,14 +325,20 @@ def recommendations():
          f"Forecast model: {rec['model']}" + (" (experimental: forecast included)." if unval else " (forecast weight set to zero: no validated edge)."))
     st.subheader("Per-stock decision")
     t = rec["table"]
+    sent = [("no data" if pd.isna(v) else f"{v:+.2f}") for v in t.sentiment_signal]
     show = pd.DataFrame({"Stock": [short(x) for x in t.index], "Decision": t.action, "Composite": t.composite, "Forecast": t.forecast_return * 100,
-                         "Forecast signal": t.forecast_signal, "Sentiment": t.sentiment_signal, "Risk signal": t.risk_signal,
-                         "Weight": t.weight * 100, "Why": t.reasons})
-    st.dataframe(show, hide_index=True, width="stretch", column_config={
-        "Composite": st.column_config.NumberColumn(format="%+.2f"), "Forecast": st.column_config.NumberColumn(format="%+.2f%%"),
-        "Forecast signal": st.column_config.NumberColumn(format="%+.2f"), "Sentiment": st.column_config.NumberColumn(format="%+.2f"),
-        "Risk signal": st.column_config.NumberColumn(format="%+.2f"), "Weight": st.column_config.NumberColumn(format="%.1f%%"),
-        "Why": st.column_config.TextColumn(width="large")})
+                         "Forecast signal": t.forecast_signal, "Sentiment": sent, "Risk signal": t.risk_signal, "Weight": t.weight * 100})
+    st.dataframe(show, hide_index=True, width="stretch", height=388, column_config={
+        "Stock": st.column_config.TextColumn(width="small"), "Decision": st.column_config.TextColumn(width="small"),
+        "Composite": st.column_config.NumberColumn(format="%+.2f", width="small", help="Weighted score; see the rule below"),
+        "Forecast": st.column_config.NumberColumn(format="%+.2f%%", width="small", help="Next-session forecast return"),
+        "Forecast signal": st.column_config.NumberColumn(format="%+.2f", width="small", help="Forecast divided by recent daily volatility"),
+        "Sentiment": st.column_config.TextColumn(width="small", help="Recent headline polarity; 'no data' when no headlines are available"),
+        "Risk signal": st.column_config.NumberColumn(format="%+.2f", width="small", help="Volatility relative to the other stocks (positive = riskier)"),
+        "Weight": st.column_config.NumberColumn(format="%.1f%%", width="small")})
+    st.subheader("Why each decision was made")
+    st.markdown(T.reasons([(short(x), r.action, {"BUY": T.GREEN, "SELL": T.ORANGE, "REDUCE": T.ORANGE}.get(r.action, T.MUTED),
+                            r.reasons[0].upper() + r.reasons[1:] if r.reasons else "") for x, r in t.iterrows()]), unsafe_allow_html=True)
     w = c["signal_weights"]
     st.markdown(f"**Rule.** composite = {w['forecast']} × forecast signal + {w['sentiment']} × sentiment − {w['risk']} × max(risk, 0). "
                 f"BUY at ≥ {c['buy_threshold']} with a positive forecast or sentiment contribution and weight below {c['max_weight']:.0%}; "
@@ -408,10 +436,20 @@ def risk_dashboard():
     periods = {"Full history": (None, None), "Training (to Dec 2023)": (None, ov["train_end"]),
                "Validation (Jan 2024 – May 2026)": (ov["train_end"] + pd.Timedelta(days=1), ov["validation_end"])}
     s, e = periods[st.radio("Period", list(periods), horizontal=True)]
-    rs = c_risk(s, e).copy(); fmt = {"Beta vs NIFTY 50": st.column_config.NumberColumn(format="%.2f")}
+    rs = c_risk(s, e).copy()
     for c in ("Annualised return", "Annualised volatility", "Maximum drawdown", "1-day VaR 95% (historical)", "Worst day"):
-        rs[c] = rs[c] * 100; fmt[c] = st.column_config.NumberColumn(format="%.1f%%")
-    st.dataframe(rs, width="stretch", column_config=fmt)
+        rs[c] = rs[c] * 100
+    if "^NSEI" in rs.index:
+        rs.loc["^NSEI", "Beta vs NIFTY 50"] = 1.0  # the benchmark's beta against itself is 1 by definition
+    rs.index = pd.Index(["NIFTY 50" if x == "^NSEI" else short(x) for x in rs.index], name="Stock")
+    labels = {"Annualised return": ("Return p.a.", "Annualised (compound) return of the adjusted close"),
+              "Annualised volatility": ("Volatility p.a.", "Standard deviation of daily returns × √252"),
+              "Maximum drawdown": ("Max drawdown", "Largest fall from a previous peak"),
+              "1-day VaR 95% (historical)": ("1-day VaR 95%", "5th percentile of daily returns (historical)"),
+              "Worst day": ("Worst day", "Lowest single-day return"), "Beta vs NIFTY 50": ("Beta", "Sensitivity to NIFTY 50 daily returns")}
+    fmt = {k: st.column_config.NumberColumn(lab, help=h, format="%.2f" if k.startswith("Beta") else "%.1f%%", width="small") for k, (lab, h) in labels.items()}
+    fmt["Sessions"] = st.column_config.NumberColumn(width="small")
+    st.dataframe(rs, width="stretch", height=35 * (len(rs) + 1) + 3, column_config=fmt)
     t = st.selectbox("Stock for the charts", api.tickers(True), format_func=lambda x: f"{short(x)} · {names[x]}")
     a, b = st.columns(2)
     with a:
@@ -440,10 +478,24 @@ def risk_dashboard():
 def sentiment():
     s, ov, names = c_sent(), c_overview(), api.names()
     if not s["available"]:
-        header("Sentiment", None, [("No news data on this machine", True)])
-        note("Unavailable", "No scored headlines are present, so no sentiment value is shown or used. The pipeline is implemented: "
-             "scripts/fetch_news_gdelt.py (timestamped headlines), scripts/score_news_sentiment.py (VADER, and FinBERT if installed), "
-             "with after-close items mapped to the next NSE session.")
+        header("Sentiment", "Daily sentiment from timestamped financial headlines, scored with FinBERT and VADER.",
+               [("No headline data", True), ("Pipeline implemented", False)])
+        st.markdown(T.figures([("Headlines stored", "0", "none fetched on this machine"), ("Market mood", "n/a", "needs headline data"),
+                               ("Used in decisions", "No", "sentiment weight is zero without data")]), unsafe_allow_html=True)
+        note("No sentiment is shown", "There is currently no headline data, so this page shows no scores and the recommendation engine gives "
+             "sentiment zero weight. Nothing here is estimated or filled in. The free GDELT news API rate-limited this machine and returned "
+             "no articles when the fetch was attempted.")
+        st.subheader("Pipeline status")
+        st.markdown(T.steps([
+            ("Step 1", "Fetch headlines", "Titles, links and first-seen times for each company from GDELT (no article text stored).", "Not yet run successfully", False),
+            ("Step 2", "Map to trading sessions", "Headlines after the 15:30 IST close or on non-trading days count for the next NSE session.", "Implemented and tested", True),
+            ("Step 3", "Score sentiment", "VADER compound score for every headline; FinBERT positive/negative/neutral probabilities when installed.", "Implemented", True),
+            ("Step 4", "Daily features", "Per stock and session: mean score, headline count, 3-session momentum and a news-volume spike flag.", "Implemented", True),
+        ]), unsafe_allow_html=True)
+        st.subheader("To populate this page")
+        st.markdown('<div class="ng-code">python scripts/fetch_news_gdelt.py\npython scripts/score_news_sentiment.py</div>', unsafe_allow_html=True)
+        st.caption("GDELT's free API covers only a recent rolling window, so even when it works it cannot supply 2016–2025 history for model "
+                   "training; the with/without-sentiment comparison required by the brief therefore remains open.")
         return
     items, daily = s["items"], s["daily"]
     src = {"finbert_polarity": "FinBERT", "vader_compound": "VADER"}.get(s["score_source"], s["score_source"])
@@ -481,13 +533,36 @@ def model_comparison():
     header("Model comparison", "Research view: the eight required models against two simple baselines.",
            [("Validation results", False), ("Test window not evaluated", False)])
     st.subheader("Model availability")
-    rt = reg.table(); rt["vs_naive"] = (rt.validation_mae / reg.naive_mae - 1) * 100; rt["selected"] = rt.name == reg.selected
-    st.dataframe(rt.rename(columns={"name": "Model", "family": "Family", "loaded": "Inference ready", "source": "Artifact", "detail": "Detail",
-                                    "validation_mae": "Validation MAE", "vs_naive": "MAE vs naive", "selected": "Selected"}),
-                 hide_index=True, width="stretch", column_config={"MAE vs naive": st.column_config.NumberColumn(format="%+.2f%%"),
-                                                                  "Validation MAE": st.column_config.NumberColumn(format="%.3f")})
-    st.caption("Selection: the loadable model with the lowest Experiment-01 validation MAE. Classical models are re-fitted locally on the training "
-               "partition (scripts/persist_classical_models.py). Deep models need the Kaggle checkpoints in artifacts/kaggle/models/deep/.")
+    ready = [m for m in reg.models if m.loaded]; deep_down = [m for m in reg.models if m.family == "Deep" and not m.loaded]
+    st.markdown(T.figures([("Models ready", f"{len(ready)} of {len(reg.models)}", "can produce forecasts"),
+                           ("Classical", f"{sum(m.family == 'Classical' for m in ready)} of 4", "fitted on the training period"),
+                           ("Deep", f"{sum(m.family == 'Deep' for m in ready)} of 4", "PyTorch checkpoints"),
+                           ("Selected for decisions", reg.selected or "none", "lowest validation error among ready models")]), unsafe_allow_html=True)
+    if deep_down:
+        incompatible = all("feature order" in (m.detail or "") for m in deep_down)
+        note("Deep-model inference unavailable",
+             ("The four deep-model checkpoints from Kaggle are installed but are incompatible with the current feature pipeline: "
+              "they were trained with seven extra raw columns (open, high, low, close, volume, dividends, stock splits) that the pipeline "
+              "now deliberately excludes. Loading them would mean feeding the models inputs they were not trained on, so they are not used "
+              "and no deep-model forecasts are shown. Their validation results below come from the Kaggle experiment."
+              if incompatible else "Some deep-model checkpoints could not be loaded, so those models produce no forecasts. Details below."))
+    rows = []
+    for m in reg.models:
+        status, why = model_status(m)
+        rows.append({"Model": m.name, "Family": m.family, "Status": status + (" · selected" if m.name == reg.selected else ""),
+                     "Validation MAE vs naive": (m.validation_mae / reg.naive_mae - 1) * 100 if m.validation_mae else np.nan, "Explanation": why})
+    st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", height=35 * 9 + 3, column_config={
+        "Model": st.column_config.TextColumn(width="medium"), "Family": st.column_config.TextColumn(width="small"),
+        "Status": st.column_config.TextColumn(width="small"),
+        "Validation MAE vs naive": st.column_config.NumberColumn("MAE vs naive", format="%+.2f%%", width="small",
+                                                                 help="Experiment-01 validation; positive = worse than the no-change forecast"),
+        "Explanation": st.column_config.TextColumn(width="large")})
+    with st.expander("Technical details"):
+        rt = reg.table()[["name", "family", "loaded", "source", "detail"]]
+        st.dataframe(rt.rename(columns={"name": "Model", "family": "Family", "loaded": "Loaded", "source": "Artifact", "detail": "Loader message"}),
+                     hide_index=True, width="stretch", column_config={"Loader message": st.column_config.TextColumn(width="large")})
+    st.caption("Selection: among models that are ready, the one with the lowest Experiment-01 validation MAE. Classical models are re-fitted "
+               "locally on the training period (scripts/persist_classical_models.py); deep checkpoints are read from artifacts/kaggle/models/deep/.")
     if not api.experiment_available():
         return
     e = c_exp(); o, s = e["overall"], e["summary"].set_index("model"); up = s.loc[e["always_up"], "directional_accuracy"]
